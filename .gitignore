@@ -1,0 +1,28 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# JTYHome private runtime data / credentials
+.jtyhome-data/
+.jtyhome.env
+.env
+*.sqlite
+*.sqlite3
+*.db
+
+# Runtime logs / generated files
+*.log
+uploads/
+conversation-imports/
+
+# macOS / editors
+.DS_Store
+.idea/
+.vscode/
+
+# Temporary extraction / package artifacts
+.unpack-tmp/

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-app-version="{{ app_version }}" data-asset-revision="{{ asset_revision }}" data-companion-name="{{ companion_name }}" data-companion-initial="{{ companion_initial }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#102d33">
+    <title>和{{ companion_name }}通话</title>
+    <link rel="stylesheet" href="/static/fonts/misans/MiSans-Regular.min.css?v={{ asset_revision }}">
+    <link rel="stylesheet" href="/static/fonts/misans/MiSans-Semibold.min.css?v={{ asset_revision }}">
+    <link rel="stylesheet" href="/static/css/voice-call.css?v={{ asset_revision }}">
+</head>
+<body>
+    <main class="call-stage" data-state="starting">
+        <header class="call-head">
+            <button id="call-minimize" class="call-icon-button" type="button" aria-label="缩小通话">⌄</button>
+            <div>
+                <span>PRIVATE VOICE LINE</span>
+                <h1>和{{ companion_name }}通话</h1>
+                <p id="call-status">正在准备麦克风…</p>
+            </div>
+            <button id="call-end" class="call-icon-button is-end" type="button" aria-label="结束通话">×</button>
+        </header>
+
+        <section class="call-presence" aria-label="当前声音状态">
+            <div class="call-orb" aria-hidden="true">
+                <i></i><i></i><i></i><strong>{{ companion_initial }}</strong>
+            </div>
+            <div class="call-meter"><span id="call-meter-fill"></span></div>
+            <div class="call-acoustic" id="call-acoustic">RMS 0.0000 · 等待人声</div>
+        </section>
+
+        <section id="call-subtitles" class="call-subtitles" aria-live="polite">
+            <div class="call-empty">线路接通后会自动听你说话；也可以切换为按住说话。</div>
+        </section>
+
+        <section class="call-mode-grid" aria-label="通话模式">
+            <label>
+                <span>收音</span>
+                <select id="call-input-mode">
+                    <option value="auto">自动 VAD</option>
+                    <option value="manual">按住说话</option>
+                </select>
+            </label>
+            <label class="call-switch">
+                <input id="call-private" type="checkbox">
+                <span><strong>私密</strong><small>只留文字，不存原音</small></span>
+            </label>
+            <label class="call-switch">
+                <input id="call-sleep" type="checkbox">
+                <span><strong>陪睡</strong><small>下行静音，不存原音</small></span>
+            </label>
+        </section>
+
+        <footer class="call-controls">
+            <button id="call-route" type="button"><span>◉</span><small>扬声器</small></button>
+            <button id="call-talk" class="call-talk hidden" type="button"><strong>按住说话</strong><small>松开发送</small></button>
+            <button id="call-browse" type="button"><span>⌁</span><small>边聊边看</small></button>
+        </footer>
+        <button id="call-resume" class="call-resume hidden" type="button">点一下恢复 iPhone / iPad 麦克风</button>
+        <div id="call-error" class="call-error hidden" role="alert"></div>
+    </main>
+    <script src="/static/js/voice-call.js?v={{ asset_revision }}"></script>
+</body>
+</html>

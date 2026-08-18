@@ -1,0 +1,39 @@
+# 大西瓜 v7.9.7 - 主程序依赖（听海使用独立 Python 3.10 环境）
+# pip install -r requirements.txt
+
+# Web 框架
+fastapi==0.115.0
+uvicorn[standard]==0.30.0
+jinja2==3.1.4
+
+# 原生模型 SDK 与兼容接口 HTTP 客户端
+openai==2.45.0
+anthropic==0.116.0
+httpx[socks]==0.27.0
+python-dotenv==1.0.1
+
+# Web Push
+pywebpush==2.0.1
+py-vapid==1.9.1
+
+# 向量搜索
+sentence-transformers==3.0.1
+# 与 sentence-transformers 3.0.1 验证过的固定组合，避免未来自动解析到
+# 体积和依赖树都不同的最新版 Torch / Transformers。
+torch==2.3.1
+transformers==4.41.2
+numpy==1.26.4
+
+# 中文分词（FTS5优化）
+jieba==0.42.1
+
+# 定时任务
+apscheduler==3.10.4
+
+# 系统监控（MCP用）
+psutil==6.0.0
+
+# 附件上传与 PDF 文字提取（Office/EPUB 使用 Python 标准库）
+python-multipart==0.0.12
+pypdf==5.1.0
+Pillow==10.4.0

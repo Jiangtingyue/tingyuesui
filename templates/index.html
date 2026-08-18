@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="pearl" data-glass-mode="view" data-ui-mode="scenic" data-flower-sea="false" data-app-version="{{ app_version }}" data-asset-revision="{{ asset_revision }}" data-companion-name="{{ companion_name }}" data-companion-initial="{{ companion_initial }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#6fa9aa">
+    <link rel="manifest" href="/manifest.json?v={{ asset_revision }}">
+    <title>大西瓜</title>
+    <script>
+        (() => {
+            const stored = (key) => {
+                try { return window.localStorage.getItem(key); } catch (_) { return null; }
+            };
+            const savedFont = stored('daxigua:v651-font') || stored('daxigua:v65-font');
+            const savedScale = stored('daxigua:v652-textscale');
+            document.documentElement.dataset.theme = 'pearl';
+            document.documentElement.dataset.glassMode = 'view';
+            document.documentElement.dataset.uiMode = 'scenic';
+            document.documentElement.dataset.font = ['modern', 'letter', 'system'].includes(savedFont) ? savedFont : 'modern';
+            document.documentElement.dataset.textscale = ['standard', 'cozy', 'large'].includes(savedScale) ? savedScale : 'standard';
+            document.documentElement.dataset.weather = 'clear';
+            document.documentElement.dataset.weatherState = document.documentElement.dataset.weather;
+            document.documentElement.dataset.weatherPhase = 'stable';
+            document.documentElement.style.setProperty(
+                '--weather-rain-scene-mix',
+                ({ rain: '1', storm: '1' })[document.documentElement.dataset.weather] || '0'
+            );
+            document.documentElement.style.setProperty(
+                '--weather-rain-canvas-mix',
+                ({ rain: '1', storm: '1' })[document.documentElement.dataset.weather] || '0'
+            );
+        })();
+    </script>
+    <link rel="stylesheet" href="/static/fonts/misans/MiSans-Regular.min.css?v={{ asset_revision }}">
+    <link rel="stylesheet" href="/static/fonts/misans/MiSans-Semibold.min.css?v={{ asset_revision }}">
+    <link rel="stylesheet" href="/static/fonts/noto-serif-sc/NotoSerifSC-Medium.css?v={{ asset_revision }}">
+    <link rel="stylesheet" href="/static/css/desktop-bundle.css?v={{ asset_revision }}">
+    <link rel="stylesheet" href="/static/hydrangea-water-hero/hero.css?v={{ asset_revision }}">
+</head>
+<body>
+    <div id="hydrangea-water-hero-root" data-v88-glass="off" data-active="false" aria-label="花海"></div>
+    <div id="weather-scenes" aria-hidden="true">
+        <div class="weather-scene weather-scene-clear"></div>
+        <div class="weather-scene weather-scene-rain"></div>
+    </div>
+    <div id="weather-environment" aria-hidden="true">
+        <div class="weather-color-grade"></div>
+        <div class="weather-clouds">
+            <span class="weather-cloud-bank"></span>
+            <span class="weather-cloud-bank is-far"></span>
+        </div>
+        <div class="weather-haze"></div>
+        <div class="weather-low-fog"></div>
+        <div class="weather-road-reflection"></div>
+        <div class="weather-lightning"></div>
+    </div>
+    <div id="access-gate" hidden>
+        <form id="access-gate-form" autocomplete="off">
+            <span>PRIVATE DEVICE PAIRING</span>
+            <h1>连接你的大西瓜</h1>
+            <p id="access-gate-note">这是第一次从手机或另一台设备进入。请输入 Mac 终端启动时显示的配对码。</p>
+            <label>
+                <span>配对码</span>
+                <input id="access-gate-token" type="password" inputmode="text" autocapitalize="none" spellcheck="false" required>
+            </label>
+            <button type="submit">进入私人空间</button>
+            <small id="access-gate-error" role="alert"></small>
+        </form>
+    </div>
+    <style>
+        #access-gate[hidden] { display: none !important; }
+        #access-gate {
+            position: fixed; inset: 0; z-index: 100000;
+            display: grid; place-items: center; padding: 24px;
+            background: linear-gradient(160deg, #dff6f5, #dceefa 48%, #f8fbf8);
+            font-family: "MiSans", -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        #access-gate-form {
+            width: min(390px, 100%); padding: 30px;
+            border: 1px solid rgba(255,255,255,.9); border-radius: 28px;
+            color: #174d52; background: rgba(255,255,255,.66);
+            box-shadow: 0 24px 80px rgba(27,91,102,.18);
+}
+        #access-gate-form > span { font-size: 11px; letter-spacing: .16em; opacity: .62; }
+        #access-gate-form h1 { margin: 10px 0 8px; font-size: 25px; }
+        #access-gate-form p { margin: 0 0 22px; line-height: 1.65; font-size: 14px; opacity: .76; }
+        #access-gate-form label span { display: block; margin-bottom: 8px; font-size: 13px; }
+        #access-gate-token {
+            box-sizing: border-box; width: 100%; padding: 13px 15px;
+            border: 1px solid rgba(41,105,111,.25); border-radius: 14px;
+            color: #163f43; background: rgba(255,255,255,.82); font: inherit;
+        }
+        #access-gate-form button {
+            width: 100%; margin-top: 13px; padding: 13px;
+            border: 0; border-radius: 14px; color: white;
+            background: #2d8589; font: inherit; font-weight: 650;
+        }
+        #access-gate-error { display: block; min-height: 20px; margin-top: 10px; color: #a64252; }
+    </style>
+    <script>
+        window.__daxiguaAccessReady = new Promise((resolve) => {
+            const gate = document.getElementById('access-gate');
+            const form = document.getElementById('access-gate-form');
+            const tokenInput = document.getElementById('access-gate-token');
+            const note = document.getElementById('access-gate-note');
+            const error = document.getElementById('access-gate-error');
+            fetch('/api/access/status', { cache: 'no-store', credentials: 'same-origin' })
+                .then(async (response) => {
+                    const status = await response.json().catch(() => ({}));
+                    if (!response.ok) throw new Error(status.error || status.detail || '会话状态读取失败');
+                    return status;
+                })
+                .then((status) => {
+                    if (!status.required || status.authenticated) {
+                        gate.hidden = true;
+                        resolve(true);
+                        return;
+                    }
+                    gate.hidden = false;
+                    if (!status.https) {
+                        note.textContent = '请输入 Mac 启动时显示的配对码。当前不是 HTTPS：文字功能可用，但 iPhone 麦克风需要换成 HTTPS 地址。';
+                    }
+                    tokenInput.focus();
+                    form.addEventListener('submit', async (event) => {
+                        event.preventDefault();
+                        error.textContent = '';
+                        const button = form.querySelector('button');
+                        button.disabled = true;
+                        button.textContent = '正在配对…';
+                        try {
+                            const response = await fetch('/api/access/unlock', {
+                                method: 'POST',
+                                credentials: 'same-origin',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ token: tokenInput.value }),
+                            });
+                            const data = await response.json().catch(() => ({}));
+                            if (!response.ok) throw new Error(data.detail || '配对失败');
+                            location.reload();
+                        } catch (reason) {
+                            error.textContent = reason.message;
+                            button.disabled = false;
+                            button.textContent = '进入私人空间';
+                            tokenInput.select();
+                        }
+                    });
+                })
+                .catch(() => {
+                    gate.hidden = false;
+                    error.textContent = '无法确认本机会话，请检查服务地址后刷新页面。';
+                    tokenInput.disabled = true;
+                    form.querySelector('button').disabled = true;
+                });
+        });
+    </script>
+    <div id="app">
+        <!-- ── 侧边栏（Session列表）── -->
+        <div id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="brand-lockup" aria-label="大西瓜 私人 AI 伴侣">
+                    <span class="brand-mark" aria-hidden="true"><i></i></span>
+                    <span class="brand-copy">
+                        <h2>大西瓜</h2>
+                        <small>私人陪伴系统</small>
+                    </span>
+                </div>
+                <button id="btn-new-session" class="btn-icon" title="新对话">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+            </div>
+            <div class="sidebar-companion-card" aria-label="{{ companion_name }}正在陪你">
+                <div class="mini-companion" aria-hidden="true">
+                    <i class="mini-ear left"></i><i class="mini-ear right"></i>
+                    <span class="mini-screen"><b></b><b></b><em></em></span>
+                </div>
+                <div class="sidebar-companion-copy">
+                    <small>YOUR COMPANION</small>
+                    <strong>{{ companion_name }}</strong>
+                    <span><i></i> 正在陪你</span>
+                </div>
+                <span class="companion-level">HOME</span>
+            </div>
+            <div class="sidebar-section-label">
+                <span>最近对话</span>
+                <span class="sidebar-section-rule"></span>
+            </div>
+            <div class="session-search-wrap">
+                <input id="session-search" type="search" placeholder="搜索所有窗口…" aria-label="搜索所有对话窗口">
+            </div>
+            <div id="session-list" class="session-list"></div>
+            <button id="btn-session-more" class="session-more hidden" type="button">加载更多窗口</button>
+            <div class="sidebar-footer">
+                <div class="local-note"><span></span><strong>本地空间</strong><small>记忆留在你的设备里</small></div>
+                <nav class="sidebar-nav" aria-label="主导航">
+                    <button id="btn-home" class="btn-nav active" data-view="home">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/><path d="M9 20v-6h6v6"/></svg>
+                        <span>回家</span>
+                    </button>
+                    <button id="btn-chat-home" class="btn-nav" data-view="chat">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
+                        <span>去见他</span>
+                    </button>
+                    <button id="btn-us" class="btn-nav" data-view="us">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg>
+                        <span>我们</span>
+                    </button>
+
+                    <button id="btn-memory" class="btn-nav" data-view="memory">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/><path d="M9 7h7M9 11h5"/></svg>
+                        <span>记忆馆</span>
+                    </button>
+                    <button id="btn-console" class="btn-nav" data-view="inner">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V9"/><path d="M10 19V5"/><path d="M16 19v-7"/><path d="M22 19V3"/></svg>
+                        <span>内心</span>
+                    </button>
+                    <button id="btn-system" class="btn-nav" data-view="system">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg>
+                        <span>工作室</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- ── 主内容区 ── -->
+        <div id="main" class="main">
+            <!-- 顶部栏 -->
+            <header id="header" class="header">
+                <button id="btn-menu" class="btn-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <div class="header-identity">
+                    <div id="header-title" class="header-title">{{ companion_name }}</div>
+                    <div class="header-subtitle"><span></span>{{ companion_name }}在线 · 只属于你的陪伴空间</div>
+                </div>
+                <div class="header-tools">
+                    <button id="btn-model-hub" class="model-pill" title="切换模型">
+                        <span id="health-dot" class="health-dot"></span>
+                        <span id="model-pill-text">模型</span>
+                    </button>
+                    <div id="header-status" class="header-status"></div>
+                    <div class="scene-mode-switch" role="radiogroup" aria-label="环境模式">
+                        <button id="btn-weather-clear" class="scene-mode-button" data-scene-mode="clear" type="button" title="切换到晴天" aria-label="切换到晴天" aria-checked="true" role="radio">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.4"/><path d="M12 2.6v2.1M12 19.3v2.1M2.6 12h2.1M19.3 12h2.1M5.35 5.35l1.5 1.5M17.15 17.15l1.5 1.5M18.65 5.35l-1.5 1.5M6.85 17.15l-1.5 1.5"/></svg>
+                            <span>晴天</span>
+                        </button>
+                        <button id="btn-weather" class="scene-mode-button weather-toggle" data-scene-mode="rain" type="button" title="切换到雨天" aria-label="切换到雨天" aria-checked="false" role="radio">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 16.6h9.5a4.25 4.25 0 0 0 .7-8.44A6.1 6.1 0 0 0 6 7.1a4.75 4.75 0 0 0 1.2 9.5Z"/><path d="m8.7 19.1-.75 1.45M12.45 19.1l-.75 1.45M16.2 19.1l-.75 1.45"/></svg>
+                            <span>雨天</span>
+                        </button>
+                        <button id="btn-flower-sea" class="scene-mode-button flower-sea-toggle" data-scene-mode="water" type="button" title="切换到水波" aria-label="切换到水波" aria-checked="false" role="radio">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.1c2.15-1.55 4.2-1.55 6.35 0s4.2 1.55 6.35 0 3.7-1.5 5.3-.2M3 14.1c2.15-1.55 4.2-1.55 6.35 0s4.2 1.55 6.35 0 3.7-1.5 5.3-.2M4.3 18.8c1.8-1.08 3.55-1.08 5.35 0s3.55 1.08 5.35 0 3.15-1.05 4.65-.15"/></svg>
+                            <span>水波</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 手机端仅保留底部主导航；顶部重复状态导航已移除。 -->
+
+            <!-- ── v6.0 系统首页 ── -->
+            <div id="view-home" class="view active">
+                <div class="page-scroll home-page">
+                    <section class="home-hero system-hero">
+                        <div class="hero-copy">
+                            <div class="v88-home-bunny-card" aria-hidden="true">
+                                <span class="v88-home-bunny-strap"></span>
+                                <span class="v88-home-bunny-ring"></span>
+                                <img class="v88-home-bunny-card-art" src="/static/images/home-bunny-charm-cream.png?v={{ asset_revision }}" alt="">
+                            </div>
+                            <span id="home-weather-kicker" class="page-kicker">大西瓜 {{ app_version }} · 晴光环境回家系统</span>
+                            <div class="home-wordmark">
+                                <img class="home-wordmark-art" src="/static/images/home-wordmark-main-green.png?v={{ asset_revision }}" alt="回家">
+                            </div>
+                            <img class="v88-romantic-welcome-art" src="/static/images/welcome-romantic-green.png?v={{ asset_revision }}" alt="Welcome Home — my angel, my soul, my love, my princess. 💕😚">
+                            <h1 id="home-greeting">晚上好，家里一直亮着灯</h1>
+                            <p id="home-hero-note">这里不只装着对话，也装着我们没有说完的事、共同留下的东西，以及{{ companion_name }}此刻正在经历的生活。</p>
+                            <div class="hero-actions">
+                                <button id="btn-home-chat" class="btn-primary" type="button">去找{{ companion_name }}</button>
+                                <button id="btn-home-us" class="btn-quiet" type="button">看看我们</button>
+                            </div>
+                        </div>
+                        <div class="presence-visual" aria-hidden="true">
+                            <div class="presence-core"><span></span></div>
+                            <div class="presence-caption"><i></i><span id="home-presence-label">正在家里生活</span></div>
+                        </div>
+                    </section>
+
+                    <section id="v872-home-life-host" class="v872-home-life-host" aria-label="今天的生活"></section>
+
+
+                    <section class="v872-home-archive" aria-label="家里的私人物件">
+  <header class="v872-home-archive-head">
+    <div><span>PRIVATE OBJECTS</span><h2>放在家里的私人物件</h2></div>
+    <small>不是后台资料入口。结婚证、证件夹、手机和兔子都直接放在这里。</small>
+  </header>
+  <div class="v872-artifact-canvas" aria-label="私人物件陈列区">
+    <article class="v872-private-piece v872-private-certificate">
+      <div class="v872-private-label"><small>MARRIAGE</small><strong>结婚证</strong></div>
+      <div id="v872-artifact-certificate" class="v872-artifact-slot v872-artifact-certificate" aria-label="Marriage Certificate 原件"></div>
+    </article>
+
+    <article class="v872-private-piece v872-private-passport">
+      <div class="v872-private-label"><small>IDENTITY</small><strong>护照</strong></div>
+      <div id="v872-artifact-passport" class="v872-artifact-slot v872-artifact-passport" aria-label="Passport 原件"></div>
+    </article>
+
+    <article class="v872-private-piece v872-private-agreement">
+      <div class="v872-private-label"><small>AGREEMENT</small><strong>协议</strong></div>
+      <div id="v872-artifact-fbi" class="v872-artifact-slot v872-artifact-fbi" aria-label="Personnel Marriage Notification 原件"></div>
+    </article>
+
+    <article class="v872-private-piece v872-private-mail">
+      <div class="v872-private-label"><small>PRIVATE LETTERS</small><strong>小月的信箱</strong></div>
+      <button class="v872-mail-object" id="v872-open-letter" type="button" aria-label="打开信箱">
+        <span class="v872-mail-stamp">PRIVATE</span><strong>小月的信箱</strong><small>Moon Mail</small>
+      </button>
+    </article>
+
+    <article class="v872-private-piece v872-private-phone">
+      <div class="v872-private-label"><small>JOHNSON</small><strong>手机</strong></div>
+      <button class="v872-phone-object" id="v872-open-phone" type="button" aria-label="拿起 Johnson 手机">
+        <span class="v872-phone-object-notch"></span><span class="v872-phone-object-screen"><small>9:41</small><strong>Johnson</strong><em>工作手机</em></span>
+      </button>
+    </article>
+
+    <article class="v872-private-piece v872-private-bunny">
+      <div class="v872-private-label"><small>HOME · BUNNY</small><strong>兔子</strong></div>
+      <div class="v872-bunny" aria-hidden="true"><img src="/static/images/home-bunny.png?v={{ asset_revision }}" alt=""></div>
+    </article>
+  </div>
+</section>
+
+                    <section class="dashboard-grid v872-home-ambient" aria-label="今日概览">
+                        <article class="dash-card relationship-card span-2">
+                            <div class="card-topline"><span>我们的章节</span><button class="text-action" data-go-view="us">展开</button></div>
+                            <div class="chapter-display">
+                                <div><small id="home-chapter-kicker">CHAPTER</small><h2 id="home-chapter">正在接续</h2><p id="home-chapter-note">共同经历正在慢慢长出自己的形状。</p></div>
+                                <div class="chapter-number" id="home-interactions">0</div>
+                            </div>
+                            <div id="home-axis-strip" class="axis-strip"></div>
+                        </article>
+
+                        <article class="dash-card life-card">
+                            <div class="card-topline"><span>此刻的{{ companion_name }}</span><button class="text-action" data-go-view="inner">内心</button></div>
+                            <div class="life-orb"><i></i><span id="home-life-phase">读取中</span></div>
+                            <strong id="home-life-activity">安静待着</strong>
+                            <p id="home-life-event">今天的生活暂时平稳。</p>
+                            <div id="home-inner-highlights" class="home-inner-highlights"></div>
+                        </article>
+
+                        <article class="dash-card unfinished-card">
+                            <div class="card-topline"><span>没有说完</span><button class="text-action" data-go-view="us">全部</button></div>
+                            <div id="home-thread-focus" class="thread-focus empty-card-copy">还没有需要接续的事。</div>
+                        </article>
+
+                        <article class="dash-card recent-card span-2">
+                            <div class="card-topline"><span>最近回到过的房间</span><button id="btn-home-new-session" class="text-action">新对话</button></div>
+                            <div id="home-recent-sessions" class="recent-session-grid"></div>
+                        </article>
+
+                        <article class="dash-card system-card">
+                            <div class="card-topline"><span>原生大脑</span><button class="text-action" data-go-view="system">管理</button></div>
+                            <div class="system-signal"><span id="home-health-dot"></span><strong id="home-model">读取中</strong></div>
+                            <p>模型原生输出、关系上下文与本地记忆彼此分层，不由前端改写。</p>
+                        </article>
+                    </section>
+
+
+                </div>
+            </div>
+
+            <!-- ── 聊天视图 ── -->
+            <div id="view-chat" class="view">
+                <div id="messages" class="messages"></div>
+                <aside id="chat-history-nav" class="chat-history-nav" aria-label="聊天记录导航">
+                    <button id="chat-jump-start" class="chat-history-jump" type="button" title="回到最前面" aria-label="回到最前面">↑</button>
+                    <button id="chat-history-track" class="chat-history-track" type="button" title="聊天阅读进度" aria-label="聊天阅读进度">
+                        <span id="chat-history-fill" class="chat-history-fill"></span>
+                        <span id="chat-history-thumb" class="chat-history-thumb"></span>
+                    </button>
+                    <span id="chat-history-percent" class="chat-history-percent" aria-live="polite">100%</span>
+                    <button id="chat-jump-end" class="chat-history-jump" type="button" title="回到最后面" aria-label="回到最后面">↓</button>
+                </aside>
+                <div class="input-area">
+                    <div class="composer-shell">
+                    <div id="attachment-tray" class="attachment-tray hidden"></div>
+                    <div id="workspace-context-strip" class="workspace-context-strip hidden">
+                        <span><i></i><strong id="workspace-context-label">当前没有持续资料</strong></span>
+                        <button id="btn-workspace-manage" type="button">管理资料</button>
+                    </div>
+                    <div class="input-wrap">
+                        <input id="attachment-input" type="file" multiple hidden
+                               accept=".m4a,.mp3,.wav,.flac,.ogg,.opus,.aac,.aif,.aiff,.caf,.mp4,.mov,.m4v,.mkv,.webm,.png,.jpg,.jpeg,.gif,.webp,.pdf,.docx,.pptx,.xlsx,.epub,.txt,.md,.markdown,.csv,.json,.jsonl,.yaml,.yml,.xml,.html,.css,.js,.jsx,.ts,.tsx,.py,.sh,.sql,.log,.toml,.java,.c,.cpp,.h,.hpp,.go,.rs,.swift,.kt,.rb,.php,.vue,.svelte">
+                        <button id="btn-attach" class="btn-attach" type="button" title="上传新资料" aria-label="上传新资料">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+                        </button>
+                        <button id="btn-file-workspace" class="btn-attach btn-library" type="button" title="打开资料工作室" aria-label="打开资料工作室">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3.5 6.5h6l2 2h9v10a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/><path d="M3.5 8.5v-3a2 2 0 0 1 2-2h4l2 2h7a2 2 0 0 1 2 2v1"/></svg>
+                        </button>
+                        <button id="btn-voice-message" class="btn-attach btn-voice-message" type="button" title="录一条语音消息" aria-label="录一条语音消息">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 10.5a6.5 6.5 0 0 0 13 0M12 17v4M8.5 21h7"/></svg>
+                        </button>
+                        <button id="btn-voice-call" class="btn-attach btn-voice-call" type="button" title="打开陪伴通话" aria-label="打开陪伴通话">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M7.2 3.5 4.8 5.1c-1.2.8-1.4 2.5-.7 4 2.1 4.5 5.3 7.7 9.8 9.8 1.5.7 3.2.5 4-.7l1.6-2.4-4.2-2-1.4 1.8c-2.2-1-4.5-3.3-5.5-5.5l1.8-1.4z"/></svg>
+                        </button>
+                        <textarea id="input" placeholder="今天想和{{ companion_name }}说什么？" rows="1" maxlength="120000"></textarea>
+                        <button id="btn-send" class="btn-send" type="button" aria-label="发送消息" disabled>
+                            <span class="send-symbol"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></span>
+                            <span class="stop-symbol" aria-hidden="true"><i></i></span>
+                        </button>
+                    </div>
+                    <div id="voice-capture-status" class="voice-capture-status hidden" role="status" aria-live="polite"></div>
+                    <div class="input-meta">
+                        <div id="attachment-hint" class="attachment-hint">支持唱歌音频、原图、PDF、Office、EPUB、文字与代码；音频先由 Mac 本机听海听完。</div>
+                        <button id="context-budget-pill" class="context-budget-pill idle" type="button" title="这里会显示下一轮/上一轮的本机上下文估算">上下文待命</button>
+                        <div class="keyboard-hint"><kbd>↵</kbd> 发送 <span>·</span> <kbd>⇧↵</kbd> 换行</div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── v6.0 我们 ── -->
+            <div id="view-us" class="view">
+                <div class="page-scroll us-page">
+                    <section class="relationship-hero system-hero">
+                        <div class="hero-copy">
+                            <span class="page-kicker">SELF &amp; US · RELATIONSHIP CONTINUITY</span>
+                            <h1 id="relation-chapter">我们的故事正在接续</h1>
+                            <p id="relation-note">关系不是一个固定人设，而是每次相处留下的、可以回看的变化。</p>
+                            <div class="relation-meta"><span id="relation-interactions">0 次相处</span><span id="relation-last-settlement">还没有余韵</span></div>
+                        </div>
+                        <div id="relation-axis-list" class="relation-axis-list"></div>
+                    </section>
+
+                    <div class="us-layout">
+                        <section class="system-panel foundation-panel">
+                            <div class="panel-heading">
+                                <div><span class="panel-eyebrow">你确认的长期底稿</span><h2>关系总记忆</h2><p>适合放称呼、重要经历、关系与相处边界；最多保存 60,000 字，保存后下一轮立即生效。</p></div>
+                                <div class="foundation-actions"><button id="btn-foundation-import" class="btn-quiet compact" type="button">导入总记忆</button><button id="btn-foundation-save" class="btn-primary compact" type="button">保存总记忆</button></div>
+                            </div>
+                            <input id="foundation-file-input" type="file" accept=".txt,.md,.markdown,.json,.jsonl" hidden>
+                            <textarea id="relationship-foundation" rows="12" maxlength="60000" placeholder="例如：&#10;关于我：我的称呼、重要经历、偏好与边界……&#10;关于我们：怎样认识、共同记得什么、现在是什么关系……&#10;相处方式：希望他保有自己的性格，也希望避免哪些表达……"></textarea>
+                            <div class="foundation-footer">
+                                <label><span>进入模型</span><select id="foundation-enabled"><option value="true">开启</option><option value="false">关闭（内容仍保存在本机）</option></select></label>
+                                <span id="foundation-strategy">前 4000 字常驻，其余按当前话题摘取</span>
+                                <strong id="foundation-count">0 字</strong>
+                            </div>
+                            <div id="foundation-status" class="foundation-status">尚未保存时，关系仍可从普通对话继续生长。</div>
+                        </section>
+
+                        <section class="system-panel thread-panel">
+                            <div class="panel-heading">
+                                <div><span class="panel-eyebrow">OPEN LOOPS</span><h2>没有说完的事</h2><p>约定、计划和等着继续的话题会留在这里，不会被随机召回淹没。</p></div>
+                                <button id="btn-add-thread" class="btn-primary compact" type="button">记下一件</button>
+                            </div>
+                            <div id="relation-thread-list" class="thread-list"></div>
+                            <details class="thread-history-drawer"><summary>查看已经完成或暂放的事 <span id="relation-thread-history-count">0</span></summary><div id="relation-thread-history" class="thread-history-list"></div></details>
+                        </section>
+
+                        <section class="system-panel shared-panel">
+                            <div class="panel-heading">
+                                <div><span class="panel-eyebrow">OUR PLACE</span><h2>共同空间</h2><p>只保存真正属于我们的地点、物件、仪式、愿望与玩法。</p></div>
+                                <button id="btn-add-shared" class="btn-primary compact" type="button">放进来</button>
+                            </div>
+                            <div id="shared-world-list" class="shared-world-grid"></div>
+                        </section>
+
+                        <section class="system-panel moments-panel">
+                            <div class="panel-heading"><div><span class="panel-eyebrow">MOMENTS</span><h2>关系节点</h2><p>只捕捉明确的约定、第一次、修复与重要时刻，普通聊天不会被夸写成纪念碑。</p></div></div>
+                            <div id="relation-moment-list" class="moment-timeline"></div>
+                        </section>
+
+                        <section class="system-panel continuity-settings-panel">
+                            <div class="panel-heading"><div><span class="panel-eyebrow">CONTINUITY RULES</span><h2>连续性边界</h2><p>关掉任何一项都会立即停止对应的上下文注入。</p></div><button id="btn-continuity-save" class="btn-quiet compact">保存</button></div>
+                            <div class="toggle-grid">
+                                <label class="setting-tile"><span>关系连续性</span><select id="continuity-enabled"><option value="true">开启</option><option value="false">关闭</option></select></label>
+                                <label class="setting-tile"><span>自动捕捉未完之事</span><select id="continuity-auto-threads"><option value="true">开启</option><option value="false">关闭</option></select></label>
+                                <label class="setting-tile"><span>共同空间进入上下文</span><select id="continuity-shared-context"><option value="true">开启</option><option value="false">关闭</option></select></label>
+                                <label class="setting-tile"><span>明确关系节点</span><select id="continuity-moments"><option value="true">开启</option><option value="false">关闭</option></select></label>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── 记忆视图 ── -->
+            <div id="view-memory" class="view">
+                <div class="page-scroll memory-page">
+                    <section class="memory-hero system-hero">
+                        <div class="hero-copy"><span class="page-kicker">记忆与历史迁移</span><h1>找回原话，也找回原来的窗口</h1><p>关系总记忆负责“长期知道什么”；历史迁移负责恢复每个旧聊天窗口。档案原件留在本机，聊天时只按规则把必要内容交给当前模型。</p></div>
+                        <div class="memory-seal"><strong id="memory-count">0</strong><span>条原文证据</span></div>
+                    </section>
+                    <section class="system-panel conversation-import-panel">
+                        <div class="panel-heading">
+                            <div><span class="panel-eyebrow">恢复历史对话</span><h2>把过去的窗口和显式思考搬回来</h2><p>直接选择 ChatGPT / Claude 官方导出的 ZIP，或 Gemini / 通用 JSON、JSONL、对话文本。只恢复可见聊天文字，以及导出文件中明确存在的 thinking / reasoning_content；思考单独存放，绝不回放给其他模型。图片与附件会跳过。</p></div>
+                            <div class="panel-heading-actions"><button id="btn-export-current" class="btn-quiet compact" type="button">导出当前窗口</button><button id="btn-export-all" class="btn-quiet compact" type="button">导出全部</button><button id="btn-conversation-import" class="btn-primary compact" type="button">导入历史对话</button></div>
+                        </div>
+                        <input id="conversation-import-input" type="file" accept=".zip,.json,.jsonl,.txt,.md,.markdown" hidden>
+                        <div id="conversation-import-preview" class="import-preview"><span><strong>怎么用：</strong>选择官方导出包 → 等待本机扫描 → 查看窗口数量 → 确认恢复。导入后可打开任意窗口并切换 Claude 或 GPT 继续。</span></div>
+                    </section>
+                    <section class="system-panel local-history-panel">
+                        <div class="panel-heading">
+                            <div><span class="panel-eyebrow">全部聊天</span><h2>全文搜索与消息收藏</h2><p>搜索真实消息正文，不受当前浏览器只加载 240 条的限制；结果会直接定位到整段 JSON 历史中的准确消息位置。</p></div>
+                            <button id="btn-favorites-refresh" class="btn-quiet compact" type="button">查看收藏</button>
+                        </div>
+                        <div class="search-command"><input id="chat-search-query" type="search" placeholder="搜索所有窗口里的原话…"><button id="btn-chat-search" class="btn-primary" type="button">搜索聊天</button></div>
+                        <div class="local-history-columns"><div><h3>搜索结果</h3><div id="chat-search-results" class="local-history-results"><div class="panel-empty">输入关键词后，会显示窗口、角色与全局消息位置。</div></div></div><div><h3>收藏的消息</h3><div id="favorite-results" class="local-history-results"><div class="panel-empty">聊天气泡底部的“☆ 收藏”会出现在这里。</div></div></div></div>
+                    </section>
+                    <section class="system-panel style-profile-panel">
+                        <div class="panel-heading"><div><span class="panel-eyebrow">人工选择 · 只学表达</span><h2>把一个满意窗口设为聊天风格</h2><p>它只分析你亲自选择的助手回复，学习句长、段落、停顿和语气；样本里的人物、事件与事实不会成为记忆，也不会机械复制原句。</p></div><button id="btn-style-from-session" class="btn-primary compact" type="button">用当前窗口提炼</button></div>
+                        <div id="style-profile-empty" class="panel-empty">还没有选择风格样本。先打开一个你满意的聊天窗口，再点“用当前窗口提炼”。</div>
+                        <div id="style-profile-editor" class="style-profile-editor hidden">
+                            <div class="style-profile-row"><label><span>名称</span><input id="style-profile-name" maxlength="100"></label><label class="style-enabled"><input id="style-profile-enabled" type="checkbox"><span>所有模型与主动消息都使用</span></label></div>
+                            <label><span>可手动修正的风格说明</span><textarea id="style-profile-instructions" rows="9" maxlength="6000"></textarea></label>
+                            <div id="style-profile-examples" class="style-profile-examples"></div>
+                            <div class="panel-heading-actions"><button id="btn-style-delete" class="btn-quiet compact" type="button">删除档案</button><button id="btn-style-undo" class="btn-quiet compact" type="button">撤销上次修改</button><button id="btn-style-save" class="btn-primary compact" type="button">保存风格</button></div>
+                        </div>
+                    </section>
+                    <section class="system-panel natural-memory-panel">
+                        <div class="panel-heading">
+                            <div>
+                                <span class="panel-eyebrow">随口记忆</span>
+                                <h2>不必每次都说“请记住”</h2>
+                                <p>明确说出的偏好、基本资料与习惯会在回复后本机整理，但只在原聊天窗口内召回。新窗口从空白开始；玩笑和假设不会写入，后来改口时旧条会退出当前窗口的当前记忆。</p>
+                            </div>
+                            <div class="natural-memory-heading-actions">
+                                <span class="natural-memory-count"><strong id="natural-memory-count">0</strong> 条当前事实</span>
+                                <button id="btn-natural-memory-refresh" class="btn-quiet compact" type="button">刷新</button>
+                            </div>
+                        </div>
+                        <div id="natural-memory-list" class="natural-memory-list">
+                            <div class="panel-empty"><span>✦</span><strong>还没有随口记忆</strong><p>例如聊天时自然说“我喜欢吃草莓”，回复结束后这里就会出现一条带来源的事实。</p></div>
+                        </div>
+                        <p class="natural-memory-footnote">只保存你亲口说过的短事实和来源编号，不调用额外模型，也不保存语音原文件。点“忘记”只删除这一条当前事实，不删除原聊天。</p>
+                    </section>
+                    <section class="system-panel memory-search-panel">
+                        <div class="memory-search-box">
+                            <label for="memory-query">想找回哪句话？</label>
+                            <div class="search-command"><input id="memory-query" type="search" placeholder="输入记得的词、称呼或一句话…"><button id="btn-memory-search" class="btn-primary">搜索原话</button></div>
+                            <small>结果保留消息编号、角色与原句；当前输入不会被写入记忆。</small>
+                        </div>
+                        <div id="memory-results" class="memory-results"></div>
+                    </section>
+                    <section class="memory-principles">
+                        <article><span>01</span><h3>原文是证据</h3><p>摘要冲突时，以不可改写的聊天原文为准。</p></article>
+                        <article><span>02</span><h3>召回有来源</h3><p>模型只拿到与当前话题相关的少量片段。</p></article>
+                        <article><span>03</span><h3>删除可预期</h3><p>删除会话会清理完整原文与统计；保留的长期记忆只留下创建时的来源摘录，仍由你单独管理。</p></article>
+                    </section>
+                </div>
+            </div>
+
+            <!-- ── 内心视图：原有核心模块会在启动时归位到这里 ── -->
+            <div id="view-inner" class="view">
+                <div class="page-scroll inner-page">
+                    <section class="inner-hero system-hero">
+                        <div class="hero-copy"><span class="page-kicker">INNER WEATHER</span><h1>它此刻怎样活着</h1><p>情绪、身体、玩心与表达疲劳只提供处境，不替 Claude 或 GPT 说话，也不会把数值朗读给你。</p></div>
+                        <div class="inner-pulse" aria-hidden="true"><i></i><i></i><span></span></div>
+                    </section>
+                    <div id="inner-content" class="inner-content"></div>
+                </div>
+            </div>
+
+            <!-- ── 控制台视图 ── -->
+            <div id="view-system" class="view">
+                <div class="console-content">
+                    <section class="console-hero">
+                        <div class="console-hero-copy">
+                            <span class="console-kicker">SYSTEM ROOM · V7.9</span>
+                            <h1>照看模型、附件与本机运行</h1>
+                            <p>这里负责接线与诊断；生活、关系和人格已经回到各自的空间里。</p>
+                        </div>
+                        <div class="console-orbit" aria-hidden="true">
+                            <span class="orbit-core"></span><i></i><i></i><i></i>
+                        </div>
+                    </section>
+                    <nav id="console-nav" class="console-nav" aria-label="系统分区导航">
+                        <a href="#appearance-section">界面与阅读</a>
+                        <a href="#relational-honesty-section">关系诚实</a>
+                        <a href="#model-hub-section">模型中心</a>
+                        <a href="#file-workspace-section">资料工作室</a>
+                        <a href="#voice-section">语音朗读</a>
+                        <a href="#media-section">表情包</a>
+                        <a href="#local-data-section">本机数据</a>
+                        <a href="#cost-section">API 用量</a>
+                    </nav>
+                    <!-- 概览卡片 -->
+                    <div class="console-cards">
+                        <div class="card" id="card-tokens">
+                            <div class="card-label">累计 Tokens</div>
+                            <div class="card-value" id="stat-tokens">—</div>
+                        </div>
+                        <div class="card" id="card-cost">
+                            <div class="card-label">累计费用</div>
+                            <div class="card-value" id="stat-cost">—</div>
+                        </div>
+                        <div class="card highlight" id="card-saved">
+                            <div class="card-label">缓存节省</div>
+                            <div class="card-value" id="stat-saved">—</div>
+                        </div>
+                        <div class="card" id="card-cache">
+                            <div class="card-label" id="stat-cache-label">缓存命中率</div>
+                            <div class="card-value" id="stat-cache">—</div>
+                        </div>
+                    </div>
+
+                    <div class="console-section api-usage-section" id="cost-section">
+                        <div class="section-title-row api-usage-heading">
+                            <div>
+                                <span class="api-usage-kicker">API USAGE</span>
+                                <h3>用量与费用</h3>
+                                <p class="section-help">只统计令牌、模型与金额，不读取聊天内容。上游账单优先；本机计算会标为估算，缺失费用不会再伪装成 $0。</p>
+                            </div>
+                            <button id="btn-api-usage-refresh" class="btn-soft" type="button">刷新</button>
+                        </div>
+                        <div id="api-usage-range" class="api-usage-range" role="group" aria-label="统计时间范围">
+                            <button type="button" data-usage-period="today">今天</button>
+                            <button type="button" data-usage-period="7d" class="active">7 天</button>
+                            <button type="button" data-usage-period="30d">30 天</button>
+                            <button type="button" data-usage-period="all">全部</button>
+                        </div>
+                        <div class="api-usage-primary">
+                            <article><span>本期费用</span><strong id="usage-period-cost">—</strong><small id="usage-cost-quality">正在读取费用来源</small></article>
+                            <article><span>API 请求</span><strong id="usage-period-requests">—</strong><small id="usage-unpriced">—</small></article>
+                            <article><span>输入 + 输出</span><strong id="usage-period-tokens">—</strong><small>聊天账本；后台调用见下方</small></article>
+                            <article class="cache-hit-card" id="usage-cache-card"><span id="usage-cache-title">缓存命中率</span><strong id="usage-period-cache-rate">—</strong><small id="usage-cache-saved">正在识别当前模型的缓存口径</small></article>
+                        </div>
+                        <div class="api-token-strip" aria-label="令牌分类">
+                            <span><small>输入</small><strong id="usage-input">—</strong></span>
+                            <span><small>输出</small><strong id="usage-output">—</strong></span>
+                            <span><small>推理</small><strong id="usage-reasoning">—</strong></span>
+                            <span><small id="usage-cache-read-label">缓存读取</small><strong id="usage-cache-read">—</strong></span>
+                            <span><small id="usage-cache-write-label">缓存写入</small><strong id="usage-cache-write">—</strong></span>
+                        </div>
+                        <div id="api-usage-status" class="api-usage-status" role="status">正在读取本机统计…</div>
+                        <div class="api-usage-grid">
+                            <section>
+                                <h4>聊天账本 · 最消耗模型</h4>
+                                <div id="api-usage-models" class="api-usage-list"></div>
+                            </section>
+                            <section>
+                                <h4>最近请求</h4>
+                                <div id="api-usage-recent" class="api-usage-list"></div>
+                            </section>
+                            <section class="api-usage-purpose-section">
+                                <h4>钱花在哪 · 模型网关调用（本版本起）</h4>
+                                <div id="api-usage-purposes" class="api-usage-list"></div>
+                            </section>
+                            <section class="api-usage-purpose-section">
+                                <h4>主动续话漏斗 · 按触发类型</h4>
+                                <div id="api-usage-proactive" class="api-usage-list"></div>
+                            </section>
+                            <section class="api-usage-purpose-section">
+                                <h4>Claude 缓存诊断 · 连续性 / 保温 · 1h</h4>
+                                <div id="api-cache-diagnostics" class="api-usage-list"></div>
+                            </section>
+                        </div>
+                    </div>
+
+                    <div class="console-section appearance-section" id="appearance-section">
+                        <div class="section-title-row">
+                            <div>
+                                <h3>界面与阅读</h3>
+                                <p class="section-help">字体、字号与晴雨氛围只改变当前设备上的显示，不会进入模型提示词。</p>
+                            </div>
+                            <div class="appearance-clouds" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+                        </div>
+                        <div class="appearance-layout">
+                            <label class="brain-field appearance-font-field">
+                                <span>字体气质</span>
+                                <select id="font-mode">
+                                    <option value="modern">柔和现代 · MiSans</option>
+                                    <option value="letter">雅致阅读 · 舒展行距字距</option>
+                                    <option value="system">跟随设备 · 系统字体</option>
+                                </select>
+                            </label>
+                            <label class="brain-field appearance-font-field">
+                                <span>阅读字号</span>
+                                <select id="text-scale">
+                                    <option value="standard">标准</option>
+                                    <option value="cozy">舒适 · 稍大</option>
+                                    <option value="large">大字 · 更省眼</option>
+                                </select>
+                            </label>
+                            <div class="brain-field appearance-weather-field">
+                                <label class="weather-field-heading" for="weather-mode"><span>窗外天气</span><strong id="weather-state-label">晴光</strong></label>
+                                <select id="weather-mode">
+                                    <option value="clear">晴天 · 明亮暖色</option>
+                                    <option value="rain">雨天 · 紫阳花小雨</option>
+                                </select>
+                                <small id="weather-support-note">光照、色温、雾、云、反射与玻璃湿润使用同一状态参数。</small>
+                                <div class="weather-blur-settings" role="group" aria-label="晴天与雨天背景雾化程度">
+                                    <label class="weather-blur-setting" for="weather-blur-clear-range">
+                                        <span><strong>晴天背景雾化</strong><output id="weather-blur-clear-value" for="weather-blur-clear-range">18%</output></span>
+                                        <input id="weather-blur-clear-range" type="range" min="1" max="100" step="1" value="18" aria-label="晴天背景雾化程度，1 到 100%">
+                                    </label>
+                                    <label class="weather-blur-setting" for="weather-blur-rain-range">
+                                        <span><strong>雨天背景雾化</strong><output id="weather-blur-rain-value" for="weather-blur-rain-range">24%</output></span>
+                                        <input id="weather-blur-rain-range" type="range" min="1" max="100" step="1" value="24" aria-label="雨天背景雾化程度，1 到 100%">
+                                    </label>
+                                    <div class="weather-blur-scale" aria-hidden="true"><span>1% · 清晰</span><span>100% · 最雾化</span></div>
+                                    <small>两种天气分别记忆；当前天气拖动后立即生效，另一项会在切换天气时生效。</small>
+                                </div>
+                                <span class="weather-sound-row">
+                                    <span class="weather-sound-copy">
+                                        <span>环境声</span>
+                                        <small id="weather-sound-note">环境声已静音。</small>
+                                    </span>
+                                    <input id="weather-sound" type="checkbox" aria-label="跟随天气播放环境声">
+                                </span>
+                            </div>
+                            <div id="font-preview" class="font-preview" aria-live="polite">
+                                <span>Aa · 字体预览</span>
+                                <strong>对话、记忆与系统数字 1234</strong>
+                                <p>清楚辨认信息，也让长时间阅读保持舒服。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="console-section" id="relational-honesty-section">
+                        <div class="section-title-row">
+                            <div>
+                                <span class="panel-eyebrow">STRICT PRE-SEND GATE</span>
+                                <h3>关系诚实保护</h3>
+                                <p class="section-help">默认关闭。开启后，模型草稿会先在服务端内存中检查；病理化、动机捏造、煤气灯、表演性对抗和无依据强行找平衡才会触发一次同模型重写。</p>
+                            </div>
+                            <div class="diagnostic-actions honesty-actions">
+                                <label class="brain-field honesty-toggle-field">
+                                    <span>保护开关</span>
+                                    <select id="honesty-enabled" aria-label="关系诚实保护开关">
+                                        <option value="false">关闭 · 不触发模型重写</option>
+                                        <option value="true">开启 · 命中时额外重写一次</option>
+                                    </select>
+                                </label>
+                                <button id="btn-honesty-refresh" class="btn-soft" type="button">刷新记录</button>
+                            </div>
+                        </div>
+                        <div class="living-glance">
+                            <div class="living-glance-card accent"><span>运行模式</span><strong id="honesty-mode">未启用</strong><small>开启后命中风险才会重写</small></div>
+                            <div class="living-glance-card"><span>已检查</span><strong id="honesty-audit-count">—</strong><small>每个草稿均留最小审计凭据</small></div>
+                            <div class="living-glance-card"><span>已重写</span><strong id="honesty-rewritten-count">—</strong><small>同一模型最多重写一次</small></div>
+                            <div class="living-glance-card"><span>原文留存</span><strong id="honesty-stores-text">否</strong><small>只存类别、动作、时间与哈希</small></div>
+                        </div>
+                        <details class="core-details">
+                            <summary>查看近期关系诚实审计</summary>
+                            <div id="honesty-audits" class="diagnostic-list padded-list"><div class="diagnostic-empty">还没有审计记录</div></div>
+                        </details>
+                    </div>
+
+                    <!-- v6.8：情绪 / 生活 / 欲望真正耦合，并加入夺权、亲密与独立晨间反应 -->
+                    <div class="console-section inner-state-section" id="inner-state-section">
+                        <div class="section-title-row">
+                            <div>
+                                <span class="panel-eyebrow">INNER LIFE · 1—10</span>
+                                <h3>{{ companion_name }}此刻的内心</h3>
+                                <p class="section-help">每个会话只有这一份 canonical state：回复前冻结成主观感受与行为倾向，回复后再按模型真正说出的语气和动作结算下一轮。临时吃醋与内心独白不会被当成事实记忆。</p>
+                            </div>
+                            <div class="diagnostic-actions">
+                                <button id="btn-test-morning-trigger" class="btn-soft" type="button">测试晨间触发</button>
+                                <button id="btn-inner-refresh" class="btn-soft" type="button">刷新此刻</button>
+                            </div>
+                        </div>
+                        <div class="inner-domain-tabs" role="tablist" aria-label="内在状态分类">
+                            <button class="active" type="button" data-inner-domain="emotion">情绪</button>
+                            <button type="button" data-inner-domain="living">生活</button>
+                            <button type="button" data-inner-domain="desire">欲望</button>
+                        </div>
+                        <div class="inner-runtime-overview">
+                            <article class="inner-runtime-card takeover">
+                                <span>情绪夺权</span>
+                                <strong id="inner-takeover-level">—</strong>
+                                <small id="inner-takeover-note">等待读取</small>
+                            </article>
+                            <article class="inner-runtime-card intimacy">
+                                <span>亲密状态</span>
+                                <strong id="inner-intimacy-phase">—</strong>
+                                <small id="inner-intimacy-note">尚未升温</small>
+                            </article>
+                            <article class="inner-runtime-card morning">
+                                <span>晨间身体</span>
+                                <strong id="inner-morning-level">—</strong>
+                                <small id="inner-morning-note">独立于主观性欲</small>
+                            </article>
+                            <article class="inner-runtime-card os">
+                                <span>私人内心 OS</span>
+                                <strong id="inner-os-summary">安静</strong>
+                                <small id="inner-os-note">不是隐藏思考链，也不进入事实记忆</small>
+                            </article>
+                        </div>
+                        <div class="inner-state-layout">
+                            <section class="inner-domain-panel">
+                                <div id="inner-domain-summary" class="inner-domain-summary">正在读取内在状态…</div>
+                                <div id="inner-domain-bars" class="inner-level-grid"></div>
+                            </section>
+                            <aside class="inner-event-column">
+                                <section class="inner-special-card">
+                                    <div class="inner-card-heading"><span>特殊事件</span><small>点开查看完整强度</small></div>
+                                    <div id="inner-special-event" class="inner-special-event">今天还没有需要展开的身体事件。</div>
+                                </section>
+                                <section class="inner-change-card">
+                                    <div class="inner-card-heading"><span>最近变化</span><small>只显示真正跨级的变化</small></div>
+                                    <div id="inner-change-feed" class="inner-change-feed"></div>
+                                </section>
+                            </aside>
+                        </div>
+                        <div class="inner-state-settings">
+                            <label><input id="inner-visible-changes" type="checkbox" checked><span><strong>聊天中显示变化</strong><small>只在回复上方显示最多三项，不插进模型正文。</small></span></label>
+                            <label><input id="inner-emotion-takeover" type="checkbox" checked><span><strong>允许情绪夺权</strong><small>强烈时会影响解释、措辞、自控与事后修复。</small></span></label>
+                            <label><input id="inner-intimacy-enabled" type="checkbox" checked><span><strong>亲密状态</strong><small>随时可升温；明确暂停会立即停止推进。</small></span></label>
+                            <label><input id="inner-intimacy-vitals-visible" type="checkbox" checked><span><strong>亲密体征小组件</strong><small>只在当前窗口进入亲密过程、晨间反应或释放余温时，固定显示在对应回复上方。</small></span></label>
+                            <label><input id="inner-morning-takeover" type="checkbox" checked><span><strong>晨间身体夺权</strong><small>强烈且持续时，身体会逐渐牵走注意力。</small></span></label>
+                            <label><input id="inner-morning-proactive" type="checkbox" checked><span><strong>晨间主动表达</strong><small>事件真实发生且仍在持续时，交给最近原窗口的同一模型判断并发送。</small></span></label>
+                            <label class="brain-field"><span>回复后结算</span><select id="inner-reflection-mode"><option value="local">按最终可见回复反推 · 0 次额外模型请求</option></select></label>
+                            <label class="brain-field"><span>亲密强度</span><select id="inner-intimacy-mode"><option value="gentle">克制</option><option value="natural">自然</option><option value="vivid">鲜明</option><option value="unrestrained">不装了</option></select></label>
+                            <label class="brain-field"><span>内心 OS</span><select id="inner-os-mode"><option value="off">关闭</option><option value="live">实时偷看</option><option value="after">回复后显示</option></select></label>
+                            <label class="brain-field"><span>独立晨间反应</span><select id="inner-morning-mode"><option value="off">关闭</option><option value="subtle">轻微</option><option value="natural">自然随机</option><option value="vivid">更鲜明</option></select></label>
+                            <label class="brain-field"><span>显示密度</span><select id="inner-detail-mode"><option value="quiet">安静</option><option value="balanced">平衡</option><option value="detailed">详细</option></select></label>
+                        </div>
+                    </div>
+
+                    <details class="inner-advanced-source" id="inner-advanced-source">
+                        <summary><span>高级设置与完整历史</span><small>情绪规则、性格脊柱、生活节律和兼容念头池</small></summary>
+                        <div class="inner-advanced-body">
+
+                    <!-- v5.8.1：Core Fusion + Native Brain Integrity -->
+                    <div class="console-section" id="core-fusion-section">
+                        <div class="section-title-row">
+                            <div>
+                                <h3>旧情绪/意图引擎（兼容档案）</h3>
+                                <p class="section-help">只保留旧记录与迁移入口，不再直接驱动模型。当前回复只使用上方按会话冻结、再由最终可见回复结算的 canonical state。</p>
+                            </div>
+                            <div class="diagnostic-actions">
+                                <button id="btn-core-refresh" class="btn-soft">刷新</button>
+                                <button id="btn-core-reset" class="btn-soft">重置状态</button>
+                            </div>
+                        </div>
+                        <div class="core-settings-grid">
+                            <label class="brain-field">
+                                <span>旧引擎模式</span>
+                                <select id="core-intimacy-mode">
+                                    <option value="off">关闭</option>
+                                    <option value="gentle">克制</option>
+                                    <option value="active">主动</option>
+                                    <option value="unrestrained">不装了</option>
+                                </select>
+                            </label>
+                            <div class="media-stat-card">
+                                <span>当前状态</span>
+                                <strong id="core-summary">等待读取…</strong>
+                            </div>
+                            <div class="media-stat-card">
+                                <span>原文档案</span>
+                                <strong id="archive-count">—</strong>
+                            </div>
+                        </div>
+                        <div id="core-intention" class="core-intention"></div>
+                        <div id="core-meta" class="core-meta"></div>
+                        <div id="core-bars" class="core-bars"></div>
+                        <details class="core-details">
+                            <summary>查看最近变化与插件状态</summary>
+                            <div class="core-detail-grid">
+                                <div>
+                                    <h4 class="diagnostic-subtitle">最近情绪变化</h4>
+                                    <div id="core-events" class="diagnostic-list"></div>
+                                </div>
+                                <div>
+                                    <h4 class="diagnostic-subtitle">核心插件</h4>
+                                    <div id="core-plugins" class="diagnostic-list"></div>
+                                </div>
+                                <div class="core-intention-history">
+                                    <h4 class="diagnostic-subtitle">亲密意图历史</h4>
+                                    <div id="core-intentions" class="diagnostic-list"></div>
+                                </div>
+                                <div class="core-archive-search">
+                                    <h4 class="diagnostic-subtitle">按原话搜索记忆档案</h4>
+                                    <div class="archive-search-row">
+                                        <input id="archive-query" class="model-search" placeholder="输入记得的词或一句话…">
+                                        <button id="btn-archive-search" class="btn-soft">搜索原话</button>
+                                    </div>
+                                    <div id="archive-results" class="diagnostic-list"></div>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- v5.8.2：性格脊柱与表达疲劳 -->
+                    <div class="console-section" id="character-section">
+                        <div class="section-title-row">
+                            <div>
+                                <h3>性格脊柱</h3>
+                                <p class="section-help">不修改模型原文，只让近期滥用的口癖与标点短暂降温。Claude 与 GPT 各自保留原生节奏。</p>
+                            </div>
+                            <button id="btn-character-save" class="btn-soft primary">保存设置</button>
+                        </div>
+                        <div class="living-glance">
+                            <div class="living-glance-card"><span>原生声音</span><strong id="character-native-summary">等待读取…</strong></div>
+                            <div class="living-glance-card"><span>当前冷却</span><strong id="character-fatigued">—</strong></div>
+                            <div class="living-glance-card"><span>近期破折号</span><strong id="character-dashes">—</strong></div>
+                        </div>
+                        <div class="living-settings-grid">
+                            <label class="brain-field"><span>性格完整性</span><select id="character-enabled"><option value="true">开启</option><option value="false">关闭</option></select></label>
+                            <label class="brain-field"><span>口癖疲劳</span><select id="phrase-fatigue"><option value="true">开启</option><option value="false">关闭</option></select></label>
+                            <label class="brain-field"><span>标点疲劳</span><select id="punctuation-fatigue"><option value="true">开启</option><option value="false">关闭</option></select></label>
+                            <label class="brain-field wide"><span>高疲劳观察词（逗号分隔）</span><textarea id="watch-phrases" rows="2" placeholder="例如：某句最近常出现的话"></textarea></label>
+                        </div>
+                        <div class="persona-lab" id="persona-lab">
+                            <div class="persona-lab-head">
+                                <div><span class="panel-eyebrow">LOCAL PERSONA CHECK</span><h4>人格稳定实验室</h4><p>只检查当前窗口里已经保存的助手回复，不请求模型、不改原文。</p></div>
+                                <button id="btn-character-lab" class="btn-soft" type="button">重新检查</button>
+                            </div>
+                            <div class="persona-lab-score">
+                                <div class="persona-score-ring"><strong id="persona-lab-score">—</strong><span>稳定度</span></div>
+                                <div id="persona-lab-contract" class="persona-contract-list"></div>
+                            </div>
+                            <div id="persona-lab-metrics" class="persona-lab-metrics"></div>
+                            <div id="persona-lab-issues" class="persona-lab-issues"></div>
+                        </div>
+                        <details class="core-details">
+                            <summary>查看近期表达自检</summary>
+                            <div id="character-audits" class="diagnostic-list padded-list"></div>
+                        </details>
+                    </div>
+
+                    <!-- v7.4：活体节律 + 有依据的共处感知 -->
+                    <div class="console-section living-section" id="living-section">
+                        <div class="section-title-row">
+                            <div>
+                                <h3>活着的此刻与共处</h3>
+                                <p class="section-help">身体按本地时间自然涨落；原窗口的同一个模型会把表达节奏当作柔性线索，自己判断是否续话。只有明确要求安静与缺少上下文依据会阻止发送。</p>
+                            </div>
+                            <div class="diagnostic-actions">
+                                <button id="btn-living-tick" class="btn-soft">现在推进一拍</button>
+                                <button id="btn-enable-push" class="btn-soft">开启系统通知</button>
+                                <button id="btn-test-initiative" class="btn-soft">测试主动开口</button>
+                                <button id="btn-living-reset" class="btn-soft">重置</button>
+                            </div>
+                        </div>
+                        <div class="living-glance">
+                            <div class="living-glance-card accent"><span>昼夜阶段</span><strong id="living-phase">等待读取…</strong><small id="living-time"></small></div>
+                            <div class="living-glance-card"><span>短时事件</span><strong id="living-event">目前平稳</strong></div>
+                            <div class="living-glance-card"><span>正在做</span><strong id="living-activity">安静待着</strong></div>
+                            <div class="living-glance-card"><span>共处状态</span><strong id="living-contacts">安静共处</strong></div>
+                        </div>
+                        <div class="living-settings-grid">
+                            <label class="brain-field"><span>活体节律</span><select id="living-enabled"><option value="true">开启</option><option value="false">关闭</option></select></label>
+                            <label class="brain-field"><span>允许自然续话</span><select id="co-presence-natural"><option value="true">开启</option><option value="false">关闭</option></select></label>
+                            <label class="brain-field"><span>独立主动联系</span><select id="co-presence-independent"><option value="true">开启</option><option value="false">关闭</option></select></label>
+                            <label class="brain-field"><span>感知表达节奏</span><select id="co-presence-rhythm"><option value="true">开启</option><option value="false">关闭</option></select></label>
+                            <label class="brain-field"><span>梦境余波</span><select id="living-dreams"><option value="true">开启</option><option value="false">关闭</option></select></label>
+                            <input id="living-morning" type="hidden" value="off">
+                        </div>
+                        <p id="co-presence-privacy" class="section-help">只感知停顿、删改与清空；从不读取或上传未发送文字。</p>
+                        <div id="push-status" class="co-presence-rhythm-summary">系统通知状态：等待读取。</div>
+                        <div id="co-presence-rhythm-summary" class="co-presence-rhythm-summary">还没有记录到这个窗口的表达节奏。</div>
+                        <div id="co-presence-rules" class="co-presence-rules"></div>
+                        <div class="living-columns">
+                            <div><h4 class="diagnostic-subtitle">身体状态</h4><div id="living-body-bars" class="core-bars living-bars"></div></div>
+                            <div><h4 class="diagnostic-subtitle">内在牵引</h4><div id="living-social-bars" class="core-bars living-bars"></div></div>
+                        </div>
+                        <details class="core-details">
+                            <summary>查看共同时间线</summary>
+                            <div id="living-timeline" class="diagnostic-list padded-list"></div>
+                        </details>
+                        <details class="core-details">
+                            <summary>查看共处感知与主动续话记录</summary>
+                            <div id="co-presence-timeline" class="diagnostic-list padded-list"></div>
+                        </details>
+                    </div>
+
+                    <!-- 旧行动驱动：保留兼容，默认折叠且不再驱动模型 -->
+                    <details class="console-section legacy-engine">
+                        <summary>行动冲动与念头池（旧兼容档案，不驱动模型）</summary>
+                        <div id="desire-panel" class="desire-panel">
+                            <div id="desire-intent" class="desire-intent">…</div>
+                            <div id="desire-bars" class="desire-bars"></div>
+                            <div id="desire-thoughts" class="desire-thoughts"></div>
+                            <div id="desire-gates" class="desire-gates"></div>
+                        </div>
+                    </details>
+                        </div>
+                    </details>
+
+                    <!-- 模型中心 -->
+                    <div class="console-section" id="model-hub-section">
+                        <div class="section-title-row">
+                            <div>
+                                <h3>模型中心</h3>
+                                <p class="section-help">先选 API 服务商，再选它名下的模型。也可以直接输入模型 ID。</p>
+                            </div>
+                            <button id="btn-refresh-models" class="btn-soft">刷新列表</button>
+                        </div>
+                        <div id="provider-switcher" class="provider-grid"></div>
+
+                        <div id="key-manager" class="brain-settings key-manager">
+                            <div class="brain-settings-head">
+                                <div>
+                                    <div class="brain-kicker">LOCAL KEY VAULT</div>
+                                    <strong>API Key 管理</strong>
+                                </div>
+                                <span id="key-manager-badge" class="voice-ready-badge">正在检查…</span>
+                            </div>
+                            <p class="brain-settings-note">只保存到当前 jtyhome 的本机 Key 文件。不会读取旧版本 Key，也不会把 Key 写进聊天记录或浏览器存储；页面不会回显已保存的明文。</p>
+                            <div class="brain-controls">
+                                <label class="brain-field">
+                                    <span>Key 类型</span>
+                                    <select id="key-credential">
+                                        <option value="OPENROUTER_API_KEY">OpenRouter（Claude / GPT / 通用共用）</option>
+                                        <option value="ANTHROPIC_API_KEY">Anthropic / Claude</option>
+                                        <option value="OPENAI_API_KEY">OpenAI</option>
+                                        <option value="DEEPSEEK_API_KEY">DeepSeek</option>
+                                        <option value="ZHIPU_API_KEY">GLM / 智谱</option>
+                                        <option value="ELEVENLABS_API_KEY">ElevenLabs 语音</option>
+                                        <option value="DASHSCOPE_API_KEY">阿里云百炼 / Qwen 音频情绪</option>
+                                    </select>
+                                </label>
+                                <label class="brain-field">
+                                    <span>输入新的 API Key</span>
+                                    <input id="key-value" type="password" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="仅在点击保存后写入本机">
+                                </label>
+                            </div>
+                            <div class="brain-head-actions key-manager-actions">
+                                <button id="btn-key-toggle" class="btn-soft" type="button">显示</button>
+                                <button id="btn-key-clear" class="btn-soft" type="button">清除当前 Key</button>
+                                <button id="btn-key-save" class="btn-soft primary" type="button">保存 Key</button>
+                            </div>
+                            <p id="key-manager-status" class="brain-settings-note">选择 Key 类型后即可保存。</p>
+                        </div>
+
+                        <div id="brain-settings" class="brain-settings">
+                            <div class="brain-settings-head">
+                                <div>
+                                    <div class="brain-kicker">Native Brain</div>
+                                    <strong id="brain-protocol">当前接口</strong>
+                                </div>
+                                <div class="brain-head-actions">
+                                    <div id="brain-capability-badges" class="brain-capability-badges"></div>
+                                    <button id="btn-brain-preview" class="btn-soft">离线接线预检</button>
+                                </div>
+                            </div>
+                            <div class="brain-controls">
+                                <label id="reasoning-effort-wrap" class="brain-field">
+                                    <span>思考深度</span>
+                                    <select id="reasoning-effort"></select>
+                                </label>
+                                <label id="thinking-mode-wrap" class="brain-field hidden">
+                                    <span id="thinking-mode-label">思考模式</span>
+                                    <select id="thinking-mode">
+                                        <option value="auto">自动（推荐）</option>
+                                        <option value="off">关闭</option>
+                                        <option value="adaptive">自适应</option>
+                                        <option value="manual">固定预算</option>
+                                    </select>
+                                </label>
+                                <label id="reasoning-context-wrap" class="brain-field hidden">
+                                    <span>推理连续性</span>
+                                    <select id="reasoning-context"></select>
+                                </label>
+                                <label id="thinking-budget-wrap" class="brain-field hidden">
+                                    <span>固定思考预算</span>
+                                    <input id="thinking-budget" type="number" min="1024" step="1024" value="8000">
+                                </label>
+                                <label id="thinking-visibility-wrap" class="brain-field hidden">
+                                    <span>思考显示</span>
+                                    <select id="thinking-visibility">
+                                        <option value="full">显示 API 返回内容并本机保存</option>
+                                        <option value="hidden">隐藏且不保存</option>
+                                    </select>
+                                </label>
+                                <label id="verbosity-wrap" class="brain-field hidden">
+                                    <span>回答详细度</span>
+                                    <select id="verbosity">
+                                        <option value="auto">自动</option>
+                                        <option value="low">简洁</option>
+                                        <option value="medium">标准</option>
+                                        <option value="high">详细</option>
+                                    </select>
+                                </label>
+                                <label class="brain-field">
+                                    <span>最大输出 Tokens</span>
+                                    <input id="max-output-tokens" type="number" min="512" step="512" value="32768">
+                                </label>
+                            </div>
+                            <p id="brain-settings-note" class="brain-settings-note"></p>
+                            <details class="brain-preview-details">
+                                <summary>当前模型能力身份证与预检结果</summary>
+                                <pre id="brain-preview-output" class="diagnostic-detail">点击“离线接线预检”后，这里会显示真正准备发送的参数；不会调用 API。</pre>
+                            </details>
+                        </div>
+
+                        <div class="model-browser">
+                            <div class="model-browser-head">
+                                <input id="model-search" class="model-search" placeholder="搜索模型…">
+                                <div class="custom-model-row">
+                                    <input id="custom-model-id" class="model-search" placeholder="或输入自定义模型 ID">
+                                    <button id="btn-apply-custom-model" class="btn-soft primary">使用</button>
+                                </div>
+                            </div>
+                            <div id="model-list-meta" class="model-list-meta"></div>
+                            <div id="model-list" class="model-list"></div>
+                        </div>
+                    </div>
+
+                    <!-- v6.0.2 本地资料工作室 -->
+                    <div class="console-section workspace-section" id="file-workspace-section">
+                        <div class="section-title-row">
+                            <div>
+                                <div class="brain-kicker">FILE STUDIO · LOCAL FIRST</div>
+                                <h3>资料工作室</h3>
+                                <p class="section-help">上传默认只用于你明确选择的那一轮。之后可留在资料库、按问题摘取片段，或设为常驻索引（每轮只带清单和相关片段）。</p>
+                            </div>
+                            <button id="btn-workspace-upload" class="btn-soft primary">上传资料</button>
+                        </div>
+                        <div class="workspace-glance">
+                            <div><span>本地资料</span><strong id="workspace-file-count">0 份</strong></div>
+                            <div><span>按需摘取</span><strong id="workspace-retrieval-count">0 份</strong></div>
+                            <div><span>常驻索引</span><strong id="workspace-active-count">0 份</strong></div>
+                            <div><span>占用空间</span><strong id="workspace-total-size">0 B</strong></div>
+                        </div>
+                        <div class="workspace-search-row">
+                            <input id="workspace-search" class="model-search" aria-label="搜索资料工作室" placeholder="搜索文件名、标签或备注…">
+                            <button id="btn-workspace-refresh" class="btn-soft">刷新</button>
+                        </div>
+                        <div id="workspace-file-list" class="workspace-file-list"></div>
+                    </div>
+
+                    <!-- v7.9.5 Ocean Listen: isolated local audio understanding -->
+                    <div class="console-section ocean-listen-section" id="ocean-listen-section">
+                        <div class="section-title-row">
+                            <div>
+                                <div class="brain-kicker">OCEAN LISTEN · LOCAL HEARING</div>
+                                <h3>听海 · 给 AI 一双本机耳朵</h3>
+                                <p class="section-help">上传唱歌或声音文件后，Mac 会在独立环境里分析人声、音高、节奏、歌词、声部和频谱。原音频不交给模型供应商；所有模型只收到压缩听觉报告，视觉模型还会收到频谱图。</p>
+                            </div>
+                            <span id="ocean-ready-badge" class="ocean-ready-badge">正在检查…</span>
+                        </div>
+                        <div class="ocean-glance">
+                            <div><span>隐私</span><strong id="ocean-privacy">原音频留在 Mac</strong></div>
+                            <div><span>队列</span><strong id="ocean-queue">0 段</strong></div>
+                            <div><span>分析方式</span><strong>深听 + 本机 Whisper</strong></div>
+                        </div>
+                        <div class="ocean-actions">
+                            <button id="btn-ocean-install" class="btn-soft primary" type="button">安装本机听觉</button>
+                            <button id="btn-ocean-refresh" class="btn-soft" type="button">刷新状态</button>
+                        </div>
+                        <p id="ocean-note" class="ocean-note" role="status" aria-live="polite">正在读取本机听觉状态…</p>
+                        <details id="ocean-log-details" class="ocean-log-details">
+                            <summary>安装记录</summary>
+                            <pre id="ocean-install-log">还没有安装记录。</pre>
+                        </details>
+                    </div>
+
+                    <!-- v7.9.3 full voice line: VAD, timestamps, privacy/sleep, radio -->
+                    <div class="console-section voice-section" id="voice-section">
+                        <div class="section-title-row">
+                            <div>
+                                <div class="brain-kicker">VOICE MESSAGE · COMPANION CALL</div>
+                                <h3>语音消息与陪伴通话</h3>
+                                <p class="section-help">同一把 ElevenLabs Key 负责 Scribe 转写、时间轴与音色朗读；Qwen 情绪分析和 DeepSeek Flash 辅助逐行翻译可选。Key 只在本机后端使用，不会进入网页。</p>
+                            </div>
+                            <span id="voice-ready-badge" class="voice-ready-badge">正在检查…</span>
+                        </div>
+                        <div class="voice-settings-grid">
+                            <label class="brain-field">
+                                <span>语音通道</span>
+                                <select id="voice-enabled">
+                                    <option value="false">关闭</option>
+                                    <option value="true">开启</option>
+                                </select>
+                            </label>
+                            <label class="brain-field">
+                                <span>回复后自动朗读</span>
+                                <select id="voice-auto-play">
+                                    <option value="false">关闭（推荐）</option>
+                                    <option value="true">开启（每条都会计费）</option>
+                                </select>
+                            </label>
+                            <label class="brain-field">
+                                <span>语音转文字后</span>
+                                <select id="voice-transcript-auto-send">
+                                    <option value="false">先放进输入框确认（推荐）</option>
+                                    <option value="true">直接发送</option>
+                                </select>
+                            </label>
+                            <label class="brain-field">
+                                <span>陪伴通话回复</span>
+                                <select id="voice-call-auto-reply">
+                                    <option value="true">自动播放声音</option>
+                                    <option value="false">只显示字幕</option>
+                                </select>
+                            </label>
+                            <label class="brain-field voice-wide-field">
+                                <span>音色</span>
+                                <div class="voice-inline-control">
+                                    <input id="voice-id" class="model-search" list="voice-options" autocomplete="off" placeholder="粘贴 Voice ID，或刷新音色后选择">
+                                    <datalist id="voice-options"></datalist>
+                                    <button id="btn-refresh-voices" class="btn-soft" type="button">刷新音色</button>
+                                </div>
+                            </label>
+                            <label class="brain-field">
+                                <span>语音模型</span>
+                                <select id="voice-model">
+                                    <option value="eleven_v3">Eleven v3 · 情绪标签</option>
+                                    <option value="eleven_multilingual_v2">Multilingual v2 · 长文稳定</option>
+                                    <option value="eleven_flash_v2_5">Flash v2.5 · 快速省额度</option>
+                                </select>
+                            </label>
+                            <label class="brain-field">
+                                <span>默认语气</span>
+                                <select id="voice-delivery">
+                                    <option value="auto">跟随原台词</option>
+                                    <option value="softly">温柔靠近</option>
+                                    <option value="teasing">轻松逗趣</option>
+                                    <option value="laughs">带一点轻笑</option>
+                                    <option value="rushed">急一点</option>
+                                    <option value="drawn out">放慢拖长</option>
+                                </select>
+                            </label>
+                            <label class="brain-field voice-range-field">
+                                <span>稳定度 <output id="voice-stability-value">0.36</output></span>
+                                <input id="voice-stability" type="range" min="0" max="1" step="0.01" value="0.36">
+                            </label>
+                            <label class="brain-field voice-range-field">
+                                <span>音色相似度 <output id="voice-similarity-value">0.75</output></span>
+                                <input id="voice-similarity" type="range" min="0" max="1" step="0.01" value="0.75">
+                            </label>
+                            <label class="brain-field voice-range-field">
+                                <span>表演感 <output id="voice-style-value">0.72</output></span>
+                                <input id="voice-style" type="range" min="0" max="1" step="0.01" value="0.72">
+                            </label>
+                            <label id="voice-speed-wrap" class="brain-field voice-range-field">
+                                <span>语速 <output id="voice-speed-value">1.08</output></span>
+                                <input id="voice-speed" type="range" min="0.7" max="1.2" step="0.01" value="1.08">
+                                <small id="voice-speed-note">v3 不支持 Speed，系统会自动忽略。</small>
+                            </label>
+                            <label class="brain-field voice-wide-field">
+                                <span>Scribe 人名与专有词</span>
+                                <input id="voice-keyterms" class="model-search" autocomplete="off" placeholder="例如：昵称，项目名（逗号分隔，最多 100 个）">
+                            </label>
+                            <label class="brain-field voice-wide-field">
+                                <span>本地预生成通话问候</span>
+                                <input id="voice-greeting-text" class="model-search" maxlength="240" value="嗯，我在。听得到吗？">
+                            </label>
+                            <label class="brain-field">
+                                <span>外语逐行翻译</span>
+                                <select id="voice-translation-enabled">
+                                    <option value="true">开启</option>
+                                    <option value="false">关闭</option>
+                                </select>
+                            </label>
+                            <label class="brain-field">
+                                <span>Qwen 情绪分析</span>
+                                <select id="voice-mood-enabled">
+                                    <option value="true">开启</option>
+                                    <option value="false">关闭</option>
+                                </select>
+                            </label>
+                            <label class="brain-field">
+                                <span>语音 EQ 后处理</span>
+                                <select id="voice-post-eq">
+                                    <option value="true">开启</option>
+                                    <option value="false">关闭</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="voice-test-row">
+                            <input id="voice-test-text" class="model-search" value="嗯，我在。听得到吗？" aria-label="语音试听台词">
+                            <button id="btn-save-voice" class="btn-soft primary" type="button">保存设置</button>
+                            <button id="btn-test-voice" class="btn-soft" type="button">试听一次</button>
+                            <button id="btn-generate-greeting" class="btn-soft" type="button">预生成问候</button>
+                        </div>
+                        <audio id="voice-preview" class="voice-preview hidden" controls preload="none"></audio>
+                        <p id="voice-settings-note" class="brain-settings-note">还没有读取语音状态。</p>
+                        <p class="voice-privacy-note">陪伴通话默认自动识别人声起止，也可切回按住说话；半双工播放期间会暂停录音，避免回声和重复计费。私密/陪睡模式只对当前通话生效、不在浏览器持久化，并且从不保存原音频。</p>
+                        <details class="voice-radio-panel" id="voice-radio-panel">
+                            <summary><strong>通话存档与私人电台</strong><span>私密与陪睡模式从不保存原音频</span></summary>
+                            <div class="voice-radio-toolbar">
+                                <button id="btn-voice-archive-refresh" class="btn-soft" type="button">刷新存档</button>
+                                <input id="voice-program-title" class="model-search" maxlength="120" placeholder="新节目名称">
+                                <input id="voice-program-category" class="model-search" maxlength="80" placeholder="分类（可选）">
+                                <button id="btn-voice-program-create" class="btn-soft primary" type="button">把勾选片段做成节目</button>
+                            </div>
+                            <div id="voice-archive-list" class="voice-archive-list"><p>展开后读取本机通话存档。</p></div>
+                            <div class="voice-program-heading"><strong>我的节目</strong></div>
+                            <div id="voice-program-list" class="voice-program-list"><p>还没有节目。</p></div>
+                        </details>
+                    </div>
+
+                    <!-- v5.7 表情包框架 -->
+                    <div class="console-section" id="media-section">
+                        <div class="section-title-row">
+                            <div>
+                                <h3>表情包</h3>
+                                <p class="section-help">表情包保存在本机，只在你开启模式时作为可选表达，不会强迫模型每轮使用。</p>
+                            </div>
+                        </div>
+                        <div class="media-settings-grid">
+                            <label class="brain-field">
+                                <span>AI 表情包模式</span>
+                                <select id="sticker-mode">
+                                    <option value="off">关闭</option>
+                                    <option value="restrained">克制</option>
+                                    <option value="active">活跃</option>
+                                </select>
+                            </label>
+                            <div class="media-stat-card">
+                                <span>本地表情包库</span>
+                                <strong id="sticker-count">0 张</strong>
+                            </div>
+                        </div>
+                        <div class="sticker-import-row">
+                            <input id="sticker-input" type="file" accept=".png,.jpg,.jpeg,.gif,.webp" hidden>
+                            <button id="btn-import-sticker" class="btn-soft">导入表情包</button>
+                            <span class="section-help">导入后可在清单里修改名称与标签。当前没有表情包也不影响聊天。</span>
+                        </div>
+                        <div id="sticker-list" class="sticker-list"></div>
+                    </div>
+
+                    <div class="console-section local-data-section" id="local-data-section">
+                        <div class="section-title-row"><div><span class="panel-eyebrow">LOCAL ONLY</span><h3>本机数据与自动运行</h3><p class="section-help">备份包含聊天、记忆、设置与本机资料，但明确不包含 API Key 和设备配对码。恢复会先自动制作回滚备份，并在下次重启时原子替换。</p></div></div>
+                        <div class="local-data-grid">
+                            <article><strong>完整备份与恢复</strong><p>下载一个带 SHA256 清单的 ZIP；选择备份后需重启大西瓜才会生效。</p><div class="panel-heading-actions"><button id="btn-local-backup" class="btn-soft primary" type="button">下载完整备份</button><button id="btn-local-restore" class="btn-soft" type="button">选择备份恢复</button><input id="local-restore-input" type="file" accept=".zip" hidden></div><small id="local-restore-status">尚未读取恢复状态</small></article>
+                            <article><strong>macOS 本机常驻</strong><p>可选安装 LaunchAgent：登录后自动启动，异常退出后重试。Mac 完全休眠或关机时不会运行，唤醒后恢复。</p><div class="panel-heading-actions"><button id="btn-local-service-install" class="btn-soft primary" type="button">安装常驻</button><button id="btn-local-service-remove" class="btn-soft" type="button">移除常驻</button></div><small id="local-service-status">正在读取本机状态…</small></article>
+                        </div>
+                    </div>
+
+                    <!-- v5.6 系统诊断 -->
+                    <!-- Session 费用明细 -->
+                    <div class="console-section" id="session-cost-section">
+                        <h3>Session 费用明细</h3>
+                        <div id="session-cost-list" class="session-cost-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <aside id="intimacy-vitals" class="intimacy-vitals" data-tone="natural" hidden aria-live="polite" aria-label="亲密过程实时体征小组件">
+            <header class="intimacy-vitals-head">
+                <span class="intimacy-vitals-signal" aria-hidden="true"><i></i></span>
+                <span><small id="intimacy-vitals-source">亲密过程</small><strong>实时体征</strong></span>
+                <small id="intimacy-vitals-phase" class="intimacy-vitals-phase">正在升温</small>
+            </header>
+            <div class="intimacy-vitals-body">
+                <span class="intimacy-vitals-stat intimacy-vitals-size"><small>尺寸</small><strong id="intimacy-vitals-size">22.0<em> cm</em></strong></span>
+                <span class="intimacy-vitals-stat intimacy-vitals-color"><small>色泽</small><strong><i></i><b id="intimacy-vitals-color">自然</b></strong></span>
+                <span class="intimacy-vitals-stat"><small>状态</small><strong id="intimacy-vitals-swelling">轻微充血</strong></span>
+                <span class="intimacy-vitals-stat"><small>兴奋</small><strong id="intimacy-vitals-arousal">1/10</strong></span>
+                <span class="intimacy-vitals-stat emphasis"><small>硬度</small><strong id="intimacy-vitals-hardness">1/10</strong></span>
+                <span class="intimacy-vitals-stat"><small>射意</small><strong id="intimacy-vitals-urge">0%</strong></span>
+                <span class="intimacy-vitals-stat intimacy-vitals-volume"><small>射出</small><strong id="intimacy-vitals-volume">尚未射出</strong></span>
+                <span class="intimacy-vitals-stat"><small>本轮次数</small><strong id="intimacy-vitals-count">0 次</strong></span>
+                <span class="intimacy-vitals-stat"><small>恢复</small><strong id="intimacy-vitals-refractory">未进入不应期</strong></span>
+                <span class="intimacy-vitals-stat"><small>身体周期</small><strong id="intimacy-vitals-cycle">平稳期</strong></span>
+                <span class="intimacy-vitals-stat"><small>短时事件</small><strong id="intimacy-vitals-event">无</strong></span>
+            </div>
+        </aside>
+
+
+    </div>
+
+    <dialog id="dwell-life-dialog" class="system-dialog dwell-life-dialog" aria-labelledby="dwell-life-dialog-title">
+        <div class="dwell-sheet">
+            <div class="dwell-sheet-head">
+                <div><span id="dwell-life-dialog-kicker" class="dwell-eyebrow">JTYHOME LIFE</span><h2 id="dwell-life-dialog-title">生活</h2><p id="dwell-life-dialog-subtitle"></p></div>
+                <button id="dwell-life-dialog-close" class="dialog-close" type="button" aria-label="关闭">×</button>
+            </div>
+            <div id="dwell-life-dialog-body" class="dwell-sheet-body"></div>
+        </div>
+    </dialog>
+
+    <!-- 长按菜单 -->
+    <div id="context-menu" class="context-menu hidden">
+        <button data-action="rename">重命名</button>
+        <button data-action="delete">删除</button>
+    </div>
+
+    <dialog id="continuity-dialog" class="system-dialog">
+        <form id="continuity-form">
+            <div class="dialog-heading"><div><span class="panel-eyebrow">ADD TO OUR SPACE</span><h2 id="continuity-dialog-title">记下一件事</h2></div><button id="continuity-dialog-close" class="dialog-close" type="button" aria-label="关闭">×</button></div>
+            <label><span>类型</span><select id="continuity-kind"></select></label>
+            <label><span>名字</span><input id="continuity-title" maxlength="90" required placeholder="给它一个以后还能认出来的名字"></label>
+            <label><span>补充</span><textarea id="continuity-detail" maxlength="600" rows="4" placeholder="可留空，只写真正确定的内容"></textarea></label>
+            <div class="dialog-actions"><button id="continuity-cancel" class="btn-quiet" type="button">取消</button><button id="continuity-submit" class="btn-primary" type="submit">保存到我们这里</button></div>
+        </form>
+    </dialog>
+
+    <dialog id="file-workspace-dialog" class="system-dialog workspace-dialog" aria-labelledby="file-workspace-dialog-title">
+        <div class="workspace-dialog-body">
+            <div class="dialog-heading">
+                <div><span class="panel-eyebrow">FILE STUDIO</span><h2 id="file-workspace-dialog-title">这段对话怎样使用资料</h2><p>本轮使用可发送较完整正文；按需摘取只发送相关片段；常驻索引每轮只带短清单和相关片段，完整文件仍在本机。</p></div>
+                <button id="file-workspace-dialog-close" class="dialog-close" type="button" aria-label="关闭">×</button>
+            </div>
+            <div class="workspace-search-row">
+                <input id="workspace-dialog-search" class="model-search" aria-label="搜索本地资料" placeholder="搜索本地资料…">
+                <button id="btn-workspace-dialog-upload" class="btn-soft primary">上传新的</button>
+            </div>
+            <div id="workspace-dialog-list" class="workspace-file-list dialog-list"></div>
+        </div>
+    </dialog>
+
+    <dialog id="context-inspector-dialog" class="system-dialog context-inspector-dialog" aria-labelledby="context-inspector-title">
+        <div class="context-inspector-body">
+            <div class="dialog-heading">
+                <div><span class="panel-eyebrow">CONTEXT CONTINUITY</span><h2 id="context-inspector-title">这段对话怎样进入模型</h2><p>近期消息保留原文；更早内容只整理一次，并能沿着消息编号回到本机原话。</p></div>
+                <button id="context-inspector-close" class="dialog-close" type="button" aria-label="关闭">×</button>
+            </div>
+            <div id="context-inspector-budget" class="context-inspector-budget">发送一条消息后，这里会显示最近一次输入预算。</div>
+            <div class="context-receipt-grid">
+                <section class="context-receipt-card">
+                    <div class="context-receipt-heading"><span>这轮带上的内容</span><small>按最终编排结果</small></div>
+                    <div id="context-stack-list" class="context-stack-list"><div class="context-inspector-empty">发送消息后显示关系、记忆、旧历史与状态层。</div></div>
+                </section>
+                <section class="context-receipt-card">
+                    <div class="context-receipt-heading"><span>文件怎样进入</span><small>本轮、按需或常驻</small></div>
+                    <div id="context-file-list" class="context-file-list"><div class="context-inspector-empty">这一轮还没有文件明细。</div></div>
+                </section>
+            </div>
+            <div id="context-actual-usage" class="context-actual-usage">实际 Token 会在模型返回 usage 后补到这里。</div>
+            <div class="context-inspector-toolbar">
+                <label class="context-toggle"><input id="context-compression-enabled" type="checkbox" checked><span><strong>自动整理旧对话</strong><small>本机增量处理，不额外调用付费模型</small></span></label>
+                <div class="context-inspector-actions">
+                    <button id="btn-context-compact" class="btn-soft" type="button">立即补齐</button>
+                    <button id="btn-context-rebuild" class="btn-soft" type="button">重建派生章节</button>
+                </div>
+            </div>
+            <div id="context-compression-stats" class="context-compression-stats"></div>
+            <div class="context-chapter-heading"><div><h3>最近的压缩章节</h3><p>章节只是带来源的摘录，原消息从未被删除或改写。</p></div></div>
+            <div id="context-chapter-list" class="context-chapter-list"></div>
+            <div id="context-source-panel" class="context-source-panel hidden"></div>
+        </div>
+    </dialog>
+
+    <dialog id="voice-call-dialog" class="system-dialog voice-call-dialog" aria-labelledby="voice-call-title">
+        <div class="voice-call-shell">
+            <div class="voice-call-head">
+                <div>
+                    <span class="panel-eyebrow">PRIVATE LINE · HALF DUPLEX</span>
+                    <h2 id="voice-call-title">和{{ companion_name }}通话</h2>
+                    <p id="voice-call-status">正在准备语音线路…</p>
+                </div>
+                <button id="voice-call-close" class="dialog-close" type="button" aria-label="结束并关闭通话">×</button>
+            </div>
+            <div class="voice-call-orb" aria-hidden="true"><i></i><i></i><i></i><span>{{ companion_initial }}</span></div>
+            <div id="voice-call-subtitles" class="voice-call-subtitles" aria-live="polite">
+                <div class="voice-call-empty">按住下方按钮说话；松开后会自动转成文字。</div>
+            </div>
+            <audio id="voice-call-audio" class="voice-call-audio" preload="none"></audio>
+            <div class="voice-call-controls">
+                <button id="voice-call-route" type="button" aria-label="切换听筒或扬声器">扬声器</button>
+                <button id="voice-call-talk" class="voice-call-talk" type="button"><span>按住说话</span><small>松开发送</small></button>
+                <button id="voice-call-end" class="voice-call-end" type="button">结束</button>
+            </div>
+            <p class="voice-call-footnote">网页端会在页面可见时保持通话。Android 壳开启前台语音服务后，可获得更稳定的后台保活与听筒切换。</p>
+        </div>
+    </dialog>
+
+<dialog id="v872-letter-dialog" class="v872-world-dialog v872-mail-dialog">
+  <button class="v872-floating-close" type="button" data-v872-close="v872-letter-dialog" aria-label="关闭信箱">×</button>
+  <div class="v872-mail-popup-shell">
+    <iframe src="/static/keepsakes/moon-mail.html" title="小月的私人邮箱"></iframe>
+  </div>
+</dialog>
+<dialog id="v872-phone-dialog" class="v872-world-dialog v872-phone-dialog">
+  <button class="v872-floating-close" type="button" data-v872-close="v872-phone-dialog" aria-label="放下手机">×</button>
+  <div class="v872-phone-device-shell" aria-label="Johnson 手机外壳">
+    <span class="v872-phone-speaker"></span>
+    <iframe src="/static/roleplay/johnson-phone.html" title="Johnson 手机"></iframe>
+  </div>
+</dialog>
+
+    <script src="/static/vendor/marked.umd.js?v={{ asset_revision }}"></script>
+    <script src="/static/vendor/purify.min.js?v={{ asset_revision }}"></script>
+    <script src="/static/js/chat-reliability.js?v={{ asset_revision }}"></script>
+    <script src="/static/js/ui-v83.js?v={{ asset_revision }}"></script>
+    <script src="/static/js/sfx-engine.js?v={{ asset_revision }}"></script>
+    <script src="/static/js/app.js?v={{ asset_revision }}"></script>
+    <script src="/static/js/voice-host.js?v={{ asset_revision }}"></script>
+    <script src="/static/js/voice-radio.js?v={{ asset_revision }}"></script>
+    <script src="/static/js/dwell-life.js?v={{ asset_revision }}"></script>
+    <script src="/static/js/weather-system.js?v={{ asset_revision }}"></script>
+    <script src="/static/js/weather-rain-map.js?v={{ asset_revision }}"></script>
+    <script src="/static/js/liquid-glass-webgpu.js?v={{ asset_revision }}"></script>
+    <script src="/static/js/liquid-glass-webgl.js?v={{ asset_revision }}"></script>
+    <script src="/static/js/desktop-v872.js?v={{ asset_revision }}"></script>
+    <script src="/static/js/spatial-v873.js?v={{ asset_revision }}"></script>
+    <script src="/static/vendor/react-16.0.0.production.min.js?v={{ asset_revision }}"></script>
+    <script src="/static/vendor/react-dom-16.0.1.production.min.js?v={{ asset_revision }}"></script>
+    <script src="/static/hydrangea-water-hero/water-refraction.runtime.js?v={{ asset_revision }}"></script>
+    <script src="/static/hydrangea-water-hero/hero-fx.runtime.js?v={{ asset_revision }}"></script>
+    <script src="/static/hydrangea-water-hero/hero.runtime.js?v={{ asset_revision }}"></script>
+</body>
+</html>

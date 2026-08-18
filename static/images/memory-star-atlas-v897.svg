@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1672 941" role="img" aria-label="清晰的三层记忆星图底图">
+  <defs>
+    <linearGradient id="warmArc" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f2bd87" stop-opacity=".48"/>
+      <stop offset="1" stop-color="#f2bd87" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="coolArc" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8ebae6" stop-opacity=".42"/>
+      <stop offset="1" stop-color="#8ebae6" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <g fill="none" stroke-linecap="round">
+    <ellipse cx="836" cy="470" rx="224" ry="126" stroke="#9de0d5" stroke-opacity=".48" stroke-width="2"/>
+    <ellipse cx="836" cy="470" rx="390" ry="220" stroke="#9cc8d5" stroke-opacity=".34" stroke-width="2" stroke-dasharray="22 12"/>
+    <ellipse cx="836" cy="470" rx="566" ry="319" stroke="#d4e8e4" stroke-opacity=".28" stroke-width="2" stroke-dasharray="5 15"/>
+    <path d="M1124 321c108 50 182 132 218 232" stroke="url(#warmArc)" stroke-width="8"/>
+    <path d="M544 607c-87-41-157-106-207-191" stroke="url(#coolArc)" stroke-width="8"/>
+  </g>
+
+  <circle cx="836" cy="470" r="74" fill="#78cfc0" fill-opacity=".14" stroke="#aee8de" stroke-opacity=".22"/>
+  <circle cx="836" cy="470" r="38" fill="#78cfc0" fill-opacity=".10" stroke="#aee8de" stroke-opacity=".26"/>
+  <circle cx="836" cy="470" r="6" fill="#eafffa"/>
+  <circle cx="836" cy="470" r="16" fill="none" stroke="#d7f8f1" stroke-opacity=".62"/>
+
+  <g fill="#d8f5ef" opacity=".82">
+    <circle cx="744" cy="421" r="2.3"/><circle cx="916" cy="516" r="2.1"/>
+    <circle cx="1005" cy="393" r="2.8"/><circle cx="668" cy="539" r="2.4"/>
+    <circle cx="535" cy="394" r="2.6"/><circle cx="1144" cy="562" r="2.5"/>
+    <circle cx="1248" cy="381" r="2.2"/><circle cx="423" cy="581" r="2.1"/>
+    <circle cx="1055" cy="221" r="2.4"/><circle cx="616" cy="725" r="2.7"/>
+    <circle cx="1318" cy="650" r="2.3"/><circle cx="352" cy="302" r="2.5"/>
+    <circle cx="780" cy="772" r="2.1"/><circle cx="903" cy="159" r="2.2"/>
+  </g>
+  <g fill="none" stroke="#8fd8cc" stroke-opacity=".42" stroke-width="1.5">
+    <circle cx="744" cy="421" r="10"/><circle cx="1005" cy="393" r="11"/>
+    <circle cx="668" cy="539" r="9"/><circle cx="1144" cy="562" r="10"/>
+  </g>
+
+  <g font-family="MiSans, -apple-system, BlinkMacSystemFont, sans-serif" font-size="18" letter-spacing="3" fill="#d6ece8" opacity=".56">
+    <text x="836" y="108" text-anchor="middle">DISTANT</text>
+    <text x="836" y="858" text-anchor="middle">NEAR</text>
+    <text x="214" y="477" text-anchor="middle">COOL</text>
+    <text x="1458" y="477" text-anchor="middle">WARM</text>
+  </g>
+  <g font-family="MiSans, -apple-system, BlinkMacSystemFont, sans-serif" fill="#dff4ef">
+    <text x="836" y="448" text-anchor="middle" font-size="13" letter-spacing="4" opacity=".66">MEMORY</text>
+    <text x="836" y="501" text-anchor="middle" font-size="17" font-weight="600" letter-spacing="2" opacity=".86">此 刻</text>
+  </g>
+</svg>

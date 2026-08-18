@@ -1,0 +1,14 @@
+[project]
+name = "daxigua-companion"
+version = "8.9.8"
+description = "Local-first private AI companion"
+requires-python = ">=3.11,<3.13"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-ra"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
