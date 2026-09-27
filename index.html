@@ -703,7 +703,7 @@ body.zm-lock{overflow:hidden}
 :root[data-theme="onyx"] .problems.stack .card:nth-child(3){background:#2b2723}
 :root[data-theme="onyx"] .problems.stack .card:nth-child(4){background:#EDE6D6;color:#16130F}
 :root[data-theme="onyx"] .problems.stack .card:nth-child(4) .fix{color:#16130F}
-@media (max-width:760px){.problems.stack .card{grid-template-columns:1fr;min-height:0;position:relative;top:auto;margin-bottom:18px}}
+@media (max-width:760px){.problems.stack .card{grid-template-columns:1fr;gap:18px;min-height:52vh;top:calc(72px + var(--i) * 12px);margin-bottom:14vh;padding:28px 24px;align-content:space-between}.problems.stack .card h4{font-size:40px}}
 
 /* ---------- 标题逐行浮出 ---------- */
 .lr .ln{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
@@ -713,6 +713,36 @@ body.zm-lock{overflow:hidden}
 @media (prefers-reduced-motion:reduce){.lr .ch{transform:none!important;transition:none!important}}
 html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth{scroll-behavior:auto!important}
+
+
+/* ---------- 手机适配 ---------- */
+@media (max-width:760px){
+  .top{padding:12px 18px;background:rgba(242,238,229,.88);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border-bottom:1px solid var(--line)}
+  :root[data-theme="onyx"] .top{background:rgba(20,18,15,.86)}
+  .top .mark{font-size:13px;letter-spacing:.24em}
+  .pager,.hint{display:none!important}
+  section{min-height:auto;padding:88px 0 72px}
+  #cover{min-height:100svh}
+  .cv-fig .seal{display:none}
+  .ticker span{font-size:22px}
+  .sec-head{margin-bottom:36px}
+  .compare-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -20px;padding:0 20px}
+  .compare{min-width:680px}
+  .compare td,.compare th{white-space:nowrap}
+  .compare-wrap::after{content:"← 左右滑动查看 →";display:block;font-family:var(--sans);font-size:10px;letter-spacing:.2em;color:var(--muted);margin-top:10px}
+  .house-title h2{font-size:84px}
+  .ch3d{width:92px!important;height:92px!important;right:0!important}
+  .excerpt-body p{font-size:15px}
+  .fin-stage{height:auto;min-height:0;padding:40px 0 20px}
+  .fin-script{width:100%}
+  .crop{display:none}
+  .fin-3d{opacity:.85}
+  .co-foot{flex-direction:column;gap:8px;letter-spacing:.14em}
+  .zm-nav{top:auto;bottom:60px;margin-top:0}
+  .zm-tip{display:none}
+  .fin-bar .label:last-child{display:none}
+  .fin-bar .label{letter-spacing:.2em}
+}
 
 /* ---------- 章节主色：每一章一个颜色，分隔线、页码和 3D 小物件跟着变 ---------- */
 #house{--chapter:#5B7F78}
@@ -2574,10 +2604,17 @@ document.querySelectorAll('.co-copy').forEach(function(b){b.addEventListener('cl
     t+=dur*.82;
   });
   function play(){fin.classList.remove('play');void fin.offsetWidth;fin.classList.add('play')}
+  function reset(){fin.classList.remove('play')}
+  var script=fin.querySelector('.fin-script');
   if(!('IntersectionObserver' in window)){play();return}
-  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){play();io.disconnect()}})},{threshold:.45});
-  io.observe(fin);
-  fin.querySelector('.fin-script').addEventListener('click',play);
+  var shown=false;
+  // 标题进入屏幕中间区域时才开始写，保证大家都能看到书写过程
+  new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting&&!shown){shown=true;play()}
+  })},{threshold:.6,rootMargin:'-15% 0px -20% 0px'}).observe(script);
+  // 整页完全离开屏幕后复位，下次回来重新写
+  new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting&&shown){shown=false;reset()}})},{threshold:0}).observe(fin);
+  script.addEventListener('click',play);
 })();
 </script>
 <script>
@@ -2762,7 +2799,7 @@ document.querySelectorAll('.co-copy').forEach(function(b){b.addEventListener('cl
   window.__smoothBy=function(dy){ if(lenis) lenis.scrollTo(window.scrollY+dy,{duration:1.1}); else window.scrollBy({top:dy,behavior:'smooth'}) };
 
   // ---- 四个问题的卡片堆叠：后一张盖上来时，前一张缩小、变暗
-  if(!reduce&&window.gsap&&window.ScrollTrigger&&matchMedia('(min-width: 761px)').matches){
+  if(!reduce&&window.gsap&&window.ScrollTrigger){
     gsap.registerPlugin(ScrollTrigger);
     var cards=gsap.utils.toArray('.problems.stack .card');
     cards.forEach(function(c,i){
