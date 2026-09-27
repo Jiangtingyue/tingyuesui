@@ -100,6 +100,11 @@ em.hl{font-style:normal;background:linear-gradient(transparent 62%,rgba(168,137,
 .cv-list span{font-size:15px;line-height:1.6}
 .cv-list small{display:block;font-size:12px;color:var(--muted)}
 .cv-name{margin-top:22px}
+.cv-role{margin-left:18px;padding-left:18px;border-left:1px solid var(--line);font-size:13px;font-weight:500;letter-spacing:.2em;color:var(--accent)}
+.cv-cta{display:inline-flex;align-items:center;gap:14px;margin:-8px 0 30px;padding:10px 20px;border:1px solid var(--ink);color:var(--ink);font-size:14px;letter-spacing:.14em;text-decoration:none;transition:background .35s ease,color .35s ease}
+.cv-cta span{display:inline-block;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.cv-cta:hover,.cv-cta:focus-visible{background:var(--ink);color:var(--paper);outline:none}
+.cv-cta:hover span,.cv-cta:focus-visible span{transform:translateX(5px)}
 .cv-vert{position:absolute;right:22px;top:34%;writing-mode:vertical-rl;font-size:13px;letter-spacing:.6em;color:var(--ink-2);z-index:3}
 .cv-fig{position:absolute;right:calc(var(--gutter) + 40px);top:calc(120px + 11vw);width:min(470px,33vw);aspect-ratio:840/720;z-index:2}
 .cv-paper{position:absolute;left:-9%;top:-7%;width:92%;height:108%;background:#56637F;transform:rotate(5deg);z-index:0;
@@ -823,8 +828,9 @@ html.lenis,html.lenis body{height:auto}
   <h1 class="masthead rv">XU YUJIE</h1>
 
   <div class="cv-lines">
-    <div class="label rv">Cover Story</div>
+    <div class="label rv">Cover Story<b class="cv-role">AI 产品 · 内容运营</b></div>
     <p class="cv-lead rv">用 AI 把想法<br>做成完整的成品。</p>
+    <a class="cv-cta rv" href="#house">直接看 House<span aria-hidden="true">→</span></a>
     <ol class="cv-list">
       <li class="rv"><b>21</b><span>两个月，21 个版本<small>独立开发的 AI 应用 House</small></span></li>
       <li class="rv"><b>3′20″</b><span>独立完成的 AI MV<small>播放 2.8 万</small></span></li>
@@ -1288,7 +1294,7 @@ html.lenis,html.lenis body{height:auto}
       </div>
     </div>
     <div class="co-foot">
-      <span>XU YUJIE · MMXXVII · v4</span>
+      <span>XU YUJIE · MMXXVII · v5</span>
       <span class="co-credit">3D: three.js (MIT) · Type: Great Vibes (OFL)</span>
       <a href="#cover" class="co-back">Back to cover ↑</a>
     </div>
@@ -2830,6 +2836,24 @@ document.querySelectorAll('.co-copy').forEach(function(b){b.addEventListener('cl
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.35,rootMargin:'0px 0px -8% 0px'});
     heads.forEach(function(h){io.observe(h)});
   }
+})();
+</script>
+<script>
+/* 封面"直接看 House"：懒加载图片会在滚动途中撑高页面，到位后再校正一次 */
+(function(){
+  var cta=document.querySelector('.cv-cta'),t=document.getElementById('house');
+  if(!cta||!t)return;
+  cta.addEventListener('click',function(e){
+    e.preventDefault();e.stopPropagation();
+    var tries=0;
+    function go(){
+      var l=window.__lenis;
+      if(l){l.scrollTo(t,{onComplete:check})}
+      else{t.scrollIntoView({behavior:'smooth'});setTimeout(check,900)}
+    }
+    function check(){if(Math.abs(t.getBoundingClientRect().top)>4&&tries++<4)setTimeout(go,120)}
+    go();
+  });
 })();
 </script>
 </body>
