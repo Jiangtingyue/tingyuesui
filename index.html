@@ -187,6 +187,7 @@ em.hl{font-style:normal;background:linear-gradient(transparent 62%,rgba(168,137,
 .gallery{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(18px,2.4vw,34px);align-items:start;margin:clamp(90px,14vh,150px) 0}
 .g1{grid-column:1/8}.g2{grid-column:8/13;margin-top:90px}
 .g3{grid-column:2/7;margin-top:50px}.g4{grid-column:7/12;margin-top:60px}
+.g5{grid-column:1/7;margin-top:70px}.g6{grid-column:7/13;margin-top:120px}.g7{grid-column:3/10;margin-top:40px}
 
 .quote{max-width:900px;margin:clamp(80px,12vh,140px) auto;text-align:center}
 .quote blockquote{font-size:clamp(30px,3.6vw,52px);line-height:1.45;font-weight:600;letter-spacing:.04em}
@@ -1605,7 +1606,7 @@ html,body{overflow-x:clip}
 
     <!-- 快门按下后弹出的拍立得 -->
     <a class="cv-pola" id="pola" href="#house">
-      <div class="ph"><img loading="lazy" src="assets/8135ada3c8.jpg" alt="House 主界面"></div>
+      <div class="ph"><img loading="lazy" src="assets/ae6218a853.jpg" alt="House 主界面"></div>
       <div class="cap">House<small>N°01 · 见第 03 页</small></div>
     </a>
 
@@ -1684,8 +1685,8 @@ html,body{overflow-x:clip}
     <div class="house-hero rv">
       <figure class="print r-1">
         <span class="tape tc"></span>
-        <img loading="lazy" src="assets/8bb826b4fb.jpg" alt="House · 水波模式 · 共同生活">
-        <figcaption>图 7-3 · 水波模式 · 共同生活页面。包括日历、日记、待办、共读和音乐。</figcaption>
+        <img loading="lazy" src="assets/00a48ef953.jpg" alt="House · 水波模式首页">
+        <figcaption>图 7-3 · 水波模式首页。左边是导航和最近对话，顶部可以在四个 Claude 模型之间切换。</figcaption>
       </figure>
       <svg class="seal"><use href="#seal"/></svg>
     </div>
@@ -1703,13 +1704,19 @@ html,body{overflow-x:clip}
 
     <div class="gallery">
       <figure class="print g1 r-1 rv"><span class="tape tl"></span>
-        <img loading="lazy" src="assets/1d0fb57a50.jpg" alt="记忆馆"><figcaption>图 8-1 · 记忆馆。可以搜索和修改记忆，每条都能找到原始消息。</figcaption></figure>
+        <img loading="lazy" src="assets/1a01f487a7.jpg" alt="记忆馆"><figcaption>图 8-1 · 记忆馆。可以按原话搜索，每条记忆都能找到原始消息。</figcaption></figure>
       <figure class="print g2 r2 rv"><i class="pclip" aria-hidden="true"></i>
         <img loading="lazy" src="assets/068037d843.jpg" alt="三维礼物房间"><figcaption>图 7-4 · 三维场景。可以拖动查看和缩放，有日光和暖灯两种光照。</figcaption></figure>
       <figure class="print g3 r1 rv"><span class="tape tc"></span>
-        <img loading="lazy" src="assets/d862be4130.jpg" alt="用量面板"><figcaption>图 6-1 · 用量面板。实时显示缓存命中率和调用量。</figcaption></figure>
+        <img loading="lazy" src="assets/2ed7841c01.jpg" alt="工作室 · 缓存与模型"><figcaption>图 6-1 · 工作室。缓存命中率 91.8%，下面可以切换模型服务。</figcaption></figure>
       <figure class="print g4 r-2 rv"><i class="pclip pc-r" aria-hidden="true"></i>
-        <img loading="lazy" src="assets/8135ada3c8.jpg" alt="晴天模式"><figcaption>图 7-1 · 晴天模式主界面。界面做了三版迭代。</figcaption></figure>
+        <img loading="lazy" src="assets/ae6218a853.jpg" alt="晴天模式首页"><figcaption>图 7-1 · 晴天模式首页。界面做了三版迭代，这是用 SwiftUI 重做后的样子。</figcaption></figure>
+      <figure class="print g5 r2 rv"><span class="tape tr"></span>
+        <img loading="lazy" src="assets/ef339b75dc.jpg" alt="雨天模式首页"><figcaption>图 7-2 · 雨天模式首页。晴天、雨天、水波三种场景可以随时切换。</figcaption></figure>
+      <figure class="print g6 r-1 rv"><i class="pclip" aria-hidden="true"></i>
+        <img loading="lazy" src="assets/17c4944f7c.jpg" alt="我们 · 关系"><figcaption>图 8-2 · 我们。记录相处的次数和关系的几项数值，下面是可以自己编辑的关系总记忆。</figcaption></figure>
+      <figure class="print g7 r1 rv"><span class="tape tc"></span>
+        <img loading="lazy" src="assets/9a2aed6424.jpg" alt="内心"><figcaption>图 8-3 · 内心。情绪、身体和玩心的状态只作为回复时的参考，不会替他说话。</figcaption></figure>
     </div>
 
 
@@ -1969,7 +1976,7 @@ html,body{overflow-x:clip}
   <div class="wrap">
     <div class="sec-head"><span class="label">Quick Tour · 快速导览</span><span class="no">03</span></div>
     <div class="tour-frame rv">
-      <img class="tour-bg" src="assets/8135ada3c8.jpg" alt="">
+      <img class="tour-bg" src="assets/ae6218a853.jpg" alt="">
       <div class="tour-side"><div class="on" id="ts1"><i></i>01 选择方向</div><div id="ts2"><i></i>02 查看介绍</div></div>
       <div class="tour-card" id="tcard"><div class="stage" id="tstage"></div></div>
       <div class="tour-dots"><i class="on" id="td1"></i><i id="td2"></i></div>
