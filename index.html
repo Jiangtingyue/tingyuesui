@@ -895,6 +895,55 @@ body{background-color:#FDF9EF;background-image:var(--paper-tex);background-blend
 @media print{.vs-list dd::after{content:"　｜　演示版：" attr(data-b);font-weight:400;color:var(--muted)}}
 @media (prefers-reduced-motion:reduce){.sp-stage img,.vs-ind,.vs-list dd,.compare [data-c]{transition:none}}
 </style>
+
+<style>
+/* ---------- v5.1 手机端与细节优化 ---------- */
+/* 桌面：滚动后顶栏加一层纸色底，正文不会和导航叠在一起 */
+@media (min-width:761px){
+  .top{transition:background .35s ease,box-shadow .35s ease,padding .35s ease}
+  .top.solid{background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(12px) saturate(1.15);-webkit-backdrop-filter:blur(12px) saturate(1.15);box-shadow:0 1px 0 var(--line);padding-top:16px;padding-bottom:16px}
+}
+@media (max-width:760px){
+  /* 对比表：左边“维度”和右边“House”两列固定，中间的竞品左右滑 */
+  .compare-wrap{padding:0!important}
+  .compare td,.compare th{white-space:nowrap}
+  .compare th:first-child,.compare td:first-child{position:sticky;left:0;z-index:1;background:var(--bg);white-space:normal;width:4.3em;min-width:4.3em;padding-left:20px;font-size:13px}
+  .compare .me{position:sticky;right:0;z-index:1;white-space:normal;width:8.8em;min-width:8.8em;padding-right:20px;background:linear-gradient(rgba(168,137,78,.12),rgba(168,137,78,.12)) var(--bg);box-shadow:-10px 0 14px -12px rgba(0,0,0,.35)}
+  .compare thead th:first-child{white-space:nowrap;letter-spacing:.12em}
+  .compare-wrap::after{content:"← 中间的竞品可以左右滑，House 固定在右边";position:sticky;left:20px;display:inline-block!important;white-space:nowrap}
+  /* 小字说明：手机上至少 11px */
+  .ph-cap,.postcard figcaption,.portrait figcaption,.cap small,.co-credit{font-size:11px!important}
+  .co-copy i,.fin-mail .fm-tag{font-size:11px!important}
+  .fin-mail em{font-size:11.5px!important}
+  /* 点击区域：顶栏的小按钮看着小，手指点的范围放大到 44px */
+  .theme-sw button,.snd-btn{position:relative}
+  .theme-sw button::after,.snd-btn::after{content:"";position:absolute;inset:-13px -8px}
+  .theme-sw{gap:14px}
+  .co-back,.co-copy{padding-top:10px;padding-bottom:10px}
+  /* 手机没有 hover，去掉点按时的灰色闪块 */
+  a,button{-webkit-tap-highlight-color:transparent}
+  body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+}
+
+/* ---------- 手机底部章节导航 ---------- */
+.dock{display:none}
+@media (max-width:760px){
+  .dock{display:flex;position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));z-index:60;transform:translate(-50%,140%);
+    gap:2px;padding:5px;border-radius:999px;background:color-mix(in srgb,var(--bg) 82%,transparent);
+    backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);
+    border:1px solid var(--line);box-shadow:0 10px 30px -12px rgba(0,0,0,.35);
+    transition:transform .45s cubic-bezier(.2,.8,.2,1);max-width:calc(100vw - 24px)}
+  .dock.show{transform:translate(-50%,0)}
+  .dock a{position:relative;display:flex;align-items:center;justify-content:center;min-width:44px;height:42px;padding:0 11px;border-radius:999px;
+    font-family:var(--sans);font-size:12px;letter-spacing:.06em;color:var(--muted);text-decoration:none;white-space:nowrap;transition:color .25s}
+  .dock a.on{color:var(--paper)}
+  .dock .pill{position:absolute;top:5px;left:5px;height:42px;border-radius:999px;background:var(--ink);transition:transform .45s cubic-bezier(.2,.8,.2,1),width .45s cubic-bezier(.2,.8,.2,1);z-index:-1}
+  .dock .bar{position:absolute;left:18px;right:18px;bottom:1px;height:2px;border-radius:2px;overflow:hidden;opacity:.55}
+  .dock .bar i{display:block;height:100%;width:100%;background:var(--accent);transform-origin:left;transform:scaleX(0)}
+}
+@media (max-width:760px) and (prefers-reduced-motion:reduce){.dock,.dock .pill{transition:none}}
+@media print{.dock{display:none!important}}
+</style>
 </head>
 <body>
 
@@ -940,7 +989,7 @@ body{background-color:#FDF9EF;background-image:var(--paper-tex);background-blend
   <h1 class="masthead rv">XU YUJIE</h1>
 
   <div class="cv-lines">
-    <div class="label rv">Cover Story<b class="cv-role">AI 产品 · 内容运营</b></div>
+    <div class="label rv">Cover Story<b class="cv-role">AI 产品 · Agent</b></div>
     <p class="cv-lead rv">用 AI 把想法<br>做成完整的成品。</p>
     <a class="cv-cta rv" href="#house">直接看 House<span aria-hidden="true">→</span></a>
     <ol class="cv-list">
@@ -3421,6 +3470,78 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
     }
     requestAnimationFrame(loop);
   })();
+})();
+</script>
+
+<nav class="dock" id="dock" aria-label="章节导航">
+  <span class="pill" aria-hidden="true"></span>
+  <a href="#index" data-s="index,four">目录</a>
+  <a href="#house" data-s="house">House</a>
+  <a href="#mv" data-s="mv">影像</a>
+  <a href="#persona" data-s="persona">角色</a>
+  <a href="#words" data-s="words,skills">文字</a>
+  <a href="#colophon" data-s="colophon">联系</a>
+  <span class="bar" aria-hidden="true"><i></i></span>
+</nav>
+<script>
+/* v5.1：桌面顶栏滚动后加底色；手机底部章节导航（往下滑收起、往上滑出现） */
+(function(){
+  var top=document.querySelector('.top');
+  var dock=document.getElementById('dock');
+  var links=dock?[].slice.call(dock.querySelectorAll('a')):[];
+  var pill=dock&&dock.querySelector('.pill'),bar=dock&&dock.querySelector('.bar i');
+  var secs=[].slice.call(document.querySelectorAll('#page>section'));
+  var lastY=window.scrollY,shown=false,ticking=false,activeIdx=-1;
+  function setPill(a){
+    if(!pill)return;
+    if(!a){pill.style.width='0px';return}
+    pill.style.width=a.offsetWidth+'px';
+    pill.style.transform='translateX('+(a.offsetLeft-5)+'px)';
+  }
+  function frame(){
+    ticking=false;
+    var y=window.scrollY,vh=window.innerHeight,H=document.documentElement.scrollHeight;
+    if(top)top.classList.toggle('solid',y>40);
+    if(!dock||getComputedStyle(dock).display==='none'){lastY=y;return}
+    var cover=document.getElementById('cover');
+    var past=cover?y>cover.offsetHeight*.6:y>vh*.6;
+    var nearEnd=y+vh>H-160;
+    var dy=y-lastY;
+    var want=shown;
+    if(!past)want=false;
+    else if(nearEnd||dy<-6)want=true;
+    else if(dy>10)want=false;
+    else if(!shown&&Math.abs(dy)<1)want=true;
+    if(want!==shown){shown=want;dock.classList.toggle('show',shown)}
+    lastY=y;
+    // 当前章节
+    var probe=y+vh*.4,id='';
+    secs.forEach(function(s){if(s.offsetTop<=probe)id=s.id});
+    var idx=-1;
+    links.forEach(function(a,i){if(a.getAttribute('data-s').split(',').indexOf(id)>-1)idx=i});
+    if(idx!==activeIdx){
+      activeIdx=idx;
+      links.forEach(function(a,i){a.classList.toggle('on',i===idx);if(i===idx)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current')});
+      setPill(links[idx]);
+    }
+    if(bar)bar.style.transform='scaleX('+Math.min(1,Math.max(0,y/(H-vh)))+')';
+  }
+  function onScroll(){if(!ticking){ticking=true;requestAnimationFrame(frame)}}
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',function(){activeIdx=-2;onScroll()});
+  // 停下来一会儿就把导航放出来
+  var idle;window.addEventListener('scroll',function(){clearTimeout(idle);idle=setTimeout(function(){lastY=window.scrollY;onScroll()},700)},{passive:true});
+  links.forEach(function(a){a.addEventListener('click',function(e){
+    var t=document.querySelector(a.getAttribute('href'));if(!t)return;
+    e.preventDefault();e.stopPropagation();
+    // 懒加载的图片会在滚动途中撑高页面，到位后再校正，最多四次
+    var tries=0;
+    function go(){var l=window.__lenis;if(l){l.scrollTo(t,{duration:1.1,onComplete:check})}else{t.scrollIntoView({behavior:'smooth'});setTimeout(check,900)}}
+    function check(){if(Math.abs(t.getBoundingClientRect().top)>4&&tries++<4)setTimeout(go,120)}
+    go();
+    if(navigator.vibrate)try{navigator.vibrate(8)}catch(_){}
+  })});
+  frame();
 })();
 </script>
 </body>
