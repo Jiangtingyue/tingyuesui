@@ -1526,6 +1526,21 @@ html,body{overflow-x:clip}
 .travel .postcard{cursor:zoom-in}
 .pc-count{position:absolute;right:8px;bottom:8px;z-index:3;font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:#fff;background:rgba(14,12,10,.55);padding:3px 6px;border-radius:999px;pointer-events:none}
 </style>
+
+<style>
+/* ---------- v5.6 House 技术细节折叠 ---------- */
+.deep-toggle{margin:clamp(70px,10vh,120px) auto 0;max-width:760px;text-align:center;padding:clamp(28px,4vw,44px) clamp(20px,4vw,40px);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.deep-toggle .deep-sum{margin:14px auto 22px;max-width:34em;color:var(--ink-2);font-size:15px;line-height:1.9}
+.deep-btn{display:inline-flex;align-items:center;gap:12px;min-height:44px;padding:0 22px;border:1px solid var(--ink);border-radius:999px;background:none;color:var(--ink);font:inherit;font-size:14px;letter-spacing:.12em;cursor:pointer;transition:background .3s,color .3s}
+.deep-btn:hover,.deep-btn:focus-visible{background:var(--ink);color:var(--bg);outline:none}
+.deep-btn i{font-style:normal;transition:transform .35s ease}
+.deep-toggle.open .deep-btn i{transform:rotate(180deg)}
+.deep{animation:deepIn .6s ease both}
+@keyframes deepIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.deep-end{text-align:center;margin:clamp(60px,8vh,100px) 0 0}
+@media (prefers-reduced-motion:reduce){.deep{animation:none}}
+@media print{.deep[hidden]{display:block!important}.deep-toggle,.deep-end{display:none}}
+</style>
 </head>
 <body>
 
@@ -1550,9 +1565,9 @@ html,body{overflow-x:clip}
   <a href="#cover" class="mark">XU · YUJIE</a>
   <div class="right">
   <nav id="topnav">
-    <a href="#index">INDEX</a>
     <a href="#house">HOUSE</a>
     <a href="#mv">FILM</a>
+    <a href="#index">INDEX</a>
     <a href="#persona">PERSONA</a>
     <a href="#words">WORDS</a>
     <a href="#colophon">CONTACT</a>
@@ -1634,78 +1649,16 @@ html,body{overflow-x:clip}
 <div class="flash" id="flash"></div>
 <div class="ticker" aria-hidden="true"><div class="ticker-in"><span>Product<i>✦</i></span><span>Film<i>✦</i></span><span>Words<i>✦</i></span><span>Systems<i>✦</i></span><span>Guangzhou<i>✦</i></span><span>MMXXVI<i>✦</i></span><span>Product<i>✦</i></span><span>Film<i>✦</i></span><span>Words<i>✦</i></span><span>Systems<i>✦</i></span><span>Guangzhou<i>✦</i></span><span>MMXXVI<i>✦</i></span><span>Product<i>✦</i></span><span>Film<i>✦</i></span><span>Words<i>✦</i></span><span>Systems<i>✦</i></span><span>Guangzhou<i>✦</i></span><span>MMXXVI<i>✦</i></span><span>Product<i>✦</i></span><span>Film<i>✦</i></span><span>Words<i>✦</i></span><span>Systems<i>✦</i></span><span>Guangzhou<i>✦</i></span><span>MMXXVI<i>✦</i></span></div></div>
 
-<!-- 导览 -->
-<section id="tour">
-  <div class="wrap">
-    <div class="sec-head"><span class="label">Quick Tour · 快速导览</span><span class="no">01</span></div>
-    <div class="tour-frame rv">
-      <img class="tour-bg" src="assets/8135ada3c8.jpg" alt="">
-      <div class="tour-side"><div class="on" id="ts1"><i></i>01 选择方向</div><div id="ts2"><i></i>02 查看介绍</div></div>
-      <div class="tour-card" id="tcard"><div class="stage" id="tstage"></div></div>
-      <div class="tour-dots"><i class="on" id="td1"></i><i id="td2"></i></div>
-    </div>
-  </div>
-</section>
 
-<!-- 01 目录 -->
-<section id="index">
-  <div class="wrap">
-    <div class="sec-head"><span class="label">Index · 目录</span><span class="no">02</span></div>
-    <ol class="index-list">
-      <li><a href="#four"><span class="n">N°00</span><span class="t">个人概况<small>VISUAL · FILM · WORDS · SYSTEMS</small></span><span class="y">Profile</span></a></li>
-      <li><a href="#house"><span class="n">N°01</span><span class="t">House · AI 情感陪伴应用<small>PRODUCT · DESIGN · AI ENGINEERING</small></span><span class="y">2026</span></a></li>
-      <li><a href="#mv"><span class="n">N°02</span><span class="t">AI·MV《你心知肚明，我是你幻想中的朋友》<small>AIGC FILM · 可灵 AI</small></span><span class="y">2024</span></a></li>
-      <li><a href="#persona"><span class="n">N°03</span><span class="t">互动内容企划 · 人设载体<small>INTERACTIVE · WORLD-BUILDING</small></span><span class="y">2026</span></a></li>
-      <li><a href="#words"><span class="n">N°04</span><span class="t">文字与内容<small>FICTION · COMMUNITY · DISTRIBUTION</small></span><span class="y">Ongoing</span></a></li>
-      <li><a href="#skills"><span class="n">N°05</span><span class="t">能力与工具<small>TOOLKIT · LANGUAGES</small></span><span class="y">Skills</span></a></li>
-    </ol>
-  </div>
-</section>
 
-<!-- 02 四种交付 -->
-<section id="four">
-  <div class="wrap">
-    <div class="sec-head"><span class="label">N°00 · Profile</span><span class="no">03</span></div>
-    <p class="label rv" style="margin-bottom:20px">Profile</p>
-    <div class="intro-row">
-      <div>
-        <h2 class="rv" style="font-size:clamp(34px,4.2vw,60px);line-height:1.3;font-weight:600;letter-spacing:.04em;margin-bottom:26px">我能做的四类工作</h2>
-        <p class="lede dc rv">我是广播电视编导专业 2027 届学生。我会剪辑和拍摄，也长期写作。我用 AI 工具<span class="rn" data-rn="underline">独立完成过应用、视频和内容项目</span>。下面按四个方向介绍。</p>
-      </div>
-      <figure class="portrait rv"><span class="tape tc"></span><img loading="lazy" src="assets/5c81e445fc.jpg" alt="徐钰洁"><figcaption>徐钰洁 · 广州</figcaption></figure>
-    </div>
-    <div class="four">
-      <div class="rv"><span class="label">01 · Visual</span><div class="k">Visual</div><div class="zh">AI 视觉设计</div>
-        <p>用 Figma 独立设计了 House 的全部界面，做了三版迭代。玻璃质感在三种渲染方式上都做了实现。</p>
-        <div class="proof">见 N°01 House</div></div>
-      <div class="rv"><span class="label">02 · Film</span><div class="k">Film</div><div class="zh">AI 视频创作</div>
-        <p>用可灵 AI 独立完成了创意、脚本、生成和剪辑。成片 3 分 20 秒，播放 2.8 万。</p>
-        <div class="proof">见 N°02 AI·MV</div></div>
-      <div class="rv"><span class="label">03 · Words</span><div class="k">Words</div><div class="zh">AI 内容创作</div>
-        <p>番茄小说签约作者。16 岁时写的知乎回答阅读 15.9 万。同一内容会按不同平台重写后发布。</p>
-        <div class="proof">见 N°04 文字与内容</div></div>
-      <div class="rv"><span class="label">04 · Systems</span><div class="k">Systems</div><div class="zh">AI 效能提升</div>
-        <p>用 Claude Code 和 Codex 协作开发。我负责拆解需求、分配任务、验收和定位问题。两个月做了 21 个版本。</p>
-        <div class="proof">见 N°01 和 N°03</div></div>
-    </div>
-    <div class="travel rv">
-      <div><span class="label">Travel · 独自旅行</span>
-        <p>我一个人旅行去过这五个国家。</p><button type="button" class="pc-hint" id="pc-open">点明信片，看沿途拍的照片 <span aria-hidden="true">↗</span></button></div>
-      <div class="postcards">
-        <figure class="postcard has-photo"><div class="pc-img"><img class="dev" loading="lazy" src="assets/2e9f8094cc.jpg" alt="新西兰"><span class="mark">SOLO<br>TRIP</span><span class="en">New Zealand</span></div><figcaption>新西兰</figcaption></figure>
-        <figure class="postcard has-photo"><div class="pc-img"><img class="dev" loading="lazy" src="assets/c56b48914d.jpg" alt="新加坡"><span class="mark">SOLO<br>TRIP</span><span class="en">Singapore</span></div><figcaption>新加坡</figcaption></figure>
-        <figure class="postcard has-photo"><div class="pc-img"><img class="dev" loading="lazy" src="assets/3ad332fb2c.jpg" alt="日本"><span class="mark">SOLO<br>TRIP</span><span class="en">Japan</span></div><figcaption>日本</figcaption></figure>
-        <figure class="postcard has-photo"><div class="pc-img"><img class="dev" loading="lazy" src="assets/05a6219948.jpg" alt="韩国"><span class="mark">SOLO<br>TRIP</span><span class="en">Korea</span></div><figcaption>韩国</figcaption></figure>
-        <figure class="postcard has-photo"><div class="pc-img"><img class="dev" loading="lazy" src="assets/febcfa1f48.jpg" alt="马来西亚"><span class="mark">SOLO<br>TRIP</span><span class="en">Malaysia</span></div><figcaption>马来西亚</figcaption></figure>
-      </div>
-    </div>
-  </div>
-</section>
+
+
+
 
 <!-- 03 House -->
 <section id="house">
   <div class="wrap">
-    <div class="sec-head"><span class="label">N°01 · Product</span><span class="no">04</span></div>
+    <div class="sec-head"><span class="label">N°01 · Product</span><span class="no">01</span></div>
     <div class="house-title">
       <div>
         <h2 class="display rv">House</h2>
@@ -1748,6 +1701,43 @@ html,body{overflow-x:clip}
     </div>
     </div>
 
+    <div class="gallery">
+      <figure class="print g1 r-1 rv"><span class="tape tl"></span>
+        <img loading="lazy" src="assets/1d0fb57a50.jpg" alt="记忆馆"><figcaption>图 8-1 · 记忆馆。可以搜索和修改记忆，每条都能找到原始消息。</figcaption></figure>
+      <figure class="print g2 r2 rv"><i class="pclip" aria-hidden="true"></i>
+        <img loading="lazy" src="assets/068037d843.jpg" alt="三维礼物房间"><figcaption>图 7-4 · 三维场景。可以拖动查看和缩放，有日光和暖灯两种光照。</figcaption></figure>
+      <figure class="print g3 r1 rv"><span class="tape tc"></span>
+        <img loading="lazy" src="assets/d862be4130.jpg" alt="用量面板"><figcaption>图 6-1 · 用量面板。实时显示缓存命中率和调用量。</figcaption></figure>
+      <figure class="print g4 r-2 rv"><i class="pclip pc-r" aria-hidden="true"></i>
+        <img loading="lazy" src="assets/8135ada3c8.jpg" alt="晴天模式"><figcaption>图 7-1 · 晴天模式主界面。界面做了三版迭代。</figcaption></figure>
+    </div>
+
+
+    <div class="motion">
+      <div class="motion-head">
+        <div>
+          <p class="label rv">Motion · 设计与动效</p>
+          <h3 class="rv">开屏像折叠屏一样展开。</h3>
+        </div>
+        <p class="rv">开屏参考了折叠屏打开的那一下：合着的磨砂屏幕先停在窗口中间，准备好以后滑到左边、右半块翻开，磨砂慢慢退掉，露出首页。页面切换、卡片和按钮也做了一套弹性动效。</p>
+      </div>
+      <figure class="print rv"><span class="tape tc"></span>
+        <div class="splash-frames">
+          <div><img loading="lazy" src="assets/207e1fcdb4.jpg" alt="开屏：合着的磨砂屏"><span>等待 · 合着的磨砂屏</span></div>
+          <div><img loading="lazy" src="assets/c7a2d36561.jpg" alt="开屏：右半块翻起"><span>0.2 秒 · 右半块翻起</span></div>
+          <div><img loading="lazy" src="assets/0ce1f4c962.jpg" alt="开屏：翻到竖直"><span>0.3 秒 · 翻到竖直</span></div>
+          <div><img loading="lazy" src="assets/cc7e014e8f.jpg" alt="开屏：落下，磨砂退去"><span>0.45 秒 · 落下，磨砂退去</span></div>
+        </div>
+        <figcaption>图 · 开屏动画的四个瞬间。拖动时间轴，或者慢放看一遍。</figcaption>
+      </figure>
+    </div>
+
+    <div class="deep-toggle rv" id="deep-toggle">
+      <p class="label">For interviewers · 技术细节</p>
+      <p class="deep-sum">一条消息的旅程 · 记忆架构 MEMORY.md · Prompt 全透明 · 同类产品对比 · 验收单与演示版</p>
+      <button type="button" class="deep-btn" aria-expanded="false" aria-controls="house-deep"><span>展开技术细节</span><i aria-hidden="true">↓</i></button>
+    </div>
+    <div class="deep" id="house-deep" hidden>
     <div class="journey">
       <p class="label rv">How it works · 一条消息的旅程</p>
       <h3 class="rv" style="font-size:clamp(24px,2.4vw,34px);font-weight:600;line-height:1.5;margin-top:14px;max-width:26em">从按下发送到回复出现，一条消息会经过这些地方。</h3>
@@ -1851,37 +1841,6 @@ html,body{overflow-x:clip}
       <p>长的人设指令在长对话里效果会变弱。我的做法是<span class="rn" data-rn="underline">让角色自己说出身份</span>，再用记忆系统持续提供一致的信息。这样换了模型，角色性格也能保持。</p>
     </div></div>
 
-    <div class="gallery">
-      <figure class="print g1 r-1 rv"><span class="tape tl"></span>
-        <img loading="lazy" src="assets/1d0fb57a50.jpg" alt="记忆馆"><figcaption>图 8-1 · 记忆馆。可以搜索和修改记忆，每条都能找到原始消息。</figcaption></figure>
-      <figure class="print g2 r2 rv"><i class="pclip" aria-hidden="true"></i>
-        <img loading="lazy" src="assets/068037d843.jpg" alt="三维礼物房间"><figcaption>图 7-4 · 三维场景。可以拖动查看和缩放，有日光和暖灯两种光照。</figcaption></figure>
-      <figure class="print g3 r1 rv"><span class="tape tc"></span>
-        <img loading="lazy" src="assets/d862be4130.jpg" alt="用量面板"><figcaption>图 6-1 · 用量面板。实时显示缓存命中率和调用量。</figcaption></figure>
-      <figure class="print g4 r-2 rv"><i class="pclip pc-r" aria-hidden="true"></i>
-        <img loading="lazy" src="assets/8135ada3c8.jpg" alt="晴天模式"><figcaption>图 7-1 · 晴天模式主界面。界面做了三版迭代。</figcaption></figure>
-    </div>
-
-
-    <div class="motion">
-      <div class="motion-head">
-        <div>
-          <p class="label rv">Motion · 设计与动效</p>
-          <h3 class="rv">开屏像折叠屏一样展开。</h3>
-        </div>
-        <p class="rv">开屏参考了折叠屏打开的那一下：合着的磨砂屏幕先停在窗口中间，准备好以后滑到左边、右半块翻开，磨砂慢慢退掉，露出首页。页面切换、卡片和按钮也做了一套弹性动效。</p>
-      </div>
-      <figure class="print rv"><span class="tape tc"></span>
-        <div class="splash-frames">
-          <div><img loading="lazy" src="assets/207e1fcdb4.jpg" alt="开屏：合着的磨砂屏"><span>等待 · 合着的磨砂屏</span></div>
-          <div><img loading="lazy" src="assets/c7a2d36561.jpg" alt="开屏：右半块翻起"><span>0.2 秒 · 右半块翻起</span></div>
-          <div><img loading="lazy" src="assets/0ce1f4c962.jpg" alt="开屏：翻到竖直"><span>0.3 秒 · 翻到竖直</span></div>
-          <div><img loading="lazy" src="assets/cc7e014e8f.jpg" alt="开屏：落下，磨砂退去"><span>0.45 秒 · 落下，磨砂退去</span></div>
-        </div>
-        <figcaption>图 · 开屏动画的四个瞬间。拖动时间轴，或者慢放看一遍。</figcaption>
-      </figure>
-    </div>
-
     <p class="label rv">Comparison · 同类产品对比</p>
     <div class="compare-wrap rv">
     <table class="compare">
@@ -1947,6 +1906,8 @@ html,body{overflow-x:clip}
       </div>
     </div>
 
+    <div class="deep-end"><button type="button" class="deep-btn deep-close"><span>收起技术细节</span><i aria-hidden="true">↑</i></button></div>
+    </div>
     <div class="ownership rv">
       <span class="label" style="display:block;margin-bottom:8px">Ownership · 权属</span>
       这是我的个人项目，用自己的设备和自费的 API 完成，著作权归我本人。项目没有开源。可以现场演示，也可以讲解架构和版本文档。
@@ -1958,7 +1919,7 @@ html,body{overflow-x:clip}
 <div class="tx-gap" id="tx-gap" aria-hidden="true"></div>
 <section id="mv">
   <div class="wrap">
-    <div class="sec-head"><span class="label">N°02 · AIGC Film</span><span class="no">05</span></div>
+    <div class="sec-head"><span class="label">N°02 · AIGC Film</span><span class="no">02</span></div>
     <div class="mv">
       <div class="rv">
         <div class="filmstrip"></div>
@@ -1998,6 +1959,74 @@ html,body{overflow-x:clip}
         <span class="label">Fan Edit · 同人剪辑 · 2024.12</span>
         <h3>乙女游戏同人剪辑<br>《恋与深空》秦彻</h3>
         <p>这是我的期末作业，用游戏里的画面剪成一支同人视频。歌词字幕我设计了几种版式，有粉色手写体的英文，也有竖排的中文配拼音。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 导览 -->
+<section id="tour">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Quick Tour · 快速导览</span><span class="no">03</span></div>
+    <div class="tour-frame rv">
+      <img class="tour-bg" src="assets/8135ada3c8.jpg" alt="">
+      <div class="tour-side"><div class="on" id="ts1"><i></i>01 选择方向</div><div id="ts2"><i></i>02 查看介绍</div></div>
+      <div class="tour-card" id="tcard"><div class="stage" id="tstage"></div></div>
+      <div class="tour-dots"><i class="on" id="td1"></i><i id="td2"></i></div>
+    </div>
+  </div>
+</section>
+
+<!-- 01 目录 -->
+<section id="index">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">Index · 目录</span><span class="no">04</span></div>
+    <ol class="index-list">
+      <li><a href="#four"><span class="n">N°00</span><span class="t">个人概况<small>VISUAL · FILM · WORDS · SYSTEMS</small></span><span class="y">Profile</span></a></li>
+      <li><a href="#house"><span class="n">N°01</span><span class="t">House · AI 情感陪伴应用<small>PRODUCT · DESIGN · AI ENGINEERING</small></span><span class="y">2026</span></a></li>
+      <li><a href="#mv"><span class="n">N°02</span><span class="t">AI·MV《你心知肚明，我是你幻想中的朋友》<small>AIGC FILM · 可灵 AI</small></span><span class="y">2024</span></a></li>
+      <li><a href="#persona"><span class="n">N°03</span><span class="t">互动内容企划 · 人设载体<small>INTERACTIVE · WORLD-BUILDING</small></span><span class="y">2026</span></a></li>
+      <li><a href="#words"><span class="n">N°04</span><span class="t">文字与内容<small>FICTION · COMMUNITY · DISTRIBUTION</small></span><span class="y">Ongoing</span></a></li>
+      <li><a href="#skills"><span class="n">N°05</span><span class="t">能力与工具<small>TOOLKIT · LANGUAGES</small></span><span class="y">Skills</span></a></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 02 四种交付 -->
+<section id="four">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">N°00 · Profile</span><span class="no">05</span></div>
+    <p class="label rv" style="margin-bottom:20px">Profile</p>
+    <div class="intro-row">
+      <div>
+        <h2 class="rv" style="font-size:clamp(34px,4.2vw,60px);line-height:1.3;font-weight:600;letter-spacing:.04em;margin-bottom:26px">我能做的四类工作</h2>
+        <p class="lede dc rv">我是广播电视编导专业 2027 届学生。我会剪辑和拍摄，也长期写作。我用 AI 工具<span class="rn" data-rn="underline">独立完成过应用、视频和内容项目</span>。下面按四个方向介绍。</p>
+      </div>
+      <figure class="portrait rv"><span class="tape tc"></span><img loading="lazy" src="assets/5c81e445fc.jpg" alt="徐钰洁"><figcaption>徐钰洁 · 广州</figcaption></figure>
+    </div>
+    <div class="four">
+      <div class="rv"><span class="label">01 · Visual</span><div class="k">Visual</div><div class="zh">AI 视觉设计</div>
+        <p>用 Figma 独立设计了 House 的全部界面，做了三版迭代。玻璃质感在三种渲染方式上都做了实现。</p>
+        <div class="proof">见 N°01 House</div></div>
+      <div class="rv"><span class="label">02 · Film</span><div class="k">Film</div><div class="zh">AI 视频创作</div>
+        <p>用可灵 AI 独立完成了创意、脚本、生成和剪辑。成片 3 分 20 秒，播放 2.8 万。</p>
+        <div class="proof">见 N°02 AI·MV</div></div>
+      <div class="rv"><span class="label">03 · Words</span><div class="k">Words</div><div class="zh">AI 内容创作</div>
+        <p>番茄小说签约作者。16 岁时写的知乎回答阅读 15.9 万。同一内容会按不同平台重写后发布。</p>
+        <div class="proof">见 N°04 文字与内容</div></div>
+      <div class="rv"><span class="label">04 · Systems</span><div class="k">Systems</div><div class="zh">AI 效能提升</div>
+        <p>用 Claude Code 和 Codex 协作开发。我负责拆解需求、分配任务、验收和定位问题。两个月做了 21 个版本。</p>
+        <div class="proof">见 N°01 和 N°03</div></div>
+    </div>
+    <div class="travel rv">
+      <div><span class="label">Travel · 独自旅行</span>
+        <p>我一个人旅行去过这五个国家。</p><button type="button" class="pc-hint" id="pc-open">点明信片，看沿途拍的照片 <span aria-hidden="true">↗</span></button></div>
+      <div class="postcards">
+        <figure class="postcard has-photo"><div class="pc-img"><img class="dev" loading="lazy" src="assets/2e9f8094cc.jpg" alt="新西兰"><span class="mark">SOLO<br>TRIP</span><span class="en">New Zealand</span></div><figcaption>新西兰</figcaption></figure>
+        <figure class="postcard has-photo"><div class="pc-img"><img class="dev" loading="lazy" src="assets/c56b48914d.jpg" alt="新加坡"><span class="mark">SOLO<br>TRIP</span><span class="en">Singapore</span></div><figcaption>新加坡</figcaption></figure>
+        <figure class="postcard has-photo"><div class="pc-img"><img class="dev" loading="lazy" src="assets/3ad332fb2c.jpg" alt="日本"><span class="mark">SOLO<br>TRIP</span><span class="en">Japan</span></div><figcaption>日本</figcaption></figure>
+        <figure class="postcard has-photo"><div class="pc-img"><img class="dev" loading="lazy" src="assets/05a6219948.jpg" alt="韩国"><span class="mark">SOLO<br>TRIP</span><span class="en">Korea</span></div><figcaption>韩国</figcaption></figure>
+        <figure class="postcard has-photo"><div class="pc-img"><img class="dev" loading="lazy" src="assets/febcfa1f48.jpg" alt="马来西亚"><span class="mark">SOLO<br>TRIP</span><span class="en">Malaysia</span></div><figcaption>马来西亚</figcaption></figure>
       </div>
     </div>
   </div>
@@ -4070,9 +4099,9 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
 
 <nav class="dock" id="dock" aria-label="章节导航">
   <span class="pill" aria-hidden="true"></span>
-  <a href="#index" data-s="index,four">目录</a>
   <a href="#house" data-s="house">House</a>
   <a href="#mv" data-s="mv">影像</a>
+  <a href="#index" data-s="tour,index,four">目录</a>
   <a href="#persona" data-s="persona">角色</a>
   <a href="#words" data-s="words,skills">文字</a>
   <a href="#colophon" data-s="colophon">联系</a>
@@ -4417,7 +4446,9 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
 
   /* 懒加载的图片会改变页面高度，加载完再校准一次转场位置 */
   addEventListener('load',function(){ScrollTrigger.refresh()});
-  var imgs=[].slice.call(document.images),n=0;imgs.forEach(function(im){if(!im.complete)im.addEventListener('load',function(){if(++n%6===0)ScrollTrigger.refresh()},{once:true})});
+  var rt;function soon(){clearTimeout(rt);rt=setTimeout(function(){ScrollTrigger.refresh()},180)}
+  [].forEach.call(document.images,function(im){if(!im.complete)im.addEventListener('load',soon,{once:true})});
+  if('ResizeObserver' in window){var lastH=0;new ResizeObserver(function(){var h=document.body.scrollHeight;if(Math.abs(h-lastH)>40){lastH=h;soon()}}).observe(document.body)}
 })();
 </script>
 
@@ -4469,6 +4500,29 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
     open(startOf[cards.indexOf(c)]||0);
   },true);
   var btn=document.getElementById('pc-open');if(btn)btn.addEventListener('click',function(){open(0)});
+})();
+</script>
+
+<script>
+/* v5.6：House 的技术细节默认收起，给面试官按需展开 */
+(function(){
+  var deep=document.getElementById('house-deep'),tg=document.getElementById('deep-toggle');if(!deep||!tg)return;
+  var btn=tg.querySelector('.deep-btn'),close=deep.querySelector('.deep-close');
+  function refresh(){requestAnimationFrame(function(){if(window.ScrollTrigger)ScrollTrigger.refresh();window.dispatchEvent(new Event('resize'))})}
+  function set(open,scroll){
+    deep.hidden=!open;tg.classList.toggle('open',open);btn.setAttribute('aria-expanded',String(open));
+    btn.querySelector('span').textContent=open?'收起技术细节':'展开技术细节';
+    refresh();
+    if(scroll){var t=open?deep:tg;setTimeout(function(){if(window.__smoothTo)window.__smoothTo(t);else t.scrollIntoView({behavior:'smooth'})},60)}
+  }
+  btn.addEventListener('click',function(){set(deep.hidden,true)});
+  if(close)close.addEventListener('click',function(){set(false,true)});
+  // 有链接指向技术细节里的内容时，先自动展开
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;
+    var id=a.getAttribute('href').slice(1);if(!id)return;var t=document.getElementById(id);
+    if(t&&deep.hidden&&deep.contains(t))set(true,false);
+  },true);
 })();
 </script>
 </body>
