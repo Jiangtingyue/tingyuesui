@@ -943,6 +943,11 @@ body{background-color:#FDF9EF;background-image:var(--paper-tex);background-blend
 }
 @media (max-width:760px) and (prefers-reduced-motion:reduce){.dock,.dock .pill{transition:none}}
 @media print{.dock{display:none!important}}
+@supports not (background:color-mix(in srgb,red 50%,transparent)){
+  .dock{background:rgba(242,238,229,.9)}
+  :root[data-theme="onyx"] .dock{background:rgba(20,18,15,.9)}
+  @media (min-width:761px){.top.solid{background:rgba(242,238,229,.9)} :root[data-theme="onyx"] .top.solid{background:rgba(20,18,15,.9)}}
+}
 </style>
 
 <style>
@@ -1427,7 +1432,9 @@ div.pswp__img--placeholder,
 :root[data-theme="onyx"] .index-list .n{background:radial-gradient(circle at calc(100% - 13px) 50%,var(--bg) 0 2.6px,transparent 3.2px),var(--tab)}
 
 /* 验收小票：上面锯齿，下面撕开 */
-.receipt-wrap{justify-self:center;width:100%;max-width:460px;filter:drop-shadow(0 16px 18px rgba(22,19,15,.2)) drop-shadow(0 2px 2px rgba(22,19,15,.12));transform:rotate(-1.4deg)}
+.receipt-wrap{position:relative;justify-self:center;width:100%;max-width:460px;transform:rotate(-1.4deg)}
+.receipt-wrap::before{content:"";position:absolute;left:4%;right:4%;top:14px;bottom:10px;border-radius:2px;box-shadow:0 18px 34px -8px rgba(22,19,15,.26),0 3px 6px rgba(22,19,15,.10);pointer-events:none}
+.receipt-wrap .receipt{position:relative}
 .receipt{background:#f9f6ef;color:#2a251f;font-family:var(--mono);padding:34px 28px 40px;
   -webkit-mask:conic-gradient(from 135deg at top,#0000,#000 1deg 89deg,#0000 90deg) top/14px 8px repeat-x,linear-gradient(#000 0 0) 0 7px/100% calc(100% - 18px) no-repeat,url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M0 0H120V7L114 9 107 5 100 10 92 6 84 11 76 7 67 10 59 5 50 9 42 6 34 11 26 7 18 10 9 6 0 8Z'/%3E%3C/svg%3E") bottom/120px 12px repeat-x;
           mask:conic-gradient(from 135deg at top,#0000,#000 1deg 89deg,#0000 90deg) top/14px 8px repeat-x,linear-gradient(#000 0 0) 0 7px/100% calc(100% - 18px) no-repeat,url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M0 0H120V7L114 9 107 5 100 10 92 6 84 11 76 7 67 10 59 5 50 9 42 6 34 11 26 7 18 10 9 6 0 8Z'/%3E%3C/svg%3E") bottom/120px 12px repeat-x}
@@ -1445,7 +1452,8 @@ div.pswp__img--placeholder,
 .receipt .rc-foot small{display:block;margin-top:10px;font-size:10.5px;color:#7a7065;letter-spacing:.06em}
 
 /* 撕下来的笔记纸：少写提示词 */
-.quote-wrap{max-width:820px;margin:clamp(80px,12vh,140px) auto;filter:drop-shadow(0 18px 22px rgba(22,19,15,.16)) drop-shadow(0 2px 2px rgba(22,19,15,.1))}
+.quote-wrap{position:relative;max-width:820px;margin:clamp(80px,12vh,140px) auto}
+.quote-wrap::before{content:"";position:absolute;left:3%;right:3%;top:16px;bottom:14px;transform:rotate(.7deg);box-shadow:0 20px 36px -10px rgba(22,19,15,.2),0 3px 6px rgba(22,19,15,.08);pointer-events:none}
 .quote.note-sheet{position:relative;margin:0;padding:clamp(48px,6vw,72px) clamp(28px,6vw,80px) clamp(52px,6vw,76px);transform:rotate(.7deg);
   background:linear-gradient(90deg,transparent 54px,rgba(168,50,43,.35) 54px 55px,transparent 55px),repeating-linear-gradient(180deg,transparent 0 33px,rgba(70,95,130,.16) 33px 34px),var(--paper);
   -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M0 12H120V5L112 3 105 7 97 2 89 6 81 1 73 5 64 2 56 7 48 3 40 6 31 1 23 5 15 2 7 6 0 3Z'/%3E%3C/svg%3E") top/120px 12px repeat-x,linear-gradient(#000 0 0) 0 11px/100% calc(100% - 22px) no-repeat,url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M0 0H120V7L114 9 107 5 100 10 92 6 84 11 76 7 67 10 59 5 50 9 42 6 34 11 26 7 18 10 9 6 0 8Z'/%3E%3C/svg%3E") bottom/120px 12px repeat-x;
@@ -1503,6 +1511,9 @@ div.pswp__img--placeholder,
 :root[data-theme="onyx"] .tx-paper::before{background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,0))}
 .tx-paper::after{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--line)}
 @media print{.tx-layer{display:none!important}}
+.tx-gap{height:70vh}
+@media print{.tx-gap{display:none}}
+@media (prefers-reduced-motion:reduce){.tx-gap{display:none}}
 /* 不让任何元素把页面撑宽：手机上只能上下滑，不会被拖歪 */
 html,body{overflow-x:clip}
 @supports not (overflow:clip){html,body{overflow-x:hidden}}
@@ -1940,6 +1951,7 @@ html,body{overflow-x:clip}
 </section>
 
 <!-- 04 AI·MV -->
+<div class="tx-gap" id="tx-gap" aria-hidden="true"></div>
 <section id="mv">
   <div class="wrap">
     <div class="sec-head"><span class="label">N°02 · AIGC Film</span><span class="no">05</span></div>
@@ -4366,21 +4378,21 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
   }
   if(!mobile){var hs=$('house');if(hs)maskReveal(hs,'grid')}
 
-  /* 4. 片头卡：进入影像章节前，先整片暗成全黑，黑场里亮出片名，最后百叶窗打开，一打开就是 MV */
-  var mv=$('mv'),card=$('tx-card');
-  if(mv&&card){
+  /* 4. 片头卡：House 和影像之间留一段黑场间隔。House 看完才开始暗场，黑场里亮出片名，最后百叶窗打开，一打开就是 MV */
+  var mv=$('mv'),card=$('tx-card'),gap=$('tx-gap');
+  if(mv&&card&&gap){
     var stripe=function(){return mobile?34:Math.round(innerHeight/12)};
-    ScrollTrigger.create({trigger:mv,start:'top bottom',end:'top top',scrub:true,onUpdate:function(st){
+    function off(){card.style.opacity='0';card.classList.remove('on');card.style.webkitMask=card.style.mask=''}
+    ScrollTrigger.create({trigger:gap,start:'top 40%',end:'bottom top',scrub:true,onUpdate:function(st){
       var p=st.progress;
-      if(p<=0||p>=1){card.style.opacity='0';card.classList.remove('on');card.style.webkitMask=card.style.mask='';return}
+      if(p<=0||p>=1){off();return}
       card.classList.add('on');
-      var o=Math.min(1,p/.2);                                   // 0–20%：淡入全黑
-      card.style.opacity=String(o);
-      card.style.setProperty('--bp',String(Math.min(1,Math.max(0,(p-.22)/.38))));   // 黑场里走进度条
-      var t=card.querySelectorAll('.k,.t,.bar,.s');[].forEach.call(t,function(e){e.style.opacity=String(Math.min(1,Math.max(0,(p-.16)/.12)))});
-      if(p>.66){var q=(p-.66)/.34;var m='linear-gradient(180deg,#000 '+((1-q)*100).toFixed(1)+'%,#0000 0) 0 0/100% '+stripe()+'px';card.style.webkitMask=m;card.style.mask=m}
+      card.style.opacity=String(Math.min(1,p/.3));                                       // 暗场
+      [].forEach.call(card.querySelectorAll('.k,.t,.bar,.s'),function(e){e.style.opacity=String(Math.min(1,Math.max(0,(p-.28)/.12)))});
+      card.style.setProperty('--bp',String(Math.min(1,Math.max(0,(p-.36)/.42))));           // 进度条
+      if(p>.8){var q=(p-.8)/.2;var m='linear-gradient(180deg,#000 '+((1-q)*100).toFixed(1)+'%,#0000 0) 0 0/100% '+stripe()+'px';card.style.webkitMask=m;card.style.mask=m}
       else card.style.webkitMask=card.style.mask='';
-    },onLeave:function(){card.style.opacity='0';card.classList.remove('on')},onLeaveBack:function(){card.style.opacity='0';card.classList.remove('on')}});
+    },onLeave:off,onLeaveBack:off});
   }
 
   /* 5. 圈入圈出：目录 → 个人概况，像电影开场的序幕。画面收成一个圈，黑场里写“序”，再圈开 */
