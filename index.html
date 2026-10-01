@@ -1479,6 +1479,33 @@ div.pswp__img--placeholder,
 }
 @media print{.stamp-v{opacity:.86;transform:rotate(-14deg)}}
 </style>
+
+<style>
+/* ---------- v5.4 章节转场：按镜头语言来剪 ---------- */
+.tx-layer{position:fixed;inset:0;pointer-events:none;opacity:0;visibility:hidden}
+.tx-layer.on{visibility:visible}
+/* 片头卡：影像章节前灯光暗下 */
+#tx-card{z-index:70;background:#0e0c0a;color:#EDE6D6;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px}
+#tx-card .k{font-family:var(--sans);font-size:11px;letter-spacing:.42em;color:#9b9284}
+#tx-card .t{font-family:var(--display);font-size:clamp(34px,5vw,72px);letter-spacing:.06em;line-height:1.1}
+#tx-card .s{font-size:clamp(14px,1.4vw,18px);letter-spacing:.12em;color:#c9bfae;max-width:22em;padding:0 24px}
+#tx-card .bar{width:min(320px,60vw);height:1px;background:rgba(237,230,214,.25);position:relative;overflow:hidden}
+#tx-card .bar i{position:absolute;inset:0;background:#C8665A;transform-origin:left;transform:scaleX(var(--bp,0))}
+#tx-card::before,#tx-card::after{content:"";position:absolute;left:0;right:0;height:11vh;background:#000}
+#tx-card::before{top:0}#tx-card::after{bottom:0}
+/* 像素转场 */
+#tx-pix{z-index:58;opacity:1}
+/* 圈入圈出：片尾 */
+#tx-iris{z-index:70;opacity:1;background:radial-gradient(circle at 50% 50%,transparent var(--r,150vmax),#0e0c0a calc(var(--r,150vmax) + 1px))}
+#tx-iris .fin{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:var(--display);font-style:italic;font-size:clamp(28px,3.4vw,46px);letter-spacing:.2em;color:#EDE6D6;opacity:var(--fo,0);white-space:nowrap}
+/* 纸张叠压：下一章盖上来时，在上一章上投下一片阴影 */
+.tx-paper{position:relative;background:var(--bg);z-index:1}
+.tx-paper::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:26vh;pointer-events:none;
+  background:linear-gradient(to top,rgba(22,19,15,.13),rgba(22,19,15,.04) 35%,rgba(22,19,15,0));opacity:var(--sh,0)}
+:root[data-theme="onyx"] .tx-paper::before{background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,0))}
+.tx-paper::after{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--line)}
+@media print{.tx-layer{display:none!important}}
+</style>
 </head>
 <body>
 
@@ -4285,6 +4312,107 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
   addEventListener('load',redraw);
   // 切换主题以后标注换颜色
   new MutationObserver(function(){made.forEach(function(a){var hl=a.type==='highlight';a.color=hl?(dark()?'rgba(201,171,110,.32)':'rgba(236,205,96,.55)'):(dark()?'#d0665a':'#a8322b')})}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
+
+<div class="tx-layer" id="tx-card" aria-hidden="true"><span class="k">NOW SHOWING · 正在放映</span><span class="t">N°02 · 影像</span><span class="bar"><i></i></span><span class="s">AI·MV《你心知肚明，我是你幻想中的朋友》</span></div>
+<canvas class="tx-layer" id="tx-pix" aria-hidden="true"></canvas>
+<div class="tx-layer" id="tx-iris" aria-hidden="true"><span class="fin">— FIN —</span></div>
+<script>
+/* v5.4：章节转场。参考 Codrops 的 SVG 遮罩转场、像素转场和 GSAP 的章节叠压写法，用页面里已有的 GSAP ScrollTrigger 重写 */
+(function(){
+  if(!window.gsap||!window.ScrollTrigger)return;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  gsap.registerPlugin(ScrollTrigger);
+  var mobile=matchMedia('(max-width:760px)').matches;
+  var $=function(id){return document.getElementById(id)};
+  function bell(p){return 1-Math.abs(2*p-1)}            // 0→1→0，转场正中最满
+  function ease(p){return p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2}
+
+  /* 1. 推镜：离开封面时，镜头往后拉 */
+  var cover=$('cover');
+  if(cover){gsap.to(cover,{scale:.94,opacity:.3,transformOrigin:'50% 40%',ease:'none',
+    scrollTrigger:{trigger:cover,start:'top top',end:'bottom top',scrub:true}})}
+
+  /* 2. 纸张叠压：目录→概况、角色→文字，下一章像新的一页纸盖上来 */
+  ['four','words'].forEach(function(id){
+    var sec=$(id);if(!sec)return;sec.classList.add('tx-paper');
+    ScrollTrigger.create({trigger:sec,start:'top bottom',end:'top top',scrub:true,onUpdate:function(st){
+      var p=st.progress;sec.style.setProperty('--sh',String(bell(Math.min(1,p*1.25))));
+      if(p<1&&p>0){sec.style.transform='translateY('+((1-ease(p))*7)+'vh) rotate('+((1-ease(p))*.6)+'deg)';sec.style.transformOrigin='50% 0'}
+      else sec.style.transform='';
+    }});
+  });
+
+  /* 3. 遮罩转场：电脑上进入 House 时，画面从一格一格的方块里揭开（参考 SVG 遮罩转场的格子图案） */
+  function maskReveal(sec,kind){
+    var tile=kind==='grid'?Math.max(64,Math.round(innerWidth/14)):Math.max(36,Math.round(innerHeight/14));
+    function set(p){
+      var m=p>=1?'':mk(Math.max(0,p));
+      sec.style.webkitMask=m;sec.style.mask=m;
+    }
+    function mk(p){
+      if(kind==='grid'){
+        var a=(p*50).toFixed(2);
+        var h='linear-gradient(90deg,#0000 calc(50% - '+a+'%),#000 0 calc(50% + '+a+'%),#0000 0) 0 0/'+tile+'px '+tile+'px';
+        var v='linear-gradient(180deg,#0000 calc(50% - '+a+'%),#000 0 calc(50% + '+a+'%),#0000 0) 0 0/'+tile+'px '+tile+'px';
+        return h+','+v;
+      }
+      return 'linear-gradient(180deg,#000 '+(p*100).toFixed(2)+'%,#0000 0) 0 0/100% '+tile+'px';
+    }
+    if(kind==='grid'){sec.style.webkitMaskComposite='source-in';sec.style.maskComposite='intersect'}
+    ScrollTrigger.create({trigger:sec,start:'top 95%',end:'top 20%',scrub:true,onUpdate:function(st){set(st.progress)},
+      onLeave:function(){set(1)},onLeaveBack:function(){set(0)},onEnterBack:function(st){set(st.progress)}});
+  }
+  if(!mobile){var hs=$('house');if(hs)maskReveal(hs,'grid')}
+
+  /* 4. 片头卡：进入影像章节前，灯光暗下，黑场里亮出片名，然后百叶窗一样打开 */
+  var mv=$('mv'),card=$('tx-card');
+  if(mv&&card){
+    var bar=card.querySelector('.bar');
+    ScrollTrigger.create({trigger:mv,start:'top 92%',end:'top 8%',scrub:true,onUpdate:function(st){
+      var p=st.progress,o=Math.min(1,bell(p)*1.6);
+      card.style.opacity=String(o);card.classList.toggle('on',o>0.01);
+      card.style.setProperty('--bp',String(Math.min(1,Math.max(0,(p-.25)/.5))));
+      card.style.webkitMask=card.style.mask=p>.5?'linear-gradient(180deg,#000 '+((1-(p-.5)*2)*100).toFixed(1)+'%,#0000 0) 0 0/100% '+(mobile?32:Math.round(innerHeight/12))+'px':'';
+    },onLeave:function(){card.style.opacity='0';card.classList.remove('on')},onLeaveBack:function(){card.style.opacity='0';card.classList.remove('on')}});
+  }
+
+  /* 5. 像素转场：影像→角色，画面碎成纸色方块再拼回来（参考 Codrops 像素转场） */
+  var persona=$('persona'),cv=$('tx-pix');
+  if(persona&&cv){
+    var ctx=cv.getContext('2d'),cols,rows,cell,order=[],dpr=Math.min(2,window.devicePixelRatio||1);
+    function build(){
+      cv.width=innerWidth*dpr;cv.height=innerHeight*dpr;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';
+      cell=mobile?Math.ceil(innerWidth/9):Math.ceil(innerWidth/24);cols=Math.ceil(innerWidth/cell);rows=Math.ceil(innerHeight/cell);
+      order=[];for(var i=0;i<cols*rows;i++)order.push(Math.random());
+    }
+    build();addEventListener('resize',build);
+    function draw(c){
+      ctx.clearRect(0,0,cv.width,cv.height);if(c<=0){cv.classList.remove('on');return}cv.classList.add('on');
+      var root=getComputedStyle(document.documentElement);
+      var bg=(root.getPropertyValue('--bg')||'#F2EEE5').trim(),ink=(root.getPropertyValue('--accent')||'#A8322B').trim(),cs=Math.ceil(cell*dpr)+1;
+      for(var y=0;y<rows;y++)for(var x=0;x<cols;x++){var r=order[y*cols+x];if(r<c){ctx.fillStyle=(r>c-.03&&c<.98)?ink:bg;ctx.fillRect(x*cell*dpr,y*cell*dpr,cs,cs)}}
+    }
+    ScrollTrigger.create({trigger:persona,start:'top 90%',end:'top 10%',scrub:true,onUpdate:function(st){draw(Math.min(1,bell(st.progress)*1.35))},
+      onLeave:function(){draw(0)},onLeaveBack:function(){draw(0)}});
+  }
+
+  /* 6. 圈入圈出：快到结尾时，画面像老电影一样收成一个圈，黑场里出现 FIN，再圈开到 Thank you */
+  var col=$('colophon'),iris=$('tx-iris');
+  if(col&&iris){
+    var maxR=Math.hypot(innerWidth,innerHeight)/2+20;
+    ScrollTrigger.create({trigger:col,start:'top 95%',end:'top 5%',scrub:true,onUpdate:function(st){
+      var p=st.progress,c=Math.min(1,bell(p)*1.25);
+      if(c<=0){iris.classList.remove('on');return}
+      iris.classList.add('on');iris.style.setProperty('--r',((1-c)*maxR).toFixed(1)+'px');iris.style.setProperty('--fo',String(Math.max(0,(c-.8)/.2)));
+    },onLeave:function(){iris.classList.remove('on')},onLeaveBack:function(){iris.classList.remove('on')}});
+    addEventListener('resize',function(){maxR=Math.hypot(innerWidth,innerHeight)/2+20});
+  }
+
+  /* 懒加载的图片会改变页面高度，加载完再校准一次转场位置 */
+  addEventListener('load',function(){ScrollTrigger.refresh()});
+  var imgs=[].slice.call(document.images),n=0;imgs.forEach(function(im){if(!im.complete)im.addEventListener('load',function(){if(++n%6===0)ScrollTrigger.refresh()},{once:true})});
 })();
 </script>
 </body>
