@@ -1404,6 +1404,81 @@ div.pswp__img--placeholder,
   .deck-ui button{min-height:40px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:none;color:var(--ink);font:inherit;letter-spacing:.12em;cursor:pointer}
 }
 </style>
+
+<style>
+/* ---------- v5.3 拟物细节：标签机、文件夹索引、小票、撕纸、夹子、手绘标注、印章 ---------- */
+/* 标签机打出来的压纹标签 */
+.dymo{display:inline-block;font-family:var(--mono);font-size:11px;line-height:1.35;letter-spacing:.16em;text-transform:uppercase;color:#f4efe4!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,0) 42%,rgba(0,0,0,.2)),var(--dy,#1c1916);padding:5px 11px 4px;border-radius:2px;
+  text-shadow:0 1px 0 rgba(255,255,255,.2),0 -1px 0 rgba(0,0,0,.55);box-shadow:0 1px 2px rgba(0,0,0,.28);transform:rotate(var(--rot,-.6deg));white-space:nowrap}
+.dymo-row{display:flex!important;flex-wrap:wrap;gap:8px 10px;margin-top:14px!important;letter-spacing:0!important}
+.dymo-row .dymo:nth-child(2){--rot:.8deg;--dy:#7e2b26}.dymo-row .dymo:nth-child(3){--rot:-.3deg;--dy:#2f4560}
+.four .zh.dymo{font-size:11.5px;margin-bottom:22px}
+.badge{box-shadow:0 1px 2px rgba(0,0,0,.18)}
+.badge span:first-child{text-shadow:0 1px 0 rgba(255,255,255,.18),0 -1px 0 rgba(0,0,0,.5);background-image:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,0) 45%,rgba(0,0,0,.18))}
+
+/* 目录：编号做成文件夹索引标签 */
+.index-list .n{position:relative;justify-self:start;align-self:center;font-family:var(--mono)!important;font-size:11px!important;letter-spacing:.1em!important;color:#2b241c!important;
+  padding:6px 18px 6px 10px;background:radial-gradient(circle at calc(100% - 13px) 50%,var(--bg) 0 2.6px,transparent 3.2px),var(--tab,#d8c49c);
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.index-list li:nth-child(1) .n{--tab:#d8c49c}.index-list li:nth-child(2) .n{--tab:#e6c3ba}.index-list li:nth-child(3) .n{--tab:#c3d2db}
+.index-list li:nth-child(4) .n{--tab:#cdd7bd}.index-list li:nth-child(5) .n{--tab:#e8d99c}.index-list li:nth-child(6) .n{--tab:#d5cbe0}
+.index-list li a:hover .n{transform:translateX(-6px) rotate(-2deg)}
+:root[data-theme="onyx"] .index-list .n{background:radial-gradient(circle at calc(100% - 13px) 50%,var(--bg) 0 2.6px,transparent 3.2px),var(--tab)}
+
+/* 验收小票：上面锯齿，下面撕开 */
+.receipt-wrap{justify-self:center;width:100%;max-width:460px;filter:drop-shadow(0 16px 18px rgba(22,19,15,.2)) drop-shadow(0 2px 2px rgba(22,19,15,.12));transform:rotate(-1.4deg)}
+.receipt{background:#f9f6ef;color:#2a251f;font-family:var(--mono);padding:34px 28px 40px;
+  -webkit-mask:conic-gradient(from 135deg at top,#0000,#000 1deg 89deg,#0000 90deg) top/14px 8px repeat-x,linear-gradient(#000 0 0) 0 7px/100% calc(100% - 18px) no-repeat,url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M0 0H120V7L114 9 107 5 100 10 92 6 84 11 76 7 67 10 59 5 50 9 42 6 34 11 26 7 18 10 9 6 0 8Z'/%3E%3C/svg%3E") bottom/120px 12px repeat-x;
+          mask:conic-gradient(from 135deg at top,#0000,#000 1deg 89deg,#0000 90deg) top/14px 8px repeat-x,linear-gradient(#000 0 0) 0 7px/100% calc(100% - 18px) no-repeat,url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M0 0H120V7L114 9 107 5 100 10 92 6 84 11 76 7 67 10 59 5 50 9 42 6 34 11 26 7 18 10 9 6 0 8Z'/%3E%3C/svg%3E") bottom/120px 12px repeat-x}
+.receipt .rc-head{text-align:center;padding-bottom:16px;border-bottom:1px dashed rgba(42,37,31,.35)}
+.receipt .rc-head b{display:block;font-size:14px;letter-spacing:.32em;font-weight:700}
+.receipt .rc-head span{display:block;font-size:10.5px;letter-spacing:.18em;color:#6b6257;margin-top:6px}
+.metrics .receipt ul{border-top:0}
+.metrics .receipt li{grid-template-columns:62px 1fr;gap:14px;padding:14px 0;border-bottom:1px dashed rgba(42,37,31,.25);color:#4a433a;font-size:13px}
+.metrics .receipt li b{font-family:var(--mono);font-size:24px;color:#2a251f;font-weight:600}
+.metrics .receipt li span{color:#4a433a}
+.receipt .rc-foot{padding-top:16px;text-align:center}
+.receipt .rc-sum{display:flex;justify-content:space-between;font-size:12px;letter-spacing:.1em;font-weight:700;padding-bottom:14px;border-bottom:1px dashed rgba(42,37,31,.35)}
+.receipt .rc-foot p{font-size:11px;letter-spacing:.3em;margin:16px 0 12px}
+.receipt .rc-bar{display:block;height:34px;margin:0 auto;width:78%;background:repeating-linear-gradient(90deg,#2a251f 0 2px,transparent 2px 3px,#2a251f 3px 4px,transparent 4px 7px,#2a251f 7px 10px,transparent 10px 11px,#2a251f 11px 12px,transparent 12px 15px)}
+.receipt .rc-foot small{display:block;margin-top:10px;font-size:10.5px;color:#7a7065;letter-spacing:.06em}
+
+/* 撕下来的笔记纸：少写提示词 */
+.quote-wrap{max-width:820px;margin:clamp(80px,12vh,140px) auto;filter:drop-shadow(0 18px 22px rgba(22,19,15,.16)) drop-shadow(0 2px 2px rgba(22,19,15,.1))}
+.quote.note-sheet{position:relative;margin:0;padding:clamp(48px,6vw,72px) clamp(28px,6vw,80px) clamp(52px,6vw,76px);transform:rotate(.7deg);
+  background:linear-gradient(90deg,transparent 54px,rgba(168,50,43,.35) 54px 55px,transparent 55px),repeating-linear-gradient(180deg,transparent 0 33px,rgba(70,95,130,.16) 33px 34px),var(--paper);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M0 12H120V5L112 3 105 7 97 2 89 6 81 1 73 5 64 2 56 7 48 3 40 6 31 1 23 5 15 2 7 6 0 3Z'/%3E%3C/svg%3E") top/120px 12px repeat-x,linear-gradient(#000 0 0) 0 11px/100% calc(100% - 22px) no-repeat,url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M0 0H120V7L114 9 107 5 100 10 92 6 84 11 76 7 67 10 59 5 50 9 42 6 34 11 26 7 18 10 9 6 0 8Z'/%3E%3C/svg%3E") bottom/120px 12px repeat-x;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M0 12H120V5L112 3 105 7 97 2 89 6 81 1 73 5 64 2 56 7 48 3 40 6 31 1 23 5 15 2 7 6 0 3Z'/%3E%3C/svg%3E") top/120px 12px repeat-x,linear-gradient(#000 0 0) 0 11px/100% calc(100% - 22px) no-repeat,url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'%3E%3Cpath d='M0 0H120V7L114 9 107 5 100 10 92 6 84 11 76 7 67 10 59 5 50 9 42 6 34 11 26 7 18 10 9 6 0 8Z'/%3E%3C/svg%3E") bottom/120px 12px repeat-x}
+.quote.note-sheet .tape{top:2px}
+
+/* 长尾夹和回形针 */
+.readme{position:relative}
+.readme .binder{position:absolute;top:-30px;left:50%;width:90px;height:58px;margin-left:-45px;z-index:6;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 90 58'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23767c81'/%3E%3Cstop offset='.5' stop-color='%23e3e6e8'/%3E%3Cstop offset='1' stop-color='%23899095'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%233a3632'/%3E%3Cstop offset='.35' stop-color='%23151311'/%3E%3Cstop offset='1' stop-color='%230c0b0a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M24 34 L18 6 Q17 2 21 2 L36 2 Q39 2 38 6 L33 34' fill='none' stroke='url(%23m)' stroke-width='2.6' stroke-linejoin='round'/%3E%3Cpath d='M66 34 L72 6 Q73 2 69 2 L54 2 Q51 2 52 6 L57 34' fill='none' stroke='url(%23m)' stroke-width='2.6' stroke-linejoin='round'/%3E%3Cpath d='M14 30 H76 L86 56 H4 Z' fill='url(%23b)'/%3E%3Cpath d='M15 31 H75' stroke='%23fff' stroke-opacity='.25'/%3E%3C/svg%3E") no-repeat center/contain;filter:drop-shadow(0 3px 2px rgba(0,0,0,.3));pointer-events:none}
+.pclip{position:absolute;top:-24px;left:26px;width:24px;height:66px;z-index:4;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 70'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%236f757a'/%3E%3Cstop offset='.5' stop-color='%23d9dde0'/%3E%3Cstop offset='1' stop-color='%23838a8f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M9 20v34a5 5 0 0 0 10 0V12a7 7 0 0 0-14 0v44a9 9 0 0 0 18 0V22' fill='none' stroke='url(%23g)' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center/contain;transform:rotate(-7deg);filter:drop-shadow(1px 2px 1px rgba(0,0,0,.28));pointer-events:none}
+.pclip.pc-r{left:auto;right:30px;transform:rotate(9deg)}
+
+/* 验证印章：滚到这里“啪”地盖上 */
+.val-box{position:relative}
+.stamp-v{position:absolute;right:-8px;top:-46px;width:136px;height:136px;color:#a8322b;opacity:0;transform:rotate(-14deg) scale(1.9);pointer-events:none;mix-blend-mode:multiply}
+:root[data-theme="onyx"] .stamp-v{color:#cf6157;mix-blend-mode:normal}
+.val-box.in .stamp-v{animation:stampIn .5s cubic-bezier(.2,.9,.3,1.25) .45s forwards}
+@keyframes stampIn{0%{opacity:0;transform:rotate(-14deg) scale(1.9)}55%{opacity:.95;transform:rotate(-14deg) scale(.93)}100%{opacity:.86;transform:rotate(-14deg) scale(1)}}
+
+/* 手绘标注 */
+.rn{position:relative}
+@media (prefers-reduced-motion:reduce){.val-box .stamp-v{animation:none!important;opacity:.86;transform:rotate(-14deg)}}
+@media (max-width:760px){
+  .index-list li a{grid-template-columns:70px 1fr}
+  .index-list .n{font-size:11px!important;padding:5px 16px 5px 8px}
+  .stamp-v{width:104px;height:104px;top:-30px;right:-4px}
+  .receipt{padding:30px 20px 36px}
+  .metrics .receipt li{grid-template-columns:52px 1fr}
+  .quote.note-sheet{background:linear-gradient(90deg,transparent 30px,rgba(168,50,43,.35) 30px 31px,transparent 31px),repeating-linear-gradient(180deg,transparent 0 33px,rgba(70,95,130,.16) 33px 34px),var(--paper)}
+  .readme .binder{width:72px;height:46px;margin-left:-36px;top:-24px}
+}
+@media print{.stamp-v{opacity:.86;transform:rotate(-14deg)}}
+</style>
 </head>
 <body>
 
@@ -1548,7 +1623,7 @@ div.pswp__img--placeholder,
     <div class="intro-row">
       <div>
         <h2 class="rv" style="font-size:clamp(34px,4.2vw,60px);line-height:1.3;font-weight:600;letter-spacing:.04em;margin-bottom:26px">我能做的四类工作</h2>
-        <p class="lede dc rv">我是广播电视编导专业 2027 届学生。我会剪辑和拍摄，也长期写作。我用 AI 工具独立完成过应用、视频和内容项目。下面按四个方向介绍。</p>
+        <p class="lede dc rv">我是广播电视编导专业 2027 届学生。我会剪辑和拍摄，也长期写作。我用 AI 工具<span class="rn" data-rn="underline">独立完成过应用、视频和内容项目</span>。下面按四个方向介绍。</p>
       </div>
       <figure class="portrait rv"><span class="tape tc"></span><img loading="lazy" src="assets/5c81e445fc.jpg" alt="徐钰洁"><figcaption>徐钰洁 · 广州</figcaption></figure>
     </div>
@@ -1607,7 +1682,7 @@ div.pswp__img--placeholder,
 
     <div class="role">
       <span class="label rv">My role · 我负责什么</span>
-      <p class="rv">我负责产品定义、架构选择、交互和视觉设计、版本规划和验收。代码由 Claude Code 和 Codex 编写，我负责分配任务和检查结果。<br><span class="muted">我的专业是广播电视编导，编程是自学的。</span></p>
+      <p class="rv">我负责产品定义、架构选择、交互和视觉设计、版本规划和验收。代码由 Claude Code 和 Codex 编写，<span class="rn" data-rn="highlight">我负责分配任务和检查结果</span>。<br><span class="muted">我的专业是广播电视编导，编程是自学的。</span></p>
     </div>
 
     <div class="house-hero rv">
@@ -1621,7 +1696,7 @@ div.pswp__img--placeholder,
 
     <div class="prologue">
     <p class="label rv">Problems · 解决的问题</p>
-    <h3 class="rv" style="font-size:clamp(24px,2.4vw,34px);font-weight:600;line-height:1.5;margin-top:14px;max-width:26em">开发中遇到了四个主要问题。</h3>
+    <h3 class="rv" style="font-size:clamp(24px,2.4vw,34px);font-weight:600;line-height:1.5;margin-top:14px;max-width:26em">开发中遇到了<span class="rn" data-rn="underline">四个主要问题</span>。</h3>
     <div class="problems stack">
       <div class="card" style="--i:0"><span class="label"><span>Problem 01</span></span><span class="big-no">01</span><h4>长对话遗忘</h4><div class="body"><p class="feel">对话变长以后，早期内容会被忘掉。</p><p class="fix">聊得太久的部分，整理成一段段带出处的摘录，回复前在整段对话里找相关的记忆。每条记忆都能找到原始消息。</p></div></div>
       <div class="card" style="--i:1"><span class="label"><span>Problem 02</span></span><span class="big-no">02</span><h4>记忆混淆</h4><div class="body"><p class="feel">模型会把自己说过的话当成用户说的。</p><p class="fix">按说话人分开存储，用户和模型的内容不再混在一起。</p></div></div>
@@ -1677,7 +1752,7 @@ div.pswp__img--placeholder,
 <div class="mem">
       <p class="label rv">Memory · 记忆是怎么工作的</p>
       <h3 class="rv" style="font-size:clamp(24px,2.4vw,34px);font-weight:600;line-height:1.5;margin-top:14px;max-width:26em">这套记忆只用用户说过的原话，<span class="rn-key">每一条都能查到出处</span>。</h3>
-      <div class="readme rv">
+      <div class="readme rv"><i class="binder" aria-hidden="true"></i>
         <div class="readme-bar"><span class="dots"><i></i><i></i><i></i></span><span class="file">MEMORY.md</span><span class="meta">House · v21</span></div>
         <div class="readme-body">
           <h4>House 记忆架构</h4>
@@ -1728,19 +1803,19 @@ div.pswp__img--placeholder,
       </figure>
     </div>
 
-    <div class="quote rv">
+    <div class="quote-wrap"><div class="quote rv note-sheet"><span class="tape tc" aria-hidden="true"></span>
       <blockquote>少写提示词</blockquote>
-      <p>长的人设指令在长对话里效果会变弱。我的做法是让角色自己说出身份，再用记忆系统持续提供一致的信息。这样换了模型，角色性格也能保持。</p>
-    </div>
+      <p>长的人设指令在长对话里效果会变弱。我的做法是<span class="rn" data-rn="underline">让角色自己说出身份</span>，再用记忆系统持续提供一致的信息。这样换了模型，角色性格也能保持。</p>
+    </div></div>
 
     <div class="gallery">
       <figure class="print g1 r-1 rv"><span class="tape tl"></span>
         <img loading="lazy" src="assets/1d0fb57a50.jpg" alt="记忆馆"><figcaption>图 8-1 · 记忆馆。可以搜索和修改记忆，每条都能找到原始消息。</figcaption></figure>
-      <figure class="print g2 r2 rv"><span class="tape tr"></span>
+      <figure class="print g2 r2 rv"><i class="pclip" aria-hidden="true"></i>
         <img loading="lazy" src="assets/068037d843.jpg" alt="三维礼物房间"><figcaption>图 7-4 · 三维场景。可以拖动查看和缩放，有日光和暖灯两种光照。</figcaption></figure>
       <figure class="print g3 r1 rv"><span class="tape tc"></span>
         <img loading="lazy" src="assets/d862be4130.jpg" alt="用量面板"><figcaption>图 6-1 · 用量面板。实时显示缓存命中率和调用量。</figcaption></figure>
-      <figure class="print g4 r-2 rv"><span class="tape tl"></span>
+      <figure class="print g4 r-2 rv"><i class="pclip pc-r" aria-hidden="true"></i>
         <img loading="lazy" src="assets/8135ada3c8.jpg" alt="晴天模式"><figcaption>图 7-1 · 晴天模式主界面。界面做了三版迭代。</figcaption></figure>
     </div>
 
@@ -1781,15 +1856,31 @@ div.pswp__img--placeholder,
     <p class="foot rv">对比依据公开资料和个人使用体验，核对时间为 2026 年 9 月。House 的缺点是安装门槛较高，只支持单个角色。</p>
 
     <div class="metrics">
-      <ul class="rv">
+      <div class="receipt-wrap rv"><div class="receipt">
+        <div class="rc-head"><b>HOUSE · 验收单</b><span>NO.0021　2026-09</span><span>LOCAL-FIRST · QA</span></div>
+        <ul>
         <li><b>34</b><span>个测试文件。大部分不需要调用模型就能运行。</span></li>
         <li><b>3</b><span>遍验收。重要改动都检查三遍，每个版本都做自检。</span></li>
         <li><b>0</b><span>条数据丢失。21 个版本升级过程中数据完整保留。</span></li>
         <li><b>6</b><span>种模型接入，包括 OpenAI、Anthropic、Kimi、GLM、OpenRouter 和 DeepSeek。</span></li>
       </ul>
-      <div class="rv">
+        <div class="rc-foot"><div class="rc-sum"><span>合计</span><span>21 个版本 · 259 项测试</span></div><p>THANK YOU FOR READING</p><i class="rc-bar" aria-hidden="true"></i><small>* 未验证的功能已在文档中单独注明</small></div>
+      </div></div>
+      <div class="rv val-box">
+        <svg class="stamp-v" viewBox="0 0 140 140" aria-hidden="true"><defs>
+          <filter id="ink" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/></filter>
+          <mask id="inkm"><rect width="140" height="140" fill="#fff"/><g fill="#000" opacity=".9"><circle cx="31" cy="44" r="1.6"/><circle cx="96" cy="30" r="1.1"/><circle cx="108" cy="92" r="1.8"/><circle cx="52" cy="104" r="1.2"/><circle cx="71" cy="58" r=".9"/><circle cx="42" cy="78" r="1"/><rect x="88" y="66" width="9" height="1.4" rx=".7"/><rect x="24" y="90" width="7" height="1.2" rx=".6"/></g></mask>
+          <path id="arcT" d="M22 70 A48 48 0 0 1 118 70"/><path id="arcB" d="M26 74 A44 44 0 0 0 114 74"/></defs>
+          <g filter="url(#ink)" mask="url(#inkm)" fill="none" stroke="currentColor">
+            <circle cx="70" cy="70" r="64" stroke-width="3.2"/><circle cx="70" cy="70" r="56" stroke-width="1.2"/>
+            <rect x="12" y="56" width="116" height="28" fill="currentColor" stroke="none"/>
+            <text font-family="SF Mono,Menlo,monospace" font-size="9.5" letter-spacing="2.4" fill="currentColor" stroke="none"><textPath href="#arcT" startOffset="50%" text-anchor="middle">HOUSE · QA PASSED</textPath></text>
+            <text font-family="SF Mono,Menlo,monospace" font-size="8.5" letter-spacing="1.6" fill="currentColor" stroke="none"><textPath href="#arcB" startOffset="50%" text-anchor="middle">34 FILES · 259 TESTS</textPath></text>
+            <text x="70" y="75.5" text-anchor="middle" font-family="Didot,Bodoni 72,Georgia,serif" font-size="17" font-weight="700" letter-spacing="2.5" fill="#f6efe2" stroke="none">VERIFIED</text>
+            <text x="70" y="104" text-anchor="middle" font-family="PingFang SC,Songti SC,serif" font-size="9" letter-spacing="3" fill="currentColor" stroke="none">已验证 · 2026.09</text>
+          </g></svg>
         <p class="label" style="margin-bottom:16px">Validation · 验证</p>
-        <p style="font-size:clamp(20px,1.9vw,26px);line-height:1.7;font-weight:600">没有验证过的功能，<br>会单独标注出来。</p>
+        <p style="font-size:clamp(20px,1.9vw,26px);line-height:1.7;font-weight:600">没有验证过的功能，<br>会<span class="rn" data-rn="circle">单独标注</span>出来。</p>
         <p class="muted" style="margin-top:18px;font-size:14.5px">例如 Apple Health 接口已经做好，但我没有可穿戴设备，还没有在真机上测试，文档里写明了未验证。</p>
       </div>
     </div>
@@ -1797,7 +1888,7 @@ div.pswp__img--placeholder,
     <div class="delivery">
       <span class="label rv">Delivery · 演示版</span>
       <div>
-        <p class="rv">为了在面试时能现场演示，我从正式版整理出一个独立的演示版。</p>
+        <p class="rv">为了在面试时能<span class="rn" data-rn="highlight">现场演示</span>，我从正式版整理出一个独立的演示版。</p>
         <p class="rv muted" style="font-size:14.5px;line-height:1.95;margin-top:10px">里面去掉了所有聊天记录、记忆和私密功能，也不带 API Key。它用自己的数据目录和端口，和正式版装在同一台电脑上也不会互相影响。测试全部通过，打包以后在别的电脑上解压就能运行。</p>
         <div class="ver-switch rv">
           <div class="vs-tabs" role="tablist"><button type="button" class="on" data-v="a" role="tab" aria-selected="true">正式版</button><button type="button" data-v="b" role="tab" aria-selected="false">演示版</button><i class="vs-ind" aria-hidden="true"></i></div>
@@ -4157,6 +4248,43 @@ return(b.add=t)(r),t(w),t(S),t(T),t(A),t(L),t(k),t(M),t(H),t(O),t(j),b})
     addEventListener('resize',function(){if(on)layout()});
     addEventListener('load',function(){if(on){gsTriggers().forEach(function(st){st.disable(true)});layout()}});
   }
+})();
+</script>
+
+<script>/* Rough Notation · MIT · https://roughnotation.com */
+var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";class s{constructor(t){this.seed=t}next(){return this.seed?(2**31-1&(this.seed=Math.imul(48271,this.seed)))/2**31:Math.random()}}function i(t,e,s,i,n){return{type:"path",ops:u(t,e,s,i,n)}}function n(t,e,s){const n=(t||[]).length;if(n>2){const i=[];for(let e=0;e<n-1;e++)i.push(...u(t[e][0],t[e][1],t[e+1][0],t[e+1][1],s));return e&&i.push(...u(t[n-1][0],t[n-1][1],t[0][0],t[0][1],s)),{type:"path",ops:i}}return 2===n?i(t[0][0],t[0][1],t[1][0],t[1][1],s):{type:"path",ops:[]}}function o(t,e,s,i,o){return function(t,e){return n(t,!0,e)}([[t,e],[t+s,e],[t+s,e+i],[t,e+i]],o)}function r(t,e,s,i,n){return function(t,e,s,i){const[n,o]=g(i.increment,t,e,i.rx,i.ry,1,i.increment*a(.1,a(.4,1,s),s),s);let r=l(n,null,s);if(!s.disableMultiStroke){const[n]=g(i.increment,t,e,i.rx,i.ry,1.5,0,s),o=l(n,null,s);r=r.concat(o)}return{estimatedPoints:o,opset:{type:"path",ops:r}}}(t,e,n,function(t,e,s){const i=Math.sqrt(2*Math.PI*Math.sqrt((Math.pow(t/2,2)+Math.pow(e/2,2))/2)),n=Math.max(s.curveStepCount,s.curveStepCount/Math.sqrt(200)*i),o=2*Math.PI/n;let r=Math.abs(t/2),h=Math.abs(e/2);const a=1-s.curveFitting;return r+=c(r*a,s),h+=c(h*a,s),{increment:o,rx:r,ry:h}}(s,i,n)).opset}function h(t){return t.randomizer||(t.randomizer=new s(t.seed||0)),t.randomizer.next()}function a(t,e,s,i=1){return s.roughness*i*(h(s)*(e-t)+t)}function c(t,e,s=1){return a(-t,t,e,s)}function u(t,e,s,i,n,o=!1){const r=o?n.disableMultiStrokeFill:n.disableMultiStroke,h=f(t,e,s,i,n,!0,!1);if(r)return h;const a=f(t,e,s,i,n,!0,!0);return h.concat(a)}function f(t,e,s,i,n,o,r){const a=Math.pow(t-s,2)+Math.pow(e-i,2),u=Math.sqrt(a);let f=1;f=u<200?1:u>500?.4:-.0016668*u+1.233334;let l=n.maxRandomnessOffset||0;l*l*100>a&&(l=u/10);const g=l/2,d=.2+.2*h(n);let p=n.bowing*n.maxRandomnessOffset*(i-e)/200,_=n.bowing*n.maxRandomnessOffset*(t-s)/200;p=c(p,n,f),_=c(_,n,f);const m=[],w=()=>c(g,n,f),v=()=>c(l,n,f);return o&&(r?m.push({op:"move",data:[t+w(),e+w()]}):m.push({op:"move",data:[t+c(l,n,f),e+c(l,n,f)]})),r?m.push({op:"bcurveTo",data:[p+t+(s-t)*d+w(),_+e+(i-e)*d+w(),p+t+2*(s-t)*d+w(),_+e+2*(i-e)*d+w(),s+w(),i+w()]}):m.push({op:"bcurveTo",data:[p+t+(s-t)*d+v(),_+e+(i-e)*d+v(),p+t+2*(s-t)*d+v(),_+e+2*(i-e)*d+v(),s+v(),i+v()]}),m}function l(t,e,s){const i=t.length,n=[];if(i>3){const o=[],r=1-s.curveTightness;n.push({op:"move",data:[t[1][0],t[1][1]]});for(let e=1;e+2<i;e++){const s=t[e];o[0]=[s[0],s[1]],o[1]=[s[0]+(r*t[e+1][0]-r*t[e-1][0])/6,s[1]+(r*t[e+1][1]-r*t[e-1][1])/6],o[2]=[t[e+1][0]+(r*t[e][0]-r*t[e+2][0])/6,t[e+1][1]+(r*t[e][1]-r*t[e+2][1])/6],o[3]=[t[e+1][0],t[e+1][1]],n.push({op:"bcurveTo",data:[o[1][0],o[1][1],o[2][0],o[2][1],o[3][0],o[3][1]]})}if(e&&2===e.length){const t=s.maxRandomnessOffset;n.push({op:"lineTo",data:[e[0]+c(t,s),e[1]+c(t,s)]})}}else 3===i?(n.push({op:"move",data:[t[1][0],t[1][1]]}),n.push({op:"bcurveTo",data:[t[1][0],t[1][1],t[2][0],t[2][1],t[2][0],t[2][1]]})):2===i&&n.push(...u(t[0][0],t[0][1],t[1][0],t[1][1],s));return n}function g(t,e,s,i,n,o,r,h){const a=[],u=[],f=c(.5,h)-Math.PI/2;u.push([c(o,h)+e+.9*i*Math.cos(f-t),c(o,h)+s+.9*n*Math.sin(f-t)]);for(let r=f;r<2*Math.PI+f-.01;r+=t){const t=[c(o,h)+e+i*Math.cos(r),c(o,h)+s+n*Math.sin(r)];a.push(t),u.push(t)}return u.push([c(o,h)+e+i*Math.cos(f+2*Math.PI+.5*r),c(o,h)+s+n*Math.sin(f+2*Math.PI+.5*r)]),u.push([c(o,h)+e+.98*i*Math.cos(f+r),c(o,h)+s+.98*n*Math.sin(f+r)]),u.push([c(o,h)+e+.9*i*Math.cos(f+.5*r),c(o,h)+s+.9*n*Math.sin(f+.5*r)]),[u,a]}function d(t,e){return{maxRandomnessOffset:2,roughness:"highlight"===t?3:1.5,bowing:1,stroke:"#000",strokeWidth:1.5,curveTightness:0,curveFitting:.95,curveStepCount:9,fillStyle:"hachure",fillWeight:-1,hachureAngle:-41,hachureGap:-1,dashOffset:-1,dashGap:-1,zigzagOffset:-1,combineNestedSvgPaths:!1,disableMultiStroke:"double"!==t,disableMultiStrokeFill:!1,seed:e}}function p(t,s,h,a,c,u){const f=[];let l=h.strokeWidth||2;const g=function(t){const e=t.padding;if(e||0===e){if("number"==typeof e)return[e,e,e,e];if(Array.isArray(e)){const t=e;if(t.length)switch(t.length){case 4:return[...t];case 1:return[t[0],t[0],t[0],t[0]];case 2:return[...t,...t];case 3:return[...t,t[1]];default:return[t[0],t[1],t[2],t[3]]}}}return[5,5,5,5]}(h),p=void 0===h.animate||!!h.animate,_=h.iterations||2,m=h.rtl?1:0,w=d("single",u);switch(h.type){case"underline":{const t=s.y+s.h+g[2];for(let e=m;e<_+m;e++)e%2?f.push(i(s.x+s.w,t,s.x,t,w)):f.push(i(s.x,t,s.x+s.w,t,w));break}case"strike-through":{const t=s.y+s.h/2;for(let e=m;e<_+m;e++)e%2?f.push(i(s.x+s.w,t,s.x,t,w)):f.push(i(s.x,t,s.x+s.w,t,w));break}case"box":{const t=s.x-g[3],e=s.y-g[0],i=s.w+(g[1]+g[3]),n=s.h+(g[0]+g[2]);for(let s=0;s<_;s++)f.push(o(t,e,i,n,w));break}case"bracket":{const t=Array.isArray(h.brackets)?h.brackets:h.brackets?[h.brackets]:["right"],e=s.x-2*g[3],i=s.x+s.w+2*g[1],o=s.y-2*g[0],r=s.y+s.h+2*g[2];for(const h of t){let t;switch(h){case"bottom":t=[[e,s.y+s.h],[e,r],[i,r],[i,s.y+s.h]];break;case"top":t=[[e,s.y],[e,o],[i,o],[i,s.y]];break;case"left":t=[[s.x,o],[e,o],[e,r],[s.x,r]];break;case"right":t=[[s.x+s.w,o],[i,o],[i,r],[s.x+s.w,r]]}t&&f.push(n(t,!1,w))}break}case"crossed-off":{const t=s.x,e=s.y,n=t+s.w,o=e+s.h;for(let s=m;s<_+m;s++)s%2?f.push(i(n,o,t,e,w)):f.push(i(t,e,n,o,w));for(let s=m;s<_+m;s++)s%2?f.push(i(t,o,n,e,w)):f.push(i(n,e,t,o,w));break}case"circle":{const t=d("double",u),e=s.w+(g[1]+g[3]),i=s.h+(g[0]+g[2]),n=s.x-g[3]+e/2,o=s.y-g[0]+i/2,h=Math.floor(_/2),a=_-2*h;for(let s=0;s<h;s++)f.push(r(n,o,e,i,t));for(let t=0;t<a;t++)f.push(r(n,o,e,i,w));break}case"highlight":{const t=d("highlight",u);l=.95*s.h;const e=s.y+s.h/2;for(let n=m;n<_+m;n++)n%2?f.push(i(s.x+s.w,e,s.x,e,t)):f.push(i(s.x,e,s.x+s.w,e,t));break}}if(f.length){const s=function(t){const e=[];for(const s of t){let t="";for(const i of s.ops){const s=i.data;switch(i.op){case"move":t.trim()&&e.push(t.trim()),t=`M${s[0]} ${s[1]} `;break;case"bcurveTo":t+=`C${s[0]} ${s[1]}, ${s[2]} ${s[3]}, ${s[4]} ${s[5]} `;break;case"lineTo":t+=`L${s[0]} ${s[1]} `}}t.trim()&&e.push(t.trim())}return e}(f),i=[],n=[];let o=0;const r=(t,e,s)=>t.setAttribute(e,s);for(const a of s){const s=document.createElementNS(e,"path");if(r(s,"d",a),r(s,"fill","none"),r(s,"stroke",h.color||"currentColor"),r(s,"stroke-width",""+l),p){const t=s.getTotalLength();i.push(t),o+=t}t.appendChild(s),n.push(s)}if(p){let t=0;for(let e=0;e<n.length;e++){const s=n[e],r=i[e],h=o?c*(r/o):0,u=a+t,f=s.style;f.strokeDashoffset=""+r,f.strokeDasharray=""+r,f.animation=`rough-notation-dash ${h}ms ease-out ${u}ms forwards`,t+=h}}}}class _{constructor(t,e){this._state="unattached",this._resizing=!1,this._seed=Math.floor(Math.random()*2**31),this._lastSizes=[],this._animationDelay=0,this._resizeListener=()=>{this._resizing||(this._resizing=!0,setTimeout(()=>{this._resizing=!1,"showing"===this._state&&this.haveRectsChanged()&&this.show()},400))},this._e=t,this._config=JSON.parse(JSON.stringify(e)),this.attach()}get animate(){return this._config.animate}set animate(t){this._config.animate=t}get animationDuration(){return this._config.animationDuration}set animationDuration(t){this._config.animationDuration=t}get iterations(){return this._config.iterations}set iterations(t){this._config.iterations=t}get color(){return this._config.color}set color(t){this._config.color!==t&&(this._config.color=t,this.refresh())}get strokeWidth(){return this._config.strokeWidth}set strokeWidth(t){this._config.strokeWidth!==t&&(this._config.strokeWidth=t,this.refresh())}get padding(){return this._config.padding}set padding(t){this._config.padding!==t&&(this._config.padding=t,this.refresh())}attach(){if("unattached"===this._state&&this._e.parentElement){!function(){if(!window.__rno_kf_s){const t=window.__rno_kf_s=document.createElement("style");t.textContent="@keyframes rough-notation-dash { to { stroke-dashoffset: 0; } }",document.head.appendChild(t)}}();const t=this._svg=document.createElementNS(e,"svg");t.setAttribute("class","rough-annotation");const s=t.style;s.position="absolute",s.top="0",s.left="0",s.overflow="visible",s.pointerEvents="none",s.width="100px",s.height="100px";const i="highlight"===this._config.type;if(this._e.insertAdjacentElement(i?"beforebegin":"afterend",t),this._state="not-showing",i){const t=window.getComputedStyle(this._e).position;(!t||"static"===t)&&(this._e.style.position="relative")}this.attachListeners()}}detachListeners(){window.removeEventListener("resize",this._resizeListener),this._ro&&this._ro.unobserve(this._e)}attachListeners(){this.detachListeners(),window.addEventListener("resize",this._resizeListener,{passive:!0}),!this._ro&&"ResizeObserver"in window&&(this._ro=new window.ResizeObserver(t=>{for(const e of t)e.contentRect&&this._resizeListener()})),this._ro&&this._ro.observe(this._e)}haveRectsChanged(){if(this._lastSizes.length){const t=this.rects();if(t.length!==this._lastSizes.length)return!0;for(let e=0;e<t.length;e++)if(!this.isSameRect(t[e],this._lastSizes[e]))return!0}return!1}isSameRect(t,e){const s=(t,e)=>Math.round(t)===Math.round(e);return s(t.x,e.x)&&s(t.y,e.y)&&s(t.w,e.w)&&s(t.h,e.h)}isShowing(){return"not-showing"!==this._state}refresh(){this.isShowing()&&!this.pendingRefresh&&(this.pendingRefresh=Promise.resolve().then(()=>{this.isShowing()&&this.show(),delete this.pendingRefresh}))}show(){switch(this._state){case"unattached":break;case"showing":this.hide(),this._svg&&this.render(this._svg,!0);break;case"not-showing":this.attach(),this._svg&&this.render(this._svg,!1)}}hide(){if(this._svg)for(;this._svg.lastChild;)this._svg.removeChild(this._svg.lastChild);this._state="not-showing"}remove(){this._svg&&this._svg.parentElement&&this._svg.parentElement.removeChild(this._svg),this._svg=void 0,this._state="unattached",this.detachListeners()}render(t,e){let s=this._config;e&&(s=JSON.parse(JSON.stringify(this._config)),s.animate=!1);const i=this.rects();let n=0;i.forEach(t=>n+=t.w);const o=s.animationDuration||800;let r=0;for(let e=0;e<i.length;e++){const h=o*(i[e].w/n);p(t,i[e],s,r+this._animationDelay,h,this._seed),r+=h}this._lastSizes=i,this._state="showing"}rects(){const t=[];if(this._svg)if(this._config.multiline){const e=this._e.getClientRects();for(let s=0;s<e.length;s++)t.push(this.svgRect(this._svg,e[s]))}else t.push(this.svgRect(this._svg,this._e.getBoundingClientRect()));return t}svgRect(t,e){const s=t.getBoundingClientRect(),i=e;return{x:(i.x||i.left)-(s.x||s.left),y:(i.y||i.top)-(s.y||s.top),w:i.width,h:i.height}}}return t.annotate=function(t,e){return new _(t,e)},t.annotationGroup=function(t){let e=0;for(const s of t){const t=s;t._animationDelay=e;e+=0===t.animationDuration?0:t.animationDuration||800}const s=[...t];return{show(){for(const t of s)t.show()},hide(){for(const t of s)t.hide()}}},Object.defineProperty(t,"__esModule",{value:!0}),t}({});
+</script>
+<script>
+/* v5.3：标签机标签 + 手绘标注 */
+(function(){
+  // House 副标题的三个关键词 → 三张标签机标签
+  var tl=document.querySelector('.house-title .sub .label');
+  if(tl&&tl.textContent.indexOf('·')>-1){
+    var parts=tl.textContent.split('·').map(function(t){return t.trim()}).filter(Boolean);
+    tl.classList.add('dymo-row');tl.innerHTML=parts.map(function(t){return '<span class="dymo">'+t+'</span>'}).join('');
+  }
+  // 四类工作的中文小标题 → 不同颜色的标签
+  var cols=['#1c1916','#7e2b26','#2f4560','#3d5a45'],rots=['-.8deg','.6deg','-.4deg','.9deg'];
+  [].forEach.call(document.querySelectorAll('.four .zh'),function(el,i){el.classList.add('dymo');el.style.setProperty('--dy',cols[i%4]);el.style.setProperty('--rot',rots[i%4])});
+
+  // 手绘标注：滚到那里才一笔一笔画出来
+  var RN=window.RoughNotation;if(!RN)return;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function dark(){return document.documentElement.getAttribute('data-theme')==='onyx'}
+  var made=[];
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(!e.isIntersecting)return;io.unobserve(e.target);var el=e.target,type=el.getAttribute('data-rn');
+    var opt={type:type,animate:!reduce,animationDuration:type==='highlight'?900:1100,multiline:true,iterations:type==='circle'?2:1,strokeWidth:type==='highlight'?1:1.6,padding:type==='circle'?[6,10]:type==='highlight'?[1,2]:2,
+      color:type==='highlight'?(dark()?'rgba(201,171,110,.32)':'rgba(236,205,96,.55)'):(dark()?'#d0665a':'#a8322b')};
+    var par=el.parentElement;if(par&&getComputedStyle(par).position==='static')par.style.position='relative';
+    var a=RN.annotate(el,opt);made.push(a);setTimeout(function(){a.show()},350);
+  })},{threshold:.9,rootMargin:'0px 0px -12% 0px'});
+  [].forEach.call(document.querySelectorAll('.rn[data-rn]'),function(el){io.observe(el)});
+  // 懒加载图片撑高页面以后，标注跟着重新定位
+  var t;function redraw(){clearTimeout(t);t=setTimeout(function(){made.forEach(function(a){if(a.isShowing&&a.isShowing()){a.hide();a.show()}})},250)}
+  addEventListener('load',redraw);
+  // 切换主题以后标注换颜色
+  new MutationObserver(function(){made.forEach(function(a){var hl=a.type==='highlight';a.color=hl?(dark()?'rgba(201,171,110,.32)':'rgba(236,205,96,.55)'):(dark()?'#d0665a':'#a8322b')})}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 })();
 </script>
 </body>
