@@ -175,6 +175,12 @@ em.hl{font-style:normal;background:linear-gradient(transparent 62%,rgba(168,137,
 .house-hero{position:relative;margin:0 auto clamp(80px,12vh,140px);max-width:1080px}
 .house-hero .print{padding:14px 14px 16px}
 .house-hero .seal{position:absolute;right:-40px;top:-50px;transform:rotate(14deg);z-index:4}
+.house-film{position:relative;margin:calc(-1 * clamp(40px,6vh,70px)) auto clamp(80px,12vh,140px);max-width:1080px}
+.house-film .print{padding:14px 14px 16px}
+.house-film .ph{border:0;width:100%;font:inherit;cursor:pointer;background:#0f0d0b center/cover no-repeat;transition:opacity .6s ease}
+.house-film .ph .play{transition:transform .4s ease,background .4s ease}
+.house-film .ph:hover .play{transform:scale(1.08);background:rgba(216,207,191,.15)}
+.house-film .ph .label{color:#e9e1d2}
 
 .problems{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:40px}
 .card{background:var(--paper);padding:26px 22px 24px;box-shadow:var(--shadow);position:relative}
@@ -1689,6 +1695,21 @@ html,body{overflow-x:clip}
         <figcaption>图 7-3 · 水波模式首页。左边是导航和最近对话，顶部可以在四个 Claude 模型之间切换。</figcaption>
       </figure>
       <svg class="seal"><use href="#seal"/></svg>
+    </div>
+
+    <div class="house-film rv">
+      <figure class="print sp-on r1">
+        <span class="tape tc"></span>
+        <div class="screen">
+          <video id="hfvid" controls playsinline preload="none" data-src="assets/3546598e99.mp4" data-poster="assets/b1b1bf086d.jpg" hidden></video>
+          <button class="ph" id="hfph" type="button" aria-label="播放 House 宣传片">
+            <div class="play"></div>
+            <div class="label">HOUSE FILM &nbsp;·&nbsp; 49″ &nbsp;·&nbsp; 2026.10</div>
+            <span class="go">点击播放</span>
+          </button>
+        </div>
+        <figcaption>House 宣传片 · 49 秒。全片用 Remotion 代码生成，界面按 App 原样重建。配乐：Study Group — Jiggy Boogy。</figcaption>
+      </figure>
     </div>
 
     <div class="prologue">
@@ -4530,6 +4551,34 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
     var id=a.getAttribute('href').slice(1);if(!id)return;var t=document.getElementById(id);
     if(t&&deep.hidden&&deep.contains(t))set(true,false);
   },true);
+})();
+</script>
+<script>
+/* House 宣传片：不在页面加载时下载。load 之后空闲时只挂封面（约 150KB）和视频元数据，点播放才开始边下边播 */
+(function(){
+  var v=document.getElementById('hfvid'),ph=document.getElementById('hfph');
+  if(!v||!ph)return;
+  var armed=false;
+  function arm(){
+    if(armed)return;armed=true;
+    var poster=v.getAttribute('data-poster');
+    v.poster=poster;
+    ph.style.backgroundImage='linear-gradient(rgba(10,9,8,.18),rgba(10,9,8,.6)),url('+poster+')';
+    v.preload='metadata';
+    v.src=v.getAttribute('data-src');
+  }
+  function later(){
+    var idle=window.requestIdleCallback||function(f){return setTimeout(f,200)};
+    idle(function(){setTimeout(arm,800)});
+  }
+  if(document.readyState==='complete')later();else window.addEventListener('load',later);
+  ph.addEventListener('click',function(){
+    arm();
+    ph.hidden=true;v.hidden=false;
+    var p=v.play();
+    if(p&&p.catch)p.catch(function(){ph.hidden=false;v.hidden=true;});
+  });
+  v.addEventListener('error',function(){ph.hidden=false;v.hidden=true;});
 })();
 </script>
 </body>
