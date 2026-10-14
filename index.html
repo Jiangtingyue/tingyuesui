@@ -8,7 +8,6 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2316130F'/%3E%3Cpath d='M13 31 32 15l19 16v18a3 3 0 0 1-3 3H16a3 3 0 0 1-3-3z' fill='%23F2EEE5'/%3E%3Crect x='27' y='37' width='10' height='15' rx='2' fill='%237A1F1F'/%3E%3C/svg%3E">
 <meta name="description" content="徐钰洁 · 用 AI 把想法做成可以交付的成品。广播电视编导 2027 届。">
 <!-- 在线时加载，离线时自动回落到 macOS 自带的 Didot / 宋体 -->
-<link rel="preload" as="script" href="assets/vendor/three.min.js">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Noto+Serif+SC:wght@400;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -760,8 +759,8 @@ html.lenis,html.lenis body{height:auto}
 
 /* ---------- 手机适配 ---------- */
 @media (max-width:760px){
-  .top{padding:12px 18px;background:rgba(242,238,229,.88);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border-bottom:1px solid var(--line)}
-  :root[data-theme="onyx"] .top{background:rgba(20,18,15,.86)}
+  .top{padding:12px 18px;background:rgba(242,238,229,.96);border-bottom:1px solid var(--line)}
+  :root[data-theme="onyx"] .top{background:rgba(20,18,15,.95)}
   .top .mark{font-size:13px;letter-spacing:.24em}
   .pager,.hint{display:none!important}
   section{min-height:auto;padding:88px 0 72px}
@@ -819,10 +818,10 @@ html.lenis,html.lenis body{height:auto}
 .snd-btn{display:inline-flex;align-items:center;justify-content:center;width:28px;height:23px;margin-left:14px;padding:0;border:1px solid var(--line);border-radius:6px;background:none;color:var(--muted);cursor:pointer;pointer-events:auto;transition:color .3s,border-color .3s}
 .snd-btn:hover{color:var(--ink);border-color:var(--ink)}
 .snd-btn svg{width:15px;height:15px}
-:root{--paper-tex:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27360%27%20height%3D%27360%27%3E%3Cfilter%20id%3D%27p%27%20x%3D%270%27%20y%3D%270%27%20width%3D%27100%25%27%20height%3D%27100%25%27%20color-interpolation-filters%3D%27sRGB%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.032%27%20numOctaves%3D%274%27%20seed%3D%277%27%20stitchTiles%3D%27stitch%27%20result%3D%27n1%27%2F%3E%3CfeDiffuseLighting%20in%3D%27n1%27%20surfaceScale%3D%271.4%27%20diffuseConstant%3D%271%27%20lighting-color%3D%27%23ffffff%27%20result%3D%27lit%27%3E%3CfeDistantLight%20azimuth%3D%27225%27%20elevation%3D%2758%27%2F%3E%3C%2FfeDiffuseLighting%3E%3CfeComponentTransfer%20in%3D%27lit%27%20result%3D%27tooth%27%3E%3CfeFuncR%20type%3D%27linear%27%20slope%3D%270.09%27%20intercept%3D%270.915%27%2F%3E%3CfeFuncG%20type%3D%27linear%27%20slope%3D%270.09%27%20intercept%3D%270.915%27%2F%3E%3CfeFuncB%20type%3D%27linear%27%20slope%3D%270.09%27%20intercept%3D%270.915%27%2F%3E%3CfeFuncA%20type%3D%27linear%27%20slope%3D%270%27%20intercept%3D%271%27%2F%3E%3C%2FfeComponentTransfer%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.0055%27%20numOctaves%3D%273%27%20seed%3D%273%27%20stitchTiles%3D%27stitch%27%20result%3D%27n2%27%2F%3E%3CfeColorMatrix%20in%3D%27n2%27%20type%3D%27saturate%27%20values%3D%270%27%20result%3D%27n2g%27%2F%3E%3CfeComponentTransfer%20in%3D%27n2g%27%20result%3D%27mottle%27%3E%3CfeFuncR%20type%3D%27linear%27%20slope%3D%270.06%27%20intercept%3D%270.955%27%2F%3E%3CfeFuncG%20type%3D%27linear%27%20slope%3D%270.06%27%20intercept%3D%270.955%27%2F%3E%3CfeFuncB%20type%3D%27linear%27%20slope%3D%270.06%27%20intercept%3D%270.955%27%2F%3E%3CfeFuncA%20type%3D%27linear%27%20slope%3D%270%27%20intercept%3D%271%27%2F%3E%3C%2FfeComponentTransfer%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.85%27%20numOctaves%3D%272%27%20seed%3D%2711%27%20stitchTiles%3D%27stitch%27%20result%3D%27n3%27%2F%3E%3CfeColorMatrix%20in%3D%27n3%27%20type%3D%27saturate%27%20values%3D%270%27%20result%3D%27n3g%27%2F%3E%3CfeComponentTransfer%20in%3D%27n3g%27%20result%3D%27grain%27%3E%3CfeFuncR%20type%3D%27linear%27%20slope%3D%270.1%27%20intercept%3D%270.935%27%2F%3E%3CfeFuncG%20type%3D%27linear%27%20slope%3D%270.1%27%20intercept%3D%270.935%27%2F%3E%3CfeFuncB%20type%3D%27linear%27%20slope%3D%270.1%27%20intercept%3D%270.935%27%2F%3E%3CfeFuncA%20type%3D%27linear%27%20slope%3D%270%27%20intercept%3D%271%27%2F%3E%3C%2FfeComponentTransfer%3E%3CfeBlend%20in%3D%27tooth%27%20in2%3D%27mottle%27%20mode%3D%27multiply%27%20result%3D%27a%27%2F%3E%3CfeBlend%20in%3D%27a%27%20in2%3D%27grain%27%20mode%3D%27multiply%27%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23p%29%27%2F%3E%3C%2Fsvg%3E");--sheet-tex:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27240%27%20height%3D%27240%27%3E%3Cfilter%20id%3D%27g%27%20x%3D%270%27%20y%3D%270%27%20width%3D%27100%25%27%20height%3D%27100%25%27%20color-interpolation-filters%3D%27sRGB%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.9%27%20numOctaves%3D%272%27%20seed%3D%275%27%20stitchTiles%3D%27stitch%27%20result%3D%27n%27%2F%3E%3CfeColorMatrix%20in%3D%27n%27%20type%3D%27saturate%27%20values%3D%270%27%20result%3D%27ng%27%2F%3E%3CfeComponentTransfer%20in%3D%27ng%27%3E%3CfeFuncR%20type%3D%27linear%27%20slope%3D%270.06%27%20intercept%3D%270.96%27%2F%3E%3CfeFuncG%20type%3D%27linear%27%20slope%3D%270.06%27%20intercept%3D%270.96%27%2F%3E%3CfeFuncB%20type%3D%27linear%27%20slope%3D%270.06%27%20intercept%3D%270.96%27%2F%3E%3CfeFuncA%20type%3D%27linear%27%20slope%3D%270%27%20intercept%3D%271%27%2F%3E%3C%2FfeComponentTransfer%3E%3C%2Ffilter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23g%29%27%2F%3E%3C%2Fsvg%3E")}
+:root{--paper-tex:url("assets/942f368a01.webp");--sheet-tex:url("assets/3ab2d085c3.webp")}
 /* ---------- 纸张质感：页面底色是一张会跟着滚动的纸，卡片、照片白边是更细的纸片 ---------- */
-body{background-color:#FDF9EF;background-image:var(--paper-tex);background-blend-mode:multiply}
-.print,.cv-pola,.card,.problems.stack .card:nth-child(n),.readme,.ticket,.clip,.postcard,.portrait,.toy,.arch-box,.swatch,.stamp-in,.idx-prev{background-image:var(--sheet-tex);background-blend-mode:multiply}
+body{background-color:#FDF9EF;background-image:var(--paper-tex);background-size:360px 360px;background-blend-mode:multiply}
+.print,.cv-pola,.card,.problems.stack .card:nth-child(n),.readme,.ticket,.clip,.postcard,.portrait,.toy,.arch-box,.swatch,.stamp-in,.idx-prev{background-image:var(--sheet-tex);background-size:240px 240px;background-blend-mode:multiply}
 @media print{html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 /* ---------- House：一条消息的旅程（滚动叙事） ---------- */
 .journey{margin:0 0 clamp(90px,14vh,150px)}
@@ -855,7 +854,7 @@ body{background-color:#FDF9EF;background-image:var(--paper-tex);background-blend
 .jr-stage[data-step="5"] [data-s~="5"]{opacity:1}.jr-stage[data-step="5"] [data-s~="5"] .jr-box{stroke:var(--accent);stroke-width:1.6}.jr-stage[data-step="5"] .jr-ln[data-s~="5"],.jr-stage[data-step="5"] [data-s~="5"] .jr-ln{stroke:var(--ink)}
 .jr-stage[data-step="6"] [data-s~="6"]{opacity:1}.jr-stage[data-step="6"] [data-s~="6"] .jr-box{stroke:var(--accent);stroke-width:1.6}.jr-stage[data-step="6"] .jr-ln[data-s~="6"],.jr-stage[data-step="6"] [data-s~="6"] .jr-ln{stroke:var(--ink)}
 .jr-stage[data-step="7"] [data-s~="7"]{opacity:1}.jr-stage[data-step="7"] [data-s~="7"] .jr-box{stroke:var(--accent);stroke-width:1.6}.jr-stage[data-step="7"] .jr-ln[data-s~="7"],.jr-stage[data-step="7"] [data-s~="7"] .jr-ln{stroke:var(--ink)}
-@media (max-width:980px){.jr{display:block;margin-top:28px}.jr-stage{position:sticky;top:var(--jr-top,50px);z-index:3;height:clamp(240px,40vh,440px);margin:0 calc(-1 * var(--gutter));padding:6px 8px;background-color:#FDF9EF;background-image:var(--paper-tex);background-blend-mode:multiply;border-bottom:1px solid var(--line)}.jr-stage svg{height:100%;max-height:none}.jr-steps{position:relative;z-index:1}.jr-t{font-size:16.5px}.jr-c{font-size:14px}.jr-s{font-size:12.5px}.jr-s.jr-prov{font-size:11.5px}.jr-step{min-height:40vh;padding-top:5vh}.jr-step:first-child{padding-top:3vh}.jr-step:last-child{min-height:46vh}.jr-no{font-size:32px}}
+@media (max-width:980px){.jr{display:block;margin-top:28px}.jr-stage{position:sticky;top:var(--jr-top,50px);z-index:3;height:clamp(240px,40vh,440px);margin:0 calc(-1 * var(--gutter));padding:6px 8px;background-color:#FDF9EF;background-image:var(--paper-tex);background-size:360px 360px;background-blend-mode:multiply;border-bottom:1px solid var(--line)}.jr-stage svg{height:100%;max-height:none}.jr-steps{position:relative;z-index:1}.jr-t{font-size:16.5px}.jr-c{font-size:14px}.jr-s{font-size:12.5px}.jr-s.jr-prov{font-size:11.5px}.jr-step{min-height:40vh;padding-top:5vh}.jr-step:first-child{padding-top:3vh}.jr-step:last-child{min-height:46vh}.jr-no{font-size:32px}}
 @media (prefers-reduced-motion:reduce){.jr-step,.jr-stage [data-s],.jr-box,.jr-ln{transition:none}}
 /* ---------- House 后半段：开屏时间轴 / 对比表一对一 / 版本切换 ---------- */
 .sp-on .splash-frames{display:none}
@@ -886,7 +885,7 @@ body{background-color:#FDF9EF;background-image:var(--paper-tex);background-blend
 .compare[data-f] [data-c]{opacity:.22}
 .compare[data-f] [data-c="0"],.compare[data-f] [data-c="4"],.compare[data-f="1"] [data-c="1"],.compare[data-f="2"] [data-c="2"],.compare[data-f="3"] [data-c="3"]{opacity:1}
 .compare tbody tr:hover td{background:rgba(22,19,15,.035)}
-.ver-switch{margin-top:26px;max-width:520px;border:1px solid var(--ink);background-color:var(--paper);background-image:var(--sheet-tex);background-blend-mode:multiply}
+.ver-switch{margin-top:26px;max-width:520px;border:1px solid var(--ink);background-color:var(--paper);background-image:var(--sheet-tex);background-size:240px 240px;background-blend-mode:multiply}
 .vs-tabs{position:relative;display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--ink)}
 .vs-tabs button{position:relative;z-index:1;font:inherit;font-family:var(--sans);font-size:12px;letter-spacing:.2em;padding:12px 0;background:none;border:0;color:var(--ink);cursor:pointer;transition:color .35s ease}
 .vs-tabs button.on{color:var(--paper)}
@@ -907,7 +906,7 @@ body{background-color:#FDF9EF;background-image:var(--paper-tex);background-blend
 /* 桌面：滚动后顶栏加一层纸色底，正文不会和导航叠在一起 */
 @media (min-width:761px){
   .top{transition:background .35s ease,box-shadow .35s ease,padding .35s ease}
-  .top.solid{background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(12px) saturate(1.15);-webkit-backdrop-filter:blur(12px) saturate(1.15);box-shadow:0 1px 0 var(--line);padding-top:16px;padding-bottom:16px}
+  .top.solid{background:color-mix(in srgb,var(--bg) 95%,transparent);box-shadow:0 1px 0 var(--line);padding-top:16px;padding-bottom:16px}
 }
 @media (max-width:760px){
   /* 对比表：左边“维度”和右边“House”两列固定，中间的竞品左右滑 */
@@ -935,8 +934,7 @@ body{background-color:#FDF9EF;background-image:var(--paper-tex);background-blend
 .dock{display:none}
 @media (max-width:760px){
   .dock{display:flex;position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));z-index:60;transform:translate(-50%,140%);
-    gap:2px;padding:5px;border-radius:999px;background:color-mix(in srgb,var(--bg) 82%,transparent);
-    backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);
+    gap:2px;padding:5px;border-radius:999px;background:color-mix(in srgb,var(--bg) 95%,transparent);
     border:1px solid var(--line);box-shadow:0 10px 30px -12px rgba(0,0,0,.35);
     transition:transform .45s cubic-bezier(.2,.8,.2,1);max-width:calc(100vw - 24px)}
   .dock.show{transform:translate(-50%,0)}
@@ -2505,7 +2503,6 @@ html,body{overflow-x:clip}
   schedule();
 })();
 </script>
-<script src="assets/vendor/three.min.js"></script>
 <script>
 /* 作品集音效：全部用 Web Audio 现场合成，不用任何音频文件。
  * 默认开着，右上角的小喇叭可以关，会记住选择。
@@ -2792,7 +2789,7 @@ html,body{overflow-x:clip}
 /* 作品集 3D：封面相机 + 各章节的小物件。
  * 所有模型都在这里用代码现场生成，不引用任何外部模型文件。
  * 浏览器不支持 WebGL 时整段直接退出，页面保持原来的插画。 */
-(function () {
+window.__init3D = function () {
   'use strict';
 
   var T = window.THREE;
@@ -3169,7 +3166,7 @@ html,body{overflow-x:clip}
     key.shadow.camera.top = 8; key.shadow.camera.bottom = -8;
     key.position.set(-4, 7, 12);
     key.shadow.radius = 14;
-    key.shadow.blurSamples = 24;
+    key.shadow.blurSamples = small ? 10 : 24;
     key.shadow.bias = -0.0006;
     var wall = new T.Mesh(new T.PlaneGeometry(40, 40), new T.ShadowMaterial({ opacity: 0.2 }));
     wall.position.z = -1.9;
@@ -3485,13 +3482,17 @@ html,body{overflow-x:clip}
   mountNear('words', buildBook);
 
   var t0 = performance.now();
+  var coarse = window.matchMedia('(pointer: coarse)').matches, lastMove = 0;
+  window.addEventListener('pointermove', function () { lastMove = performance.now(); }, { passive: true });
   function loop(now) {
     var t = (now - t0) / 1000;
     for (var i = 0; i < stages.length; i++) {
       var st = stages[i];
       if (!st.visible) continue;
       // 小物件每秒画 30 次就够，封面相机保持流畅。
-      if (st.every && now - st.lastFrame < st.every) continue;
+      var every = st.every;
+      if (st.opts.shadows) every = (coarse || now - lastMove > 700) ? 33 : 0;
+      if (every && now - st.lastFrame < every) continue;
       st.lastFrame = now;
       st.render(t);
     }
@@ -3510,7 +3511,7 @@ html,body{overflow-x:clip}
     stages.forEach(function (s) { if (!keepSize) s.resize(); s.render(t || 0); });
     return stages.length;
   };
-})();
+};
 
 </script>
 
@@ -3562,7 +3563,7 @@ document.querySelectorAll('.co-copy').forEach(function(b){b.addEventListener('cl
 <script>
 // 版权页 3D：铬圆环、玻璃球、铬扭结、珍珠，随手写节奏依次出现
 // 版权页在页面最底下，滚到附近（提前 900px）才建 WebGL 舞台，不在开场时占用显卡和主线程
-(function(){
+window.__initFin3D = function(){
   var T=window.THREE, cv=document.getElementById('fin3d'), fin=document.getElementById('fin');
   if(!T||!cv||!fin) return;
   if('IntersectionObserver' in window){
@@ -3615,6 +3616,25 @@ document.querySelectorAll('.co-copy').forEach(function(b){b.addEventListener('cl
   fin.querySelector('.fin-script').addEventListener('click',function(){t0=null;start(false)});
   new MutationObserver(function(){ if(fin.classList.contains('play')){t0=null;start(false)} }).observe(fin,{attributes:true,attributeFilter:['class']});
   }
+};
+</script>
+<script>
+/* three.js（约 650KB）不在开场时下载和执行：页面加载完、浏览器空闲时再取，取到后再建封面 3D 相机、章节小物件和版权页 3D。
+   封面先显示底下的 SVG 相机。页面一直等不到 load（比如有资源被墙挂住）时，6 秒后也会开始。 */
+(function(){
+  var started=false;
+  function start(){
+    if(started)return; started=true;
+    var sc=document.createElement('script'); sc.src='assets/vendor/three.min.js'; sc.async=true;
+    sc.onload=function(){
+      try{ if(window.__init3D) window.__init3D(); }catch(e){ console.warn('3D', e); }
+      try{ if(window.__initFin3D) window.__initFin3D(); }catch(e){ console.warn('fin3D', e); }
+    };
+    document.head.appendChild(sc);
+  }
+  function idle(){ if(window.requestIdleCallback) requestIdleCallback(start,{timeout:2000}); else setTimeout(start,300); }
+  if(document.readyState==='complete') idle(); else addEventListener('load',idle);
+  setTimeout(idle,6000);
 })();
 </script>
 <div class="zm" id="zm" aria-hidden="true"><div class="zm-bg"></div><div class="zm-count"></div><div class="zm-tip">ESC 关闭 · ← → 切换</div><button class="zm-nav zm-prev" type="button" aria-label="上一张">←</button><button class="zm-nav zm-next" type="button" aria-label="下一张">→</button><div class="zm-cap"></div></div>
@@ -4134,6 +4154,10 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
   var tk = document.querySelector('.ticker-in');
   var tkAnim = tk && tk.getAnimations ? tk.getAnimations()[0] : null;
   var lastY = scrollY, rate = 1;
+  var tkOn = true;
+  if (tk && tkAnim && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) { tkOn = es[0].isIntersecting; if (tkOn) { lastY = scrollY; tkAnim.play(); } else tkAnim.pause(); }).observe(tk);
+  }
 
   // 9. 导航文字：鼠标放上去先乱码再解开
   if (fine && window.baffle) {
@@ -4152,11 +4176,12 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
       vx += (tx - vx) * .16; vy += (ty - vy) * .16;
       prev.style.transform = 'translate3d(' + vx.toFixed(1) + 'px,' + vy.toFixed(1) + 'px,0)';
     } else if (prev) { vx = px + 28; vy = py - 70; }
-    if (tkAnim) {
+    if (tkAnim && tkOn) {
       var y = scrollY, v = y - lastY; lastY = y;
       var target = 1 + Math.max(-5, Math.min(5, v * .12));
       rate += (target - rate) * .08;
-      tkAnim.playbackRate = Math.abs(rate) < .05 ? .05 : rate;
+      var pr = Math.abs(rate) < .05 ? .05 : rate;
+      if (Math.abs(pr - tkAnim.playbackRate) > .01) tkAnim.playbackRate = pr;
     }
     requestAnimationFrame(loop);
   })();
@@ -4416,11 +4441,12 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
   });
 
   /* 3. 遮罩转场：电脑上进入 House 时，画面从一格一格的方块里揭开（参考 SVG 遮罩转场的格子图案） */
-  function maskReveal(sec,kind){
+  function maskReveal(sec,kind,el){
+    el=el||sec;
     var tile=kind==='grid'?Math.max(64,Math.round(innerWidth/14)):Math.max(36,Math.round(innerHeight/14));
     function set(p){
       var m=p>=1?'':mk(Math.max(0,p));
-      sec.style.webkitMask=m;sec.style.mask=m;
+      el.style.webkitMask=m;el.style.mask=m;
     }
     function mk(p){
       if(kind==='grid'){
@@ -4431,11 +4457,11 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
       }
       return 'linear-gradient(180deg,#000 '+(p*100).toFixed(2)+'%,#0000 0) 0 0/100% '+tile+'px';
     }
-    if(kind==='grid'){sec.style.webkitMaskComposite='source-in';sec.style.maskComposite='intersect'}
+    if(kind==='grid'){el.style.webkitMaskComposite='source-in';el.style.maskComposite='intersect'}
     ScrollTrigger.create({trigger:sec,start:'top 95%',end:'top 20%',scrub:true,onUpdate:function(st){set(st.progress)},
       onLeave:function(){set(1)},onLeaveBack:function(){set(0)},onEnterBack:function(st){set(st.progress)}});
   }
-  if(!mobile){var hs=$('house');if(hs)maskReveal(hs,'grid')}
+  if(!mobile){var hs=$('house');if(hs)maskReveal(hs,'grid',hs.querySelector('.hw-stage')||hs)}
 
   /* 4. 片头卡：House 和影像之间留一段黑场间隔。House 看完才开始暗场，黑场里亮出片名，最后百叶窗打开，一打开就是 MV */
   var mv=$('mv'),card=$('tx-card'),gap=$('tx-gap');
@@ -4802,11 +4828,11 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
   stage.addEventListener('touchend', function () { lastPt = null; }, { passive: true });
 
   // ---------- 渲染循环：只在窗口出现在屏幕上时跑 ----------
-  var raf = 0, inited = false, t0 = performance.now(), cw = 0, ch = 0;
+  var raf = 0, inited = false, t0 = performance.now(), cw = 0, ch = 0, lastScroll = 0, lastDraw = 0;
   function near() { var r = hw.getBoundingClientRect(); return r.top < innerHeight * 2.2 && r.bottom > -innerHeight; }
   function onscreen() { var r = hw.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; }
   function resize() {
-    var scale = coarse ? Math.min(devicePixelRatio || 1, 1.5) : Math.min(devicePixelRatio || 1, 1.25) * 0.85;
+    var scale = coarse ? 1 : Math.min(devicePixelRatio || 1, 1.25) * 0.8;
     var w = Math.max(1, Math.round(stage.clientWidth * scale)), h = Math.max(1, Math.round(stage.clientHeight * scale));
     if (w !== cw || h !== ch) { cw = cv.width = w; ch = cv.height = h; gl.viewport(0, 0, w, h); sizeWipe(); }
   }
@@ -4814,6 +4840,9 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
     raf = 0;
     W = weatherAt(progress()); ui(W);
     if (!ready || !onscreen()) return;
+    // 没在滚动、也没在擦玻璃时，每秒画 30 帧就够了
+    if (!reduce && wiping <= 0 && now - lastScroll > 250 && now - lastDraw < 30) { raf = requestAnimationFrame(frame); return; }
+    lastDraw = now;
     resize();
     if (wiping > 0) {
       wiping--;
@@ -4832,8 +4861,9 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
     if (!inited && pageReady && near()) { inited = true; sizeWipe(); load(); }
     if (!raf) raf = requestAnimationFrame(frame);
   }
-  addEventListener('scroll', kick, { passive: true });
+  addEventListener('scroll', function () { lastScroll = performance.now(); kick(); }, { passive: true });
   addEventListener('resize', function () { cw = 0; kick(); });
+  setTimeout(function () { if (!pageReady) { pageReady = true; kick(); } }, 6000);
   document.addEventListener('visibilitychange', function () { if (!document.hidden) kick(); });
   kick();
 })();
