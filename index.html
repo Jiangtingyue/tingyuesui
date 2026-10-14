@@ -5,6 +5,7 @@
 <meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>徐钰洁 · 作品集</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2316130F'/%3E%3Cpath d='M13 31 32 15l19 16v18a3 3 0 0 1-3 3H16a3 3 0 0 1-3-3z' fill='%23F2EEE5'/%3E%3Crect x='27' y='37' width='10' height='15' rx='2' fill='%237A1F1F'/%3E%3C/svg%3E">
 <meta name="description" content="徐钰洁 · 用 AI 把想法做成可以交付的成品。广播电视编导 2027 届。">
 <!-- 在线时加载，离线时自动回落到 macOS 自带的 Didot / 宋体 -->
 <link rel="preload" as="script" href="assets/vendor/three.min.js">
@@ -162,10 +163,6 @@ em.hl{font-style:normal;background:linear-gradient(transparent 62%,rgba(168,137,
 .jd-note .label{white-space:nowrap;padding-top:4px}
 
 /* ---------- 03 House ---------- */
-.house-title{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end;margin-bottom:clamp(56px,10vh,110px)}
-.house-title h2{font-size:clamp(88px,14vw,210px)}
-.house-title .sub{font-size:clamp(18px,1.7vw,22px);margin-top:18px}
-.house-title .sub .label{display:block;margin-top:10px}
 .facts{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}
 .facts>div{padding:26px 0 24px;border-right:1px solid var(--line);padding-left:22px}
 .facts>div:first-child{padding-left:0}
@@ -493,7 +490,6 @@ html.theming *,html.theming *::before{transition:background-color .7s ease,color
   .facts>div:nth-child(4){padding-left:0}
   .role{grid-template-columns:1fr;gap:14px}
   .problems{grid-template-columns:repeat(2,1fr)}
-  .house-title{grid-template-columns:1fr}
   .gallery>*,.carriers>*,.clips>*{grid-column:1/-1!important;margin-top:0!important}
   .c-phone1,.c-phone2{grid-column:span 6!important}
   .carriers{grid-template-columns:repeat(12,1fr)}
@@ -777,7 +773,6 @@ html.lenis,html.lenis body{height:auto}
   .compare{min-width:680px}
   .compare td,.compare th{white-space:nowrap}
   .compare-wrap::after{content:"← 左右滑动查看 →";display:block;font-family:var(--sans);font-size:10px;letter-spacing:.2em;color:var(--muted);margin-top:10px}
-  .house-title h2{font-size:84px}
   .ch3d{width:92px!important;height:92px!important;right:0!important}
   .excerpt-body p{font-size:15px}
   .fin-stage{height:auto;min-height:0;padding:40px 0 20px}
@@ -1552,6 +1547,47 @@ html,body{overflow-x:clip}
 @media (prefers-reduced-motion:reduce){.deep{animation:none}}
 @media print{.deep[hidden]{display:block!important}.deep-toggle,.deep-end{display:none}}
 </style>
+<style>
+/* ---------- House 天气窗：一张钉在窗玻璃上的纸卡，窗外随滚动从晴天到雨天再到水波 ---------- */
+#house{padding-top:0}
+.hw{position:relative;height:300vh;margin-bottom:clamp(72px,12vh,140px)}
+.hw-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#d6dee4;touch-action:pan-y}
+.hw-gl,.hw-fb,.hw-fb img{position:absolute;inset:0;width:100%;height:100%}
+.hw-gl{display:block}
+.hw-fb img{object-fit:cover;opacity:0;max-width:none}
+.hw-fb img:first-child{opacity:1}
+.hw.hw-gl-on .hw-fb{display:none}
+.hw.hw-nogl .hw-gl{display:none}
+.hw-card{position:absolute;z-index:2;left:var(--gutter);bottom:clamp(28px,8vh,84px);width:min(430px,calc(100% - 2*var(--gutter)));
+  background:var(--paper);padding:30px 30px 24px;transform:rotate(-.8deg);
+  box-shadow:0 1px 2px rgba(22,19,15,.10),0 22px 48px -18px rgba(22,19,15,.45)}
+.hw-no{position:absolute;top:18px;right:22px;font-family:var(--display);font-style:italic;font-size:15px;letter-spacing:.08em;color:var(--muted)}
+.hw-card h2{font-size:clamp(64px,6.4vw,100px)}
+.hw-sub{font-size:15.5px;color:var(--ink-2);margin-top:14px;line-height:1.7}
+.hw-beat{position:relative;height:5.4em;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.hw-beat p{position:absolute;left:0;right:0;top:14px;font-size:14px;line-height:1.75;color:var(--ink-2);opacity:0;transform:translateY(6px);text-wrap:balance;word-break:keep-all;
+  transition:opacity .45s cubic-bezier(.23,1,.32,1),transform .45s cubic-bezier(.23,1,.32,1)}
+.hw-beat p.on{opacity:1;transform:none}
+.hw-beat b{font-weight:600;color:var(--accent);margin-right:.7em}
+.hw-try{display:block;font-family:var(--sans);font-size:11.5px;letter-spacing:.08em;color:var(--muted);margin-top:4px}
+.hw-try .t{display:none}
+@media (pointer:coarse){.hw-try .m{display:none}.hw-try .t{display:inline}}
+.hw-nogl .hw-try{display:none}
+.hw-sw{display:flex;gap:8px;margin-top:6px}
+.hw-sw button{font-family:var(--sans);font-size:12px;letter-spacing:.18em;padding:6px 14px;border:1px solid var(--line);border-radius:999px;
+  background:transparent;color:var(--muted);cursor:pointer;transition:background .16s,color .16s,border-color .16s,transform .12s}
+.hw-sw button:hover{color:var(--ink);border-color:rgba(22,19,15,.4)}
+.hw-sw button:active{transform:translateY(1px)}
+.hw-sw button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.hw-sw button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:700px){
+  .hw{height:280vh}
+  .hw-card{bottom:calc(90px + env(safe-area-inset-bottom));padding:24px 22px 18px}
+  .hw-card h2{font-size:58px}
+  .hw-sub{font-size:14.5px}
+}
+@media (prefers-reduced-motion:reduce){.hw-beat p{transition:opacity .2s}}
+</style>
 </head>
 <body>
 
@@ -1617,7 +1653,7 @@ html,body{overflow-x:clip}
     <!-- 快门按下后弹出的拍立得 -->
     <a class="cv-pola" id="pola" href="#house">
       <div class="ph"><img fetchpriority="high" src="assets/ae6218a853.webp" srcset="assets/ae6218a853-400.webp 400w, assets/ae6218a853-800.webp 800w, assets/ae6218a853-1200.webp 1200w, assets/ae6218a853.webp 1600w" sizes="(max-width: 600px) 33vw, (max-width: 1100px) 190px, 215px" width="1600" height="1171" decoding="async" alt="House 主界面"></div>
-      <div class="cap">House<small>N°01 · 见第 03 页</small></div>
+      <div class="cap">House<small>N°01 · 见第 02 页</small></div>
     </a>
 
     <svg class="cv-cam" id="cam" viewBox="0 0 840 720" role="button" tabindex="0" aria-label="按下快门">
@@ -1668,16 +1704,29 @@ html,body{overflow-x:clip}
 
 <!-- 03 House -->
 <section id="house">
-  <div class="wrap">
-    <div class="sec-head"><span class="label">N°01 · Product</span><span class="no">01</span></div>
-    <div class="house-title">
-      <div>
-        <h2 class="display rv">House</h2>
-        <p class="sub rv">一款在本地运行的 AI 情感陪伴应用
-          <span class="label">Local-first · Long-term memory · Persona stability</span></p>
+  <!-- House 天气窗：往下滚动时窗外从晴天下起雨，再沉进水底；雨天可以擦玻璃 -->
+  <div class="hw" id="hw" data-src="assets/">
+    <div class="hw-stage">
+      <canvas class="hw-gl" aria-hidden="true"></canvas>
+      <div class="hw-fb" aria-hidden="true"><img src="assets/31527795b5.jpg" alt="" loading="lazy" decoding="async"><img data-src="assets/27108d9597.jpg" alt="" decoding="async"><img data-src="assets/2c18ee1006.jpg" alt="" decoding="async"></div>
+      <div class="hw-card">
+        <span class="tape tc"></span>
+        <span class="hw-no">N°01</span>
+        <h2 class="display">House</h2>
+        <p class="hw-sub">一款在本地运行的 AI 情感陪伴应用</p>
+        <div class="hw-beat" aria-live="polite">
+          <p data-b="0" class="on"><b>晴天</b>2026.07 至今，macOS 和 Web，个人独立项目。</p>
+          <p data-b="1"><b>雨天</b>对话、记忆和模型密钥，都存在你自己的电脑上。<span class="hw-try"><span class="m">用鼠标擦一擦玻璃</span><span class="t">用手指擦一擦玻璃</span></span></p>
+          <p data-b="2"><b>水波</b>每一条被调起的记忆，都能找到它的原话。</p>
+        </div>
+        <div class="hw-sw" role="group" aria-label="切换 House 的天气">
+          <button type="button" aria-pressed="true">晴天</button><button type="button" aria-pressed="false">雨天</button><button type="button" aria-pressed="false">水波</button>
+        </div>
       </div>
-      <div class="label rv" style="text-align:right;line-height:2.2">2026.07 至今<br>macOS · Web · Windows<br>个人独立项目</div>
     </div>
+  </div>
+
+  <div class="wrap">
 
     <div class="facts">
       <div class="rv"><div class="v">21</div><div class="c">个版本，两个月内迭代</div></div>
@@ -1712,12 +1761,11 @@ html,body{overflow-x:clip}
             <span class="go">点击播放</span>
           </button>
         </div>
-        <figcaption>House 宣传片 · 49 秒。全片用 Remotion 代码生成，界面按 App 原样重建。配乐：Study Group — Jiggy Boogy。</figcaption>
+        <figcaption>House 宣传片 · 49 秒。全片用 Remotion 代码生成，界面按 App 原样重建。配乐：Jiggy Boogy《Study Group》。</figcaption>
       </figure>
     </div>
 
     <div class="prologue">
-    <p class="label rv">Problems · 解决的问题</p>
     <h3 class="rv" style="font-size:clamp(24px,2.4vw,34px);font-weight:600;line-height:1.5;margin-top:14px;max-width:26em">开发中遇到了<span class="rn" data-rn="underline">四个主要问题</span>。</h3>
     <div class="problems stack">
       <div class="card" style="--i:0"><span class="label"><span>Problem 01</span></span><span class="big-no">01</span><h4>长对话遗忘</h4><div class="body"><p class="feel">对话变长以后，早期内容会被忘掉。</p><p class="fix">聊得太久的部分，整理成一段段带出处的摘录，回复前在整段对话里找相关的记忆。每条记忆都能找到原始消息。</p></div></div>
@@ -1748,7 +1796,6 @@ html,body{overflow-x:clip}
     <div class="motion">
       <div class="motion-head">
         <div>
-          <p class="label rv">Motion · 设计与动效</p>
           <h3 class="rv">开屏像折叠屏一样展开。</h3>
         </div>
         <p class="rv">开屏参考了折叠屏打开的那一下：合着的磨砂屏幕先停在窗口中间，准备好以后滑到左边、右半块翻开，磨砂慢慢退掉，露出首页。页面切换、卡片和按钮也做了一套弹性动效。</p>
@@ -2051,8 +2098,7 @@ html,body{overflow-x:clip}
         <div class="proof">见 N°01 和 N°03</div></div>
     </div>
     <div class="travel rv">
-      <div><span class="label">Travel · 独自旅行</span>
-        <p>我一个人旅行去过这五个国家。</p><button type="button" class="pc-hint" id="pc-open">点明信片，看沿途拍的照片 <span aria-hidden="true">↗</span></button></div>
+      <div><p>我一个人旅行去过这五个国家。</p><button type="button" class="pc-hint" id="pc-open">点明信片，看沿途拍的照片 <span aria-hidden="true">↗</span></button></div>
       <div class="postcards">
         <figure class="postcard has-photo"><div class="pc-img"><img class="dev" loading="lazy" src="assets/2e9f8094cc.webp" srcset="assets/2e9f8094cc-400.webp 400w, assets/2e9f8094cc.webp 600w" sizes="(max-width: 600px) 53vw, (max-width: 1100px) 102px, 142px" width="600" height="800" decoding="async" alt="新西兰"><span class="mark">SOLO<br>TRIP</span><span class="en">New Zealand</span></div><figcaption>新西兰</figcaption></figure>
         <figure class="postcard has-photo"><div class="pc-img"><img class="dev" loading="lazy" src="assets/c56b48914d.webp" srcset="assets/c56b48914d-400.webp 400w, assets/c56b48914d.webp 600w" sizes="(max-width: 600px) 53vw, (max-width: 1100px) 102px, 142px" width="600" height="800" decoding="async" alt="新加坡"><span class="mark">SOLO<br>TRIP</span><span class="en">Singapore</span></div><figcaption>新加坡</figcaption></figure>
@@ -2099,7 +2145,7 @@ html,body{overflow-x:clip}
     </div>
     <div class="toys">
       <div class="toys-head">
-        <div class="rv"><span class="label">Web Toys · 网页小作品 · 2025.12</span><h3>做着玩的网页小作品</h3></div>
+        <div class="rv"><h3>做着玩的网页小作品</h3></div>
         <p class="rv">这是 2025 年 12 月期末周的课程作业。我用 Three.js 和网页技术做了几个小东西，双击就能在浏览器里打开，可以直接点着玩。</p>
       </div>
       <div class="toy-grid">
@@ -2152,7 +2198,7 @@ html,body{overflow-x:clip}
         <dl class="rv"><dt>语言</dt><dd><div class="langs"><span class="l1">普通话 · 母语</span><span class="l1">粤语 · 母语</span><span class="l1">日语 · 自由交流</span><span>英语 · 日常与文档</span><span>韩语 · 基础</span></div>
           <p style="font-size:14px;line-height:1.9;margin-top:12px;color:var(--ink-2)">日语是靠日本乙女游戏《Collar×Malice》自学的，两周目通关以后可以熟练听读。高考前临时从英语改考日语，日语成绩年级第一。</p>
           <p class="muted" style="font-size:13px;margin-top:6px">没有参加 JLPT 考试，可以接受现场日语口试。</p></dd></dl>
-        <dl class="rv"><dt>品类理解</dt><dd>乙女手游长期付费玩家（《世界之外》《恋与深空》《光与夜之恋》）；Otomate 作品全通关；橙光、易次元累计 300 小时以上</dd></dl>
+        <dl class="rv"><dt>品类理解</dt><dd>乙女手游长期付费玩家（《世界之外》《恋与深空》《光与夜之恋》）；Otomate 作品全通关；Switch 游戏时长 1000 小时以上</dd></dl>
         <dl class="rv"><dt>趋势</dt><dd>豆瓣长期活跃；通过 Reddit、TikTok、X 关注海外内容趋势</dd></dl>
       </div>
     </div>
@@ -2179,7 +2225,7 @@ html,body{overflow-x:clip}
       </div>
     </div>
     <div class="co-foot">
-      <span>XU YUJIE · MMXXVII · v5</span>
+      <span>XU YUJIE · MMXXVI</span>
       <span class="co-credit">3D: three.js (MIT) · Type: Great Vibes (OFL)</span>
       <a href="#cover" class="co-back">Back to cover ↑</a>
     </div>
@@ -3677,7 +3723,7 @@ document.querySelectorAll('.co-copy').forEach(function(b){b.addEventListener('cl
   }
 
   // ---- 标题逐行浮出：按字拆开，再按实际换行分组，每一行从一条缝里升起来
-  var heads=[].slice.call(document.querySelectorAll('#four h2, .house-title h2, .mv h2, #persona .wrap > h2, #words .wrap > h2, .feature h3, .motion-head h3, .photos-head h3, .quote blockquote, #house > .wrap > h3'));
+  var heads=[].slice.call(document.querySelectorAll('#four h2, .mv h2, #persona .wrap > h2, #words .wrap > h2, .feature h3, .motion-head h3, .photos-head h3, .quote blockquote, #house > .wrap > h3'));
   function split(el){
     var frag=document.createDocumentFragment(), chars=[];
     [].slice.call(el.childNodes).forEach(function(n){
@@ -4342,7 +4388,7 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
 </script>
 
 <div class="tx-layer" id="tx-card" aria-hidden="true"><span class="k">NOW SHOWING · 正在放映</span><span class="t">N°02 · 影像</span><span class="bar"><i></i></span><span class="s">AI·MV《你心知肚明，我是你幻想中的朋友》</span></div>
-<div class="tx-layer" id="tx-iris" aria-hidden="true"><span class="fin">— 序 —<br><small style="font-size:.38em;letter-spacing:.5em;font-style:normal;font-family:var(--sans)">PROLOGUE</small></span></div>
+<div class="tx-layer" id="tx-iris" aria-hidden="true"><span class="fin">序<br><small style="font-size:.38em;letter-spacing:.5em;font-style:normal;font-family:var(--sans)">PROLOGUE</small></span></div>
 <script>
 /* v5.4：章节转场。参考 Codrops 的 SVG 遮罩转场和 GSAP 的章节叠压写法，用页面里已有的 GSAP ScrollTrigger 重写 */
 (function(){
@@ -4529,6 +4575,267 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
     if(p&&p.catch)p.catch(function(){ph.hidden=false;v.hidden=true;});
   });
   v.addEventListener('error',function(){ph.hidden=false;v.hidden=true;});
+})();
+</script>
+<script>
+/* House 天气窗：滚动时窗外从晴天下起雨，再沉进水底。WebGL 一张全屏三角形，三张 App 壁纸 + 两张模糊版。
+   雨天可以用鼠标或手指擦玻璃；不支持 WebGL 时退回三张图片交叉淡入；减少动态时冻结时间，只保留滚动驱动的变化。 */
+(function () {
+  var hw = document.getElementById('hw');
+  if (!hw) return;
+  var stage = hw.querySelector('.hw-stage');
+  var cv = hw.querySelector('.hw-gl');
+  var fb = [].slice.call(hw.querySelectorAll('.hw-fb img'));
+  var beats = [].slice.call(hw.querySelectorAll('.hw-beat [data-b]'));
+  var btns = [].slice.call(hw.querySelectorAll('.hw-sw button'));
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var coarse = matchMedia('(pointer: coarse)').matches;
+  var base = hw.getAttribute('data-src') || '';
+  var W = 0;
+
+  function clamp(x, a, b) { return Math.min(b, Math.max(a, x)); }
+  function smooth(e0, e1, x) { var t = clamp((x - e0) / (e1 - e0), 0, 1); return t * t * (3 - 2 * t); }
+  function progress() {
+    var r = hw.getBoundingClientRect(), span = r.height - innerHeight;
+    return span > 0 ? clamp(-r.top / span, 0, 1) : 0;
+  }
+  // 0 晴天 → 1 雨天 → 2 水波；三段停留，两段过渡
+  function weatherAt(p) { return smooth(0.2, 0.4, p) + smooth(0.6, 0.8, p); }
+
+  var lastBeat = -1;
+  function ui(w) {
+    var b = w < 0.5 ? 0 : w < 1.5 ? 1 : 2;
+    if (b === lastBeat) return;
+    lastBeat = b;
+    hw.setAttribute('data-beat', b);
+    beats.forEach(function (e, i) { e.classList.toggle('on', i === b); });
+    btns.forEach(function (e, i) { e.setAttribute('aria-pressed', String(i === b)); });
+  }
+  btns.forEach(function (btn, i) {
+    btn.addEventListener('click', function () {
+      var r = hw.getBoundingClientRect(), span = r.height - innerHeight;
+      var dy = r.top + span * [0.06, 0.5, 0.94][i];
+      if (window.__smoothBy) window.__smoothBy(dy); else scrollBy({ top: dy, behavior: 'smooth' });
+    });
+  });
+
+  // ---------- 不支持 WebGL：三张图交叉淡入 ----------
+  function fallback() {
+    hw.classList.add('hw-nogl');
+    fb.forEach(function (im) { var d = im.getAttribute('data-src'); if (d) im.src = d; });
+    function tick() {
+      W = weatherAt(progress()); ui(W);
+      fb[0].style.opacity = String(1 - clamp(W, 0, 1));
+      fb[1].style.opacity = String(clamp(W, 0, 1) - clamp(W - 1, 0, 1));
+      fb[2].style.opacity = String(clamp(W - 1, 0, 1));
+    }
+    addEventListener('scroll', tick, { passive: true }); addEventListener('resize', tick); tick();
+  }
+
+  var gl = cv.getContext('webgl', { alpha: false, antialias: false, premultipliedAlpha: false, powerPreference: 'high-performance' });
+  if (!gl) { fallback(); return; }
+
+  var VS = 'attribute vec2 p;varying vec2 vUv;void main(){vUv=p*0.5+0.5;gl_Position=vec4(p,0.0,1.0);}';
+  var FS = [
+    'precision highp float;',
+    'varying vec2 vUv;',
+    'uniform vec2 uRes,uPtr,sClear,sRain,sWater;',
+    'uniform float uTime,uW,uReduce;',
+    'uniform sampler2D tClear,tClearB,tRain,tRainB,tWater,tWipe;',
+    'vec2 cover(vec2 uv,vec2 img){float rs=uRes.x/uRes.y,ri=img.x/img.y;vec2 s=rs>ri?vec2(1.0,ri/rs):vec2(rs/ri,1.0);return (uv-0.5)*s+0.5;}',
+    'float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}',
+    // 停在玻璃上的水珠：xy 是相对珠心的方向（除以半径），z 是覆盖度
+    'vec3 beads(vec2 p,float density){vec2 id=floor(p),f=fract(p);vec3 best=vec3(0.0);',
+    ' for(int j=-1;j<=1;j++){for(int i=-1;i<=1;i++){vec2 o=vec2(float(i),float(j));vec2 c0=id+o;',
+    '  if(h21(c0)>density)continue;',
+    '  vec2 c=o+vec2(h21(c0+1.7),h21(c0+9.3));float r=mix(0.08,0.40,h21(c0+4.1)*h21(c0+6.2));',
+    '  vec2 d=f-c;d.y*=1.12;float m=smoothstep(r,r*0.78,length(d));if(m>best.z)best=vec3(d/r,m);}}',
+    ' return best;}',
+    // 往下滑的水珠和它身后断续的小水点
+    'vec3 runners(vec2 p,float t,float span){float cx=floor(p.x);',
+    ' float s1=h21(vec2(cx,3.1)),s2=h21(vec2(cx,8.7)),s3=h21(vec2(cx,5.3));',
+    ' if(s3>0.5)return vec3(0.0);',
+    ' float cyc=span+3.0;float yh=span+1.0-mod(t*mix(0.5,1.3,s1)+s2*cyc*5.0,cyc);',
+    ' float wob=sin(p.y*1.3+s1*40.0)*0.15+sin(p.y*3.7+s2*17.0)*0.05;',
+    ' float lx=fract(p.x)-0.5-(s2-0.5)*0.35-wob;float r=mix(0.12,0.2,s1);',
+    ' vec2 d=vec2(lx,p.y-yh);vec2 dh=d;dh.y*=d.y>0.0?0.7:1.15;',
+    ' vec3 res=vec3(dh/r,smoothstep(r,r*0.8,length(dh)));',
+    ' float up=p.y-yh;',
+    ' if(up>0.0&&up<3.0){float k=floor(up/0.22);float keep=step(0.3,h21(vec2(cx,k+11.0)));',
+    '  float rt=r*0.42*(1.0-up/3.0)*keep;vec2 dt=vec2(lx+(h21(vec2(cx,k))-0.5)*0.05,up-(k+0.5)*0.22);',
+    '  float mt=rt>0.001?smoothstep(rt,rt*0.75,length(dt)):0.0;if(mt>res.z)res=vec3(dt/max(rt,0.001),mt);}',
+    ' return res;}',
+    'float caustic(vec2 p,float t){float acc=0.0;',
+    ' for(int i=0;i<3;i++){float fi=float(i);vec2 q=p*(1.0+fi*0.6)+vec2(t*0.11*(1.0+fi),-t*0.07*(1.0+fi*0.5));',
+    '  q+=0.35*vec2(sin(q.y*1.7+t*0.6+fi),cos(q.x*1.5-t*0.5+fi*2.0));',
+    '  float v=abs(sin(q.x*2.1)+sin(q.y*2.3)+sin((q.x+q.y)*1.4));acc+=pow(max(0.0,1.0-v*0.55),6.0);}',
+    ' return acc/3.0;}',
+    'void main(){vec2 uv=vUv;float a=uRes.x/uRes.y;float t=uTime;',
+    ' float rainK=clamp(uW,0.0,1.0),waterK=clamp(uW-1.0,0.0,1.0);',
+    // 晴天：微微推近，右上角一点暖光
+    ' vec2 drift=(uPtr-0.5)*0.006*(1.0-uReduce);',
+    ' vec2 uc=cover((uv-0.5)*(1.0-0.035*rainK)+0.5+drift,sClear);',
+    ' vec3 clear=texture2D(tClear,uc).rgb;',
+    ' clear+=vec3(1.0,0.93,0.8)*smoothstep(1.15,0.0,distance(uv,vec2(0.88,1.08)))*0.10*(1.0-rainK);',
+    // 雨天：先起雾，雾后面街景换成溪流，再挂上水珠
+    ' vec2 ur=cover(uv,sRain);float wipe=texture2D(tWipe,uv).r;',
+    ' float swap=smoothstep(0.4,0.7,rainK);',
+    ' vec3 sharp=mix(clear,texture2D(tRain,ur).rgb,swap);',
+    ' vec3 fog=mix(texture2D(tClearB,uc).rgb,texture2D(tRainB,ur).rgb,swap);',
+    ' fog=mix(fog,vec3(0.86,0.9,0.94),0.18);',
+    ' fog=mix(fog,vec3(dot(fog,vec3(0.3,0.59,0.11))),0.2)*vec3(0.94,0.98,1.04)+0.04;',
+    ' float fogAmt=smoothstep(0.0,0.4,rainK)*(1.0-0.22*smoothstep(0.72,1.0,rainK))*(1.0-wipe*0.97);',
+    ' vec3 glass=mix(sharp,fog,fogAmt);',
+    ' vec2 pb=vec2(uv.x*a,uv.y)*20.0;',
+    ' vec3 b1=beads(pb,0.45*smoothstep(0.08,0.7,rainK));',
+    ' vec3 b2=beads(pb*0.5+13.0,0.28*smoothstep(0.3,0.9,rainK));',
+    ' vec3 dr=b1.z>b2.z?b1:b2;',
+    ' if(uReduce<0.5){vec3 rn=runners(vec2(uv.x*a,uv.y)*7.0,t,7.0);rn.z*=smoothstep(0.55,1.0,rainK);if(rn.z>dr.z)dr=rn;}',
+    ' float dm=dr.z*(1.0-smoothstep(0.15,0.7,wipe));',
+    ' vec2 refr=-dr.xy*vec2(0.036/a,0.036);',
+    ' vec3 inDrop=mix(texture2D(tClear,uc+refr).rgb,texture2D(tRain,ur+refr).rgb,swap);',
+    ' float rim=smoothstep(0.5,1.0,length(dr.xy));',
+    ' vec3 N=normalize(vec3(dr.xy*0.9,0.6));float spec=pow(max(dot(N,normalize(vec3(-0.35,0.55,0.75))),0.0),18.0);',
+    ' vec3 dropCol=inDrop*(1.0-rim*0.28)*1.05+spec*0.55;',
+    ' glass=mix(glass,dropCol,dm);',
+    ' vec3 col=mix(clear,glass,smoothstep(0.0,0.2,rainK));',
+    // 水波：水位从下往上涨，水面一道亮线，水下是花海和焦散光
+    ' if(waterK>0.0){vec2 uw=cover(uv,sWater);',
+    '  vec2 rip=(1.0-uReduce)*vec2(sin(uw.y*22.0+t*1.2)+sin(uw.x*9.0-t*0.8),cos(uw.x*17.0+t*0.9)+cos(uw.y*7.0+t*0.7))*0.0018;',
+    '  vec3 water=texture2D(tWater,uw+rip).rgb;',
+    '  water+=vec3(0.82,0.97,1.0)*caustic(vec2(uw.x*a,uw.y)*4.0,t*(1.0-uReduce))*0.14;',
+    '  float lineY=mix(-0.12,1.12,smoothstep(0.0,1.0,waterK));',
+    '  float wave=(0.018*sin(uv.x*9.0+t*2.2)+0.009*sin(uv.x*23.0-t*3.1))*(1.0-uReduce*0.7)*min(1.0,a*1.25);',
+    '  float below=smoothstep(lineY+wave+0.004,lineY+wave-0.004,uv.y);',
+    '  float band=exp(-pow((uv.y-(lineY+wave))*90.0,2.0))*(1.0-step(0.999,waterK));',
+    '  col=mix(col,water,below);col+=vec3(0.9,0.98,1.0)*band*0.35;}',
+    ' col*=mix(1.0,smoothstep(1.3,0.35,length((uv-0.5)*vec2(a*0.85,1.0))),0.22);',
+    ' gl_FragColor=vec4(col,1.0);}'
+  ].join('\n');
+
+  function sh(type, src) {
+    var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.warn('hw shader', gl.getShaderInfoLog(s)); return null; }
+    return s;
+  }
+  var vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS);
+  if (!vs || !fs) { fallback(); return; }
+  var prog = gl.createProgram(); gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { fallback(); return; }
+  gl.useProgram(prog);
+  var buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  var loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  var U = {};
+  ['uRes', 'uPtr', 'sClear', 'sRain', 'sWater', 'uTime', 'uW', 'uReduce', 'tClear', 'tClearB', 'tRain', 'tRainB', 'tWater', 'tWipe'].forEach(function (n) { U[n] = gl.getUniformLocation(prog, n); });
+
+  function tex(unit) {
+    var t = gl.createTexture(); gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, t);
+    // 擦拭图的占位必须是黑色（没擦过），其余贴图用接近天空的浅灰占位
+    var px = unit === 5 ? [0, 0, 0, 255] : [214, 222, 228, 255];
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(px));
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    return t;
+  }
+  var names = ['tClear', 'tClearB', 'tRain', 'tRainB', 'tWater', 'tWipe'];
+  var files = ['31527795b5.jpg', '1ed6a44641.jpg', '27108d9597.jpg', 'ae7a33e779.jpg', '2c18ee1006.jpg'];
+  var T = names.map(function (n, i) { gl.uniform1i(U[n], i); return tex(i); });
+  var sizes = { sClear: [1536, 864], sRain: [1536, 1024], sWater: [1672, 941] };
+  var loaded = 0, ready = false;
+  function load() {
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    files.forEach(function (f, i) {
+      var im = new Image(); im.decoding = 'async';
+      im.onload = function () {
+        gl.activeTexture(gl.TEXTURE0 + i); gl.bindTexture(gl.TEXTURE_2D, T[i]);
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, im);
+        if (i === 0) sizes.sClear = [im.naturalWidth, im.naturalHeight];
+        if (i === 2) sizes.sRain = [im.naturalWidth, im.naturalHeight];
+        if (i === 4) sizes.sWater = [im.naturalWidth, im.naturalHeight];
+        if (++loaded === files.length) { ready = true; hw.classList.add('hw-gl-on'); kick(); }
+      };
+      im.src = base + f;
+    });
+  }
+
+  // ---------- 擦玻璃：一张低分辨率的“擦拭图”，白色是擦干净的地方，每帧慢慢回雾 ----------
+  var wc = document.createElement('canvas'), wx = wc.getContext('2d');
+  function sizeWipe() {
+    wc.width = 192; wc.height = Math.max(64, Math.round(192 * stage.clientHeight / Math.max(1, stage.clientWidth)));
+    wx.fillStyle = '#000'; wx.fillRect(0, 0, wc.width, wc.height);
+    uploadWipe();
+  }
+  function uploadWipe() {
+    gl.activeTexture(gl.TEXTURE5); gl.bindTexture(gl.TEXTURE_2D, T[5]);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, wc);
+  }
+  var lastPt = null, wiping = 0;
+  function dab(x, y) {
+    var px = x * wc.width, py = y * wc.height, r = wc.width * (coarse ? 0.12 : 0.085);
+    var g = wx.createRadialGradient(px, py, 0, px, py, r);
+    g.addColorStop(0, 'rgba(255,255,255,.95)'); g.addColorStop(0.55, 'rgba(255,255,255,.6)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+    wx.fillStyle = g; wx.beginPath(); wx.arc(px, py, r, 0, 6.2832); wx.fill();
+  }
+  function wipeTo(cx, cy) {
+    if (W < 0.55 || W > 1.45) { lastPt = null; return; }
+    var w = stage.clientWidth, h = stage.clientHeight, rc = stage.getBoundingClientRect();
+    var x = (cx - rc.left) / w, y = (cy - rc.top) / h;
+    if (x < 0 || x > 1 || y < 0 || y > 1) { lastPt = null; return; }
+    if (lastPt) {
+      var dx = x - lastPt[0], dy = y - lastPt[1], n = Math.min(40, Math.ceil(Math.hypot(dx * wc.width, dy * wc.height) / 2.5));
+      for (var i = 1; i <= n; i++) dab(lastPt[0] + dx * i / n, lastPt[1] + dy * i / n);
+    } else dab(x, y);
+    lastPt = [x, y]; wiping = 180; kick();
+  }
+  var ptr = [0.5, 0.5];
+  stage.addEventListener('pointermove', function (e) {
+    var rc = stage.getBoundingClientRect();
+    ptr = [(e.clientX - rc.left) / rc.width, 1 - (e.clientY - rc.top) / rc.height];
+    if (e.pointerType !== 'touch') wipeTo(e.clientX, e.clientY);
+  }, { passive: true });
+  stage.addEventListener('pointerleave', function () { lastPt = null; });
+  stage.addEventListener('touchstart', function (e) { lastPt = null; var t = e.touches[0]; if (t) wipeTo(t.clientX, t.clientY); }, { passive: true });
+  stage.addEventListener('touchmove', function (e) { var t = e.touches[0]; if (t) wipeTo(t.clientX, t.clientY); }, { passive: true });
+  stage.addEventListener('touchend', function () { lastPt = null; }, { passive: true });
+
+  // ---------- 渲染循环：只在窗口出现在屏幕上时跑 ----------
+  var raf = 0, inited = false, t0 = performance.now(), cw = 0, ch = 0;
+  function near() { var r = hw.getBoundingClientRect(); return r.top < innerHeight * 2.2 && r.bottom > -innerHeight; }
+  function onscreen() { var r = hw.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; }
+  function resize() {
+    var scale = coarse ? Math.min(devicePixelRatio || 1, 1.5) : Math.min(devicePixelRatio || 1, 1.25) * 0.85;
+    var w = Math.max(1, Math.round(stage.clientWidth * scale)), h = Math.max(1, Math.round(stage.clientHeight * scale));
+    if (w !== cw || h !== ch) { cw = cv.width = w; ch = cv.height = h; gl.viewport(0, 0, w, h); sizeWipe(); }
+  }
+  function frame(now) {
+    raf = 0;
+    W = weatherAt(progress()); ui(W);
+    if (!ready || !onscreen()) return;
+    resize();
+    if (wiping > 0) {
+      wiping--;
+      wx.fillStyle = 'rgba(0,0,0,.016)'; wx.fillRect(0, 0, wc.width, wc.height);
+      uploadWipe();
+    }
+    gl.uniform2f(U.uRes, cw, ch); gl.uniform2f(U.uPtr, ptr[0], ptr[1]);
+    gl.uniform2f(U.sClear, sizes.sClear[0], sizes.sClear[1]); gl.uniform2f(U.sRain, sizes.sRain[0], sizes.sRain[1]); gl.uniform2f(U.sWater, sizes.sWater[0], sizes.sWater[1]);
+    gl.uniform1f(U.uTime, reduce ? 8.0 : (now - t0) / 1000); gl.uniform1f(U.uW, W); gl.uniform1f(U.uReduce, reduce ? 1 : 0);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    if (!reduce || wiping > 0) raf = requestAnimationFrame(frame);
+  }
+  var pageReady = document.readyState === 'complete';
+  addEventListener('load', function () { var go = function () { pageReady = true; kick(); }; if (window.requestIdleCallback) requestIdleCallback(go, { timeout: 1500 }); else setTimeout(go, 300); });
+  function kick() {
+    if (!inited && pageReady && near()) { inited = true; sizeWipe(); load(); }
+    if (!raf) raf = requestAnimationFrame(frame);
+  }
+  addEventListener('scroll', kick, { passive: true });
+  addEventListener('resize', function () { cw = 0; kick(); });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) kick(); });
+  kick();
 })();
 </script>
 </body>
