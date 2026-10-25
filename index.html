@@ -181,6 +181,10 @@ em.hl{font-style:normal;background:linear-gradient(transparent 62%,rgba(168,137,
 .house-film .ph .play{transition:transform .4s ease,background .4s ease}
 .house-film .ph:hover .play{transform:scale(1.08);background:rgba(216,207,191,.15)}
 .house-film .ph .label{color:#e9e1d2}
+.house-film .screen video{cursor:pointer}
+.house-film .hf-tag{position:absolute;left:14px;top:12px;z-index:3;font-family:var(--sans);font-size:11px;letter-spacing:.24em;color:#e9e1d2;background:rgba(15,13,11,.5);padding:5px 10px;border-radius:999px;pointer-events:none}
+.house-film .hf-snd{position:absolute;right:14px;bottom:14px;z-index:3;border:1px solid rgba(216,207,191,.55);background:rgba(15,13,11,.62);color:#efe7d8;font-family:var(--sans);font-size:12px;letter-spacing:.12em;padding:8px 14px;border-radius:999px;cursor:pointer;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);transition:background .3s ease}
+.house-film .hf-snd:hover{background:rgba(15,13,11,.85)}
 
 .problems{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:40px}
 .card{background:var(--paper);padding:26px 22px 24px;box-shadow:var(--shadow);position:relative}
@@ -1751,6 +1755,7 @@ html,body{overflow-x:clip}
     <div class="house-film rv">
       <figure class="print sp-on r1">
         <span class="tape tc"></span>
+        <div class="filmstrip"></div>
         <div class="screen">
           <video id="hfvid" controls playsinline preload="none" data-src="assets/0ad97f4123.mp4" data-poster="assets/c673bed757.webp" hidden></video>
           <button class="ph" id="hfph" type="button" aria-label="播放 House 宣传片">
@@ -1758,7 +1763,10 @@ html,body{overflow-x:clip}
             <div class="label">HOUSE FILM &nbsp;·&nbsp; 49″ &nbsp;·&nbsp; 2026.10</div>
             <span class="go">点击播放</span>
           </button>
+          <span class="hf-tag" id="hftag" hidden>HOUSE FILM &nbsp;·&nbsp; 49″</span>
+          <button class="hf-snd" id="hfsnd" type="button" hidden>打开声音，从头看</button>
         </div>
+        <div class="filmstrip"></div>
         <figcaption>House 宣传片 · 49 秒。全片用 Remotion 代码生成，界面按 App 原样重建。配乐：Jiggy Boogy《Study Group》。</figcaption>
       </figure>
     </div>
@@ -4577,11 +4585,17 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
 })();
 </script>
 <script>
-/* House 宣传片：不在页面加载时下载。load 之后空闲时只挂封面（WebP，约 80KB）；视频地址等点了播放才挂上，免得在后台和图片抢网速 */
+/* House 宣传片：不在页面加载时下载。load 之后空闲时只挂封面（WebP，约 80KB）。
+   滑到画面露出一半时静音自动播放（这时才开始下载视频），滑走就暂停，滑回来接着放；
+   点「打开声音，从头看」或者点画面，带声音从头播。开了「减少动态效果」或省流量的人不自动播放，还是点了才放。 */
 (function(){
   var v=document.getElementById('hfvid'),ph=document.getElementById('hfph');
+  var snd=document.getElementById('hfsnd'),tag=document.getElementById('hftag');
   if(!v||!ph)return;
-  var armed=false;
+  var armed=false,auto=false,withSound=false;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var c=navigator.connection||{};
+  var lite=!!c.saveData||/2g$/.test(c.effectiveType||'');
   function arm(){
     if(armed)return;armed=true;
     var poster=v.getAttribute('data-poster');
@@ -4593,14 +4607,38 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
     idle(function(){setTimeout(arm,800)});
   }
   if(document.readyState==='complete')later();else window.addEventListener('load',later);
-  ph.addEventListener('click',function(){
-    arm();
-    if(!v.getAttribute('src')){v.preload='auto';v.src=v.getAttribute('data-src');}
-    ph.hidden=true;v.hidden=false;
+  function load(){if(!v.getAttribute('src')){v.preload='auto';v.src=v.getAttribute('data-src');}}
+  function extras(on){if(snd)snd.hidden=!on;if(tag)tag.hidden=!on;}
+  function showPoster(){ph.hidden=false;v.hidden=true;extras(false);}
+  function startMuted(){
+    arm();load();auto=true;
+    v.muted=true;v.setAttribute('muted','');v.loop=true;v.controls=false;
+    ph.hidden=true;v.hidden=false;extras(true);
     var p=v.play();
-    if(p&&p.catch)p.catch(function(){ph.hidden=false;v.hidden=true;});
-  });
-  v.addEventListener('error',function(){ph.hidden=false;v.hidden=true;});
+    if(p&&p.catch)p.catch(function(){auto=false;showPoster();});
+  }
+  function playWithSound(){
+    arm();load();withSound=true;
+    v.loop=false;v.controls=true;v.muted=false;v.removeAttribute('muted');
+    ph.hidden=true;v.hidden=false;extras(false);
+    try{v.currentTime=0;}catch(e){}
+    var p=v.play();
+    if(p&&p.catch)p.catch(function(){withSound=false;if(auto)startMuted();else showPoster();});
+  }
+  ph.addEventListener('click',playWithSound);
+  if(snd)snd.addEventListener('click',playWithSound);
+  v.addEventListener('click',function(){if(auto&&!withSound)playWithSound();});
+  v.addEventListener('error',function(){auto=false;withSound=false;showPoster();});
+  if(!reduce&&!lite&&'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      var e=es[es.length-1];
+      if(withSound)return;
+      if(e.isIntersecting&&e.intersectionRatio>=0.5){
+        if(!auto)startMuted();
+        else if(v.paused){var p=v.play();if(p&&p.catch)p.catch(function(){});}
+      }else if(auto&&!v.paused){v.pause();}
+    },{threshold:[0,0.5]}).observe(v.parentNode);
+  }
 })();
 </script>
 <script>
