@@ -547,15 +547,12 @@ html.theming *,html.theming *::before{transition:background-color .7s ease,color
 /* ---------- Vogue 编辑细节 ---------- */
 .lede.dc::first-letter{float:left;font-weight:600;font-size:3.3em;line-height:.92;margin:.1em .14em 0 0;color:var(--ink)}
 .lede,.four p,.clip p,.ctext p,.card .fix,.feature .lead,.motion-head p,.quote p,.metrics li span{text-align:justify;text-justify:inter-character}
-img.dev,.print img{filter:grayscale(1) contrast(1.04);transition:filter 1.9s ease .25s}
-img.dev.on,.print img.on,.print:hover img{filter:none}
 .ticker{overflow:hidden;border-top:1px solid var(--ink);border-bottom:1px solid var(--line);padding:16px 0;white-space:nowrap}
 .ticker-in{display:inline-flex;animation:tick 48s linear infinite}
 .ticker span{font-family:var(--display);font-style:italic;font-size:clamp(22px,2.4vw,34px);letter-spacing:.02em;padding-right:1.1em;color:var(--ink)}
 .ticker span i{font-style:normal;font-family:var(--sans);font-size:.34em;letter-spacing:.3em;vertical-align:.5em;color:var(--muted);padding:0 1.6em}
 @keyframes tick{to{transform:translateX(-50%)}}
-@media (prefers-reduced-motion:reduce){.ticker-in{animation:none}img.dev,.print img{filter:none;transition:none}}
-@media print{img.dev,.print img{filter:none}}
+@media (prefers-reduced-motion:reduce){.ticker-in{animation:none}}
 
 
 /* ---------- 摄影跨页 ---------- */
@@ -1636,10 +1633,6 @@ html,body{overflow-x:clip}
 @media (prefers-reduced-motion:reduce){.xv-stack{--gap:40px}.xv.open .xv-stack{--gap:40px}.xv-plate{transition:none}}
 @media print{.xv-stack{--gap:40px}}
 
-/* ---------- 像素显影：截图第一次滑到时从一格格像素里显出来 ---------- */
-.px-dev{position:absolute;pointer-events:none;z-index:2;transition:opacity .45s ease}
-.px-dev.done{opacity:0}
-
 /* ---------- 故障风标题：名字像信号不稳一样闪一下 ---------- */
 .mh-gl{--gl-b:#3456A0}
 :root[data-theme="onyx"] .mh-gl{--gl-b:#8DA3D9}
@@ -1658,7 +1651,7 @@ html,body{overflow-x:clip}
 .glowing>.glow-dot{opacity:1}
 #glowx{position:fixed;left:0;top:0;width:680px;height:680px;margin:-340px 0 0 -340px;border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(closest-side,rgba(255,238,214,.075),rgba(255,238,214,0));opacity:0;transition:opacity .6s ease;will-change:transform}
 :root[data-theme="onyx"] #glowx.on{opacity:1}
-@media print{.px-dev,.glow-dot,#glowx{display:none!important}}
+@media print{.glow-dot,#glowx{display:none!important}}
 </style>
 </head>
 <body>
@@ -3619,15 +3612,6 @@ window.__init3D = function () {
 
 </script>
 
-<script>
-// 图片进入视野后从黑白慢慢显影成彩色
-(function(){
-  var imgs=[].slice.call(document.querySelectorAll('img.dev,.print img'));
-  if(!('IntersectionObserver' in window)){imgs.forEach(function(i){i.classList.add('on')});return}
-  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}})},{threshold:.45});
-  imgs.forEach(function(i){io.observe(i)});
-})();
-</script>
 
 
 <script>
@@ -5003,7 +4987,7 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
 })();
 </script>
 <script>
-// 拆解图、像素显影、故障风标题、柔光。开了「减少动态效果」时：拆解图直接摊开，其余三个不做
+// 拆解图、故障风标题、柔光。开了「减少动态效果」时：拆解图直接摊开，其余两个不做
 (function(){
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine=matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -5035,53 +5019,7 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
   }
   if(reduce)return;
 
-  // 2. 像素显影：截图第一次滑到时先是大格子，几步之内变清楚；画布照抄图片当下的滤镜，和原来的黑白显影接得上
-  if('IntersectionObserver' in window){
-    var imgs=[].slice.call(document.querySelectorAll('.print img, .mv-still img')).filter(function(im){return !im.closest('.cv-pola')&&!im.closest('.sp-on')&&!im.closest('.zm')});
-    function develop(im){
-      var w=im.offsetWidth,h=im.offsetHeight,par=im.offsetParent,cs=getComputedStyle(im);
-      if(w<160||h<110||!im.naturalWidth||!par||cs.visibility==='hidden')return;
-      var nw=im.naturalWidth,nh=im.naturalHeight,sx=0,sy=0,sw=nw,sh=nh;
-      if(cs.objectFit==='cover'){
-        var q=Math.max(w/nw,h/nh),pos=cs.objectPosition.split(' '),px=parseFloat(pos[0]),py=parseFloat(pos[1]);
-        if(!/%$/.test(pos[0]))px=50;if(!/%$/.test(pos[1]||''))py=50;
-        sw=w/q;sh=h/q;sx=(nw-sw)*px/100;sy=(nh-sh)*py/100;
-      }else if(Math.abs(w/h-nw/nh)>.04)return;
-      var c=document.createElement('canvas'),dpr=Math.min(2,window.devicePixelRatio||1);
-      c.className='px-dev';c.setAttribute('aria-hidden','true');
-      c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);
-      c.style.left=im.offsetLeft+'px';c.style.top=im.offsetTop+'px';c.style.width=w+'px';c.style.height=h+'px';
-      var ctx=c.getContext('2d'),sm=document.createElement('canvas'),smx=sm.getContext('2d');
-      function draw(b){
-        var tw=Math.max(2,Math.round(w/b)),th=Math.max(2,Math.round(h/b));
-        sm.width=tw;sm.height=th;smx.imageSmoothingEnabled=true;smx.imageSmoothingQuality='high';
-        try{smx.drawImage(im,sx,sy,sw,sh,0,0,tw,th)}catch(err){return false}
-        ctx.imageSmoothingEnabled=false;ctx.clearRect(0,0,c.width,c.height);ctx.drawImage(sm,0,0,tw,th,0,0,c.width,c.height);
-        return true;
-      }
-      if(!draw(44))return;
-      par.appendChild(c);
-      var live=true;
-      (function sync(){if(!live)return;c.style.filter=cs.filter;requestAnimationFrame(sync)})();
-      var steps=[44,28,16,9,5],n=0;
-      var t=setInterval(function(){
-        n++;
-        if(n<steps.length){draw(steps[n])}
-        else{clearInterval(t);c.classList.add('done');setTimeout(function(){live=false;c.remove()},520)}
-      },120);
-    }
-    var pio=new IntersectionObserver(function(es){
-      es.forEach(function(e){
-        if(!e.isIntersecting||e.intersectionRatio<.3)return;
-        var im=e.target;pio.unobserve(im);
-        if(im.complete&&im.naturalWidth)develop(im);
-        else im.addEventListener('load',function(){develop(im)},{once:true});
-      });
-    },{threshold:[0,.3]});
-    imgs.forEach(function(im){pio.observe(im)});
-  }
-
-  // 3. 故障风标题：逐字升起落定后闪一下；鼠标移上去再闪；封面还在屏幕上时，隔十几秒偶尔再闪一次
+  // 2. 故障风标题：逐字升起落定后闪一下；鼠标移上去再闪；封面还在屏幕上时，隔十几秒偶尔再闪一次
   var mh=document.querySelector('.mh-gl');
   if(mh){
     var busy=false,onCover=true;
@@ -5110,7 +5048,7 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
     if(fine)sp.addEventListener('mouseenter',function(){scramble(sp,12)});
   });
 
-  // 4. 柔光：宣传片和 MV 截图这几块深色画面里，一团柔光跟着鼠标；深色主题时整页也有一团很淡的光慢慢跟着
+  // 3. 柔光：宣传片和 MV 截图这几块深色画面里，一团柔光跟着鼠标；深色主题时整页也有一团很淡的光慢慢跟着
   if(fine){
     [].slice.call(document.querySelectorAll('.screen, .mv-still .frame')).forEach(function(host){
       var dot=document.createElement('i');dot.className='glow-dot';dot.setAttribute('aria-hidden','true');host.appendChild(dot);
