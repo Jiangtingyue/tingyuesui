@@ -1590,6 +1590,73 @@ html,body{overflow-x:clip}
 }
 @media (prefers-reduced-motion:reduce){.hw-beat p{transition:opacity .2s}}
 </style>
+<style>
+/* ---------- 拆解图：House 的五层像零件一样分开，点哪层哪层亮 ---------- */
+.xv{max-width:1080px;margin:0 auto clamp(90px,14vh,150px);--xv-edge:var(--muted);--xv-edge-on:#4E1414}
+:root[data-theme="onyx"] .xv{--xv-edge:#4a443b;--xv-edge-on:#7d3b33}
+.xv-title{font-size:clamp(24px,2.4vw,34px);font-weight:600;line-height:1.5;margin:14px 0 8px;max-width:26em}
+.xv-sub{color:var(--muted);margin:0;max-width:34em;line-height:1.8}
+.xv-body{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(20px,4vw,64px);align-items:center;margin-top:10px}
+.xv-stage{position:relative;aspect-ratio:1/1;perspective:1600px}
+.xv-grid{position:absolute;inset:3%;background-image:radial-gradient(var(--line) 1.1px,transparent 1.4px);background-size:18px 18px;-webkit-mask-image:radial-gradient(closest-side,#000 60%,transparent);mask-image:radial-gradient(closest-side,#000 60%,transparent)}
+.xv-stack{position:absolute;left:50%;top:62%;width:50%;aspect-ratio:1/1;transform:translate(-50%,-50%) rotateX(58deg) rotateZ(-42deg);transform-style:preserve-3d;--gap:9px}
+.xv.open .xv-stack{--gap:52px}
+.xv-plate{position:absolute;inset:0;border:1px solid var(--ink);background-color:var(--paper);transform:translateZ(calc((4 - var(--i)) * var(--gap)));cursor:pointer;
+  box-shadow:-7px 7px 0 0 var(--xv-edge),-26px 26px 44px -18px rgba(22,19,15,.3);
+  transition:transform 1.2s cubic-bezier(.2,.7,.2,1) calc(var(--i) * 70ms),background-color .35s ease,border-color .35s ease,box-shadow .35s ease}
+.xv-plate i{position:absolute;left:12px;bottom:9px;font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted);transition:color .35s ease}
+.xv-plate.p0{--i:0;background-image:radial-gradient(circle,var(--muted) 2.2px,transparent 2.8px),radial-gradient(circle,var(--muted) 2.2px,transparent 2.8px),radial-gradient(circle,var(--muted) 2.2px,transparent 2.8px),linear-gradient(var(--line),var(--line)),linear-gradient(var(--line),var(--line));
+  background-size:8px 8px,8px 8px,8px 8px,100% 1px,1px 100%;background-position:12px 12px,26px 12px,40px 12px,0 32px,28% 32px;background-repeat:no-repeat}
+.xv-plate.p1{--i:1;background-image:repeating-linear-gradient(0deg,transparent 0 13px,var(--line) 13px 14px);background-size:76% 62%;background-position:50% 42%;background-repeat:no-repeat}
+.xv-plate.p2{--i:2;background-image:linear-gradient(90deg,var(--line) 1px,transparent 1px),linear-gradient(var(--line) 1px,transparent 1px);background-size:20% 20%;background-position:10% 10%}
+.xv-plate.p3{--i:3;background-image:linear-gradient(var(--line),var(--line)),linear-gradient(var(--line),var(--line)),linear-gradient(var(--line),var(--line)),linear-gradient(var(--line),var(--line));
+  background-size:62% 7px,46% 7px,70% 7px,38% 7px;background-position:14% 20%,14% 34%,14% 48%,14% 62%;background-repeat:no-repeat}
+.xv-plate.p4{--i:4;background-image:radial-gradient(circle,var(--ink) 3px,transparent 3.6px);background-size:33.33% 33.33%;background-position:center}
+.xv-plate.on{background-color:var(--accent);border-color:var(--accent);box-shadow:-7px 7px 0 0 var(--xv-edge-on),-26px 26px 48px -16px rgba(122,31,31,.5)}
+.xv-plate.on i{color:var(--paper)}
+.xv-cap{position:absolute;left:3%;bottom:1%;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--muted)}
+.xv-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.xv-list li{display:grid;grid-template-columns:7.5em 1fr;gap:14px;padding:16px 4px;border-bottom:1px solid var(--line);cursor:pointer;outline:none;transition:color .3s ease}
+.xv-list li b{font-weight:600;display:flex;gap:10px;align-items:baseline;transition:color .3s ease}
+.xv-list li em{font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--muted);position:relative;padding-left:14px;transition:color .3s ease}
+.xv-list li em::before{content:"";position:absolute;left:0;top:50%;width:7px;height:7px;margin-top:-4px;border:1px solid var(--muted);transition:background .3s ease,border-color .3s ease}
+.xv-list li span{line-height:1.75}
+.xv-list li.on b,.xv-list li.on em{color:var(--accent)}
+.xv-list li.on em::before{background:var(--accent);border-color:var(--accent)}
+.xv-list li:focus-visible{box-shadow:inset 2px 0 0 var(--accent)}
+@media (max-width:860px){
+  .xv-body{grid-template-columns:1fr}
+  .xv-stage{max-width:440px;width:100%;margin:0 auto}
+  .xv.open .xv-stack{--gap:36px}
+  .xv-list li{grid-template-columns:6.5em 1fr;padding:14px 2px}
+}
+@media (prefers-reduced-motion:reduce){.xv-stack{--gap:40px}.xv.open .xv-stack{--gap:40px}.xv-plate{transition:none}}
+@media print{.xv-stack{--gap:40px}}
+
+/* ---------- 像素显影：截图第一次滑到时从一格格像素里显出来 ---------- */
+.px-dev{position:absolute;pointer-events:none;z-index:2;transition:opacity .45s ease}
+.px-dev.done{opacity:0}
+
+/* ---------- 故障风标题：名字像信号不稳一样闪一下 ---------- */
+.mh-gl{--gl-b:#3456A0}
+:root[data-theme="onyx"] .mh-gl{--gl-b:#8DA3D9}
+.mh-gl.glitching{animation:glS .9s steps(1,end) both}
+.mh-gl.glitching::before,.mh-gl.glitching::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none}
+.mh-gl.glitching::before{color:var(--accent);animation:glA .9s steps(1,end) both}
+.mh-gl.glitching::after{color:var(--gl-b);animation:glB .9s steps(1,end) both}
+@keyframes glA{0%{clip-path:inset(12% 0 70% 0);transform:translateX(-7px)}14%{clip-path:inset(58% 0 18% 0);transform:translateX(6px)}28%{clip-path:inset(30% 0 46% 0);transform:translateX(-4px)}42%{clip-path:inset(78% 0 6% 0);transform:translateX(5px)}56%{clip-path:inset(4% 0 84% 0);transform:translateX(-3px)}70%{clip-path:inset(44% 0 38% 0);transform:translateX(2px)}84%{clip-path:inset(66% 0 22% 0);transform:translateX(-1px)}100%{clip-path:inset(0 0 100% 0);transform:none}}
+@keyframes glB{0%{clip-path:inset(64% 0 14% 0);transform:translateX(6px)}14%{clip-path:inset(8% 0 76% 0);transform:translateX(-5px)}28%{clip-path:inset(46% 0 30% 0);transform:translateX(4px)}42%{clip-path:inset(20% 0 64% 0);transform:translateX(-6px)}56%{clip-path:inset(70% 0 10% 0);transform:translateX(3px)}70%{clip-path:inset(26% 0 58% 0);transform:translateX(-2px)}84%{clip-path:inset(52% 0 34% 0);transform:translateX(1px)}100%{clip-path:inset(0 0 100% 0);transform:none}}
+@keyframes glS{0%{text-shadow:-4px 0 var(--accent),4px 0 var(--gl-b)}18%{text-shadow:none}36%{text-shadow:3px 0 var(--accent),-3px 0 var(--gl-b)}52%{text-shadow:none}72%{text-shadow:-2px 0 var(--accent),2px 0 var(--gl-b)}86%,100%{text-shadow:none}}
+.cv-bar .coord{font-family:var(--mono);letter-spacing:.16em}
+@media (max-width:980px){.cv-bar .coord{display:none}}
+
+/* ---------- 柔光：深色画面里一团柔光跟着鼠标；深色主题时整页有一团很淡的光跟着 ---------- */
+.glow-dot{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:0;transition:opacity .45s ease;mix-blend-mode:soft-light;background:radial-gradient(380px circle at var(--mx,50%) var(--my,50%),rgba(255,244,228,.62),rgba(255,244,228,0) 64%)}
+.glowing>.glow-dot{opacity:1}
+#glowx{position:fixed;left:0;top:0;width:680px;height:680px;margin:-340px 0 0 -340px;border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(closest-side,rgba(255,238,214,.075),rgba(255,238,214,0));opacity:0;transition:opacity .6s ease;will-change:transform}
+:root[data-theme="onyx"] #glowx.on{opacity:1}
+@media print{.px-dev,.glow-dot,#glowx{display:none!important}}
+</style>
 </head>
 <body>
 
@@ -1631,8 +1698,8 @@ html,body{overflow-x:clip}
 <main id="page" class="intro">
 <!-- 00 封面 -->
 <section id="cover">
-  <div class="cv-bar label"><span><b>The AI Issue · N°01</b></span><span>September MMXXVI</span><span>Portfolio · 作品集</span><span>Guangzhou</span></div>
-  <h1 class="masthead rv">XU YUJIE</h1>
+  <div class="cv-bar label"><span><b>The AI Issue · N°01</b></span><span>September MMXXVI</span><span>Portfolio · 作品集</span><span>Guangzhou</span><span class="coord">23°07′N 113°15′E</span></div>
+  <h1 class="masthead rv mh-gl" data-text="XU YUJIE" aria-label="XU YUJIE">XU YUJIE</h1>
 
   <div class="cv-lines">
     <div class="label rv">Cover Story<b class="cv-role">AI 产品 · Agent</b></div>
@@ -1779,6 +1846,32 @@ html,body{overflow-x:clip}
       <div class="card" style="--i:2"><span class="label"><span>Problem 03</span></span><span class="big-no">03</span><h4>情绪影响记忆</h4><div class="body"><p class="feel">一次情绪波动会长期影响后面的对话。</p><p class="fix">情绪和事实分开存放，情绪不写入长期记录。</p></div></div>
       <div class="card" style="--i:3"><span class="label"><span>Problem 04</span></span><span class="big-no">04</span><h4>费用过高</h4><div class="body"><p class="feel">对话变长以后，每轮费用跟着上涨，而且看不到明细。</p><p class="fix">优化缓存，命中率 91.8%。费用按对话和后台分开显示。</p></div></div>
     </div>
+    </div>
+
+    <div class="xv rv" id="xv">
+      <span class="label">Exploded view · 拆开来看</span>
+      <h3 class="xv-title">把 House 拆开，一共<span class="rn" data-rn="underline">五层</span>。</h3>
+      <p class="xv-sub">从上到下，正好是一条消息从发出到交给模型的路线。点哪一层，哪一层就亮。</p>
+      <div class="xv-body">
+        <div class="xv-stage" aria-hidden="true">
+          <div class="xv-grid"></div>
+          <div class="xv-stack">
+            <div class="xv-plate p0" data-i="0"><i>01 · UI</i></div>
+            <div class="xv-plate p1" data-i="1"><i>02 · API</i></div>
+            <div class="xv-plate p2" data-i="2"><i>03 · MEMORY</i></div>
+            <div class="xv-plate p3" data-i="3"><i>04 · PROMPT</i></div>
+            <div class="xv-plate p4" data-i="4"><i>05 · MODEL</i></div>
+          </div>
+          <div class="xv-cap">HOUSE v21 · EXPLODED VIEW · 5 LAYERS</div>
+        </div>
+        <ol class="xv-list">
+          <li data-i="0" tabindex="0"><b><em>01</em>界面</b><span>SwiftUI 原生界面，晴天、雨天、水波三种场景可以随时切换。</span></li>
+          <li data-i="1" tabindex="0"><b><em>02</em>本地后端</b><span>用 FastAPI 写的，负责找记忆、拼提示词和记账，全在自己的电脑上运行。</span></li>
+          <li data-i="2" tabindex="0"><b><em>03</em>记忆</b><span>分四层存在本机的 SQLite 里。事实只从用户的原话里提取，每条都能查到出处。</span></li>
+          <li data-i="3" tabindex="0"><b><em>04</em>提示词</b><span>系统提示和人设放在前面走缓存，命中率 91.8%。每一轮发了什么都能打开核对。</span></li>
+          <li data-i="4" tabindex="0"><b><em>05</em>模型</b><span>接了 OpenAI、Anthropic、Kimi 等 6 种模型服务，可以随时切换。</span></li>
+        </ol>
+      </div>
     </div>
 
     <div class="gallery">
@@ -4904,6 +4997,129 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
   setTimeout(function () { if (!pageReady) { pageReady = true; kick(); } }, 6000);
   document.addEventListener('visibilitychange', function () { if (!document.hidden) kick(); });
   kick();
+})();
+</script>
+<script>
+// 拆解图、像素显影、故障风标题、柔光。开了「减少动态效果」时：拆解图直接摊开，其余三个不做
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine=matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  // 1. 拆解图：露出三成时一层层分开；没人碰的时候五层轮流亮，碰过以后就停在选中的那层
+  var xv=document.getElementById('xv');
+  if(xv){
+    var plates=[].slice.call(xv.querySelectorAll('.xv-plate')),items=[].slice.call(xv.querySelectorAll('.xv-list li'));
+    var touched=false,timer=null,k=0;
+    function setOn(i){plates.forEach(function(p){p.classList.toggle('on',+p.dataset.i===i)});items.forEach(function(li){li.classList.toggle('on',+li.dataset.i===i)})}
+    function stop(){if(timer){clearInterval(timer);timer=null}}
+    function pick(i){touched=true;stop();setOn(i)}
+    function cycle(){if(touched||reduce||timer)return;setOn(k%5);k++;timer=setInterval(function(){setOn(k%5);k++},1500)}
+    plates.concat(items).forEach(function(el){
+      var i=+el.dataset.i;
+      el.addEventListener('click',function(){pick(i)});
+      if(fine)el.addEventListener('mouseenter',function(){pick(i)});
+    });
+    items.forEach(function(li){li.addEventListener('focus',function(){pick(+li.dataset.i)})});
+    if(reduce||!('IntersectionObserver' in window)){xv.classList.add('open')}
+    else{
+      var wait=null;
+      new IntersectionObserver(function(es){
+        var e=es[es.length-1];
+        if(e.isIntersecting&&e.intersectionRatio>=.3){xv.classList.add('open');if(!wait&&!timer)wait=setTimeout(function(){wait=null;cycle()},1100)}
+        else if(!e.isIntersecting){clearTimeout(wait);wait=null;stop();if(!touched){setOn(-1);k=0}}
+      },{threshold:[0,.3]}).observe(xv.querySelector('.xv-stage'));
+    }
+  }
+  if(reduce)return;
+
+  // 2. 像素显影：截图第一次滑到时先是大格子，几步之内变清楚；画布照抄图片当下的滤镜，和原来的黑白显影接得上
+  if('IntersectionObserver' in window){
+    var imgs=[].slice.call(document.querySelectorAll('.print img, .mv-still img')).filter(function(im){return !im.closest('.cv-pola')&&!im.closest('.sp-on')&&!im.closest('.zm')});
+    function develop(im){
+      var w=im.offsetWidth,h=im.offsetHeight,par=im.offsetParent,cs=getComputedStyle(im);
+      if(w<160||h<110||!im.naturalWidth||!par||cs.visibility==='hidden')return;
+      var nw=im.naturalWidth,nh=im.naturalHeight,sx=0,sy=0,sw=nw,sh=nh;
+      if(cs.objectFit==='cover'){
+        var q=Math.max(w/nw,h/nh),pos=cs.objectPosition.split(' '),px=parseFloat(pos[0]),py=parseFloat(pos[1]);
+        if(!/%$/.test(pos[0]))px=50;if(!/%$/.test(pos[1]||''))py=50;
+        sw=w/q;sh=h/q;sx=(nw-sw)*px/100;sy=(nh-sh)*py/100;
+      }else if(Math.abs(w/h-nw/nh)>.04)return;
+      var c=document.createElement('canvas'),dpr=Math.min(2,window.devicePixelRatio||1);
+      c.className='px-dev';c.setAttribute('aria-hidden','true');
+      c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);
+      c.style.left=im.offsetLeft+'px';c.style.top=im.offsetTop+'px';c.style.width=w+'px';c.style.height=h+'px';
+      var ctx=c.getContext('2d'),sm=document.createElement('canvas'),smx=sm.getContext('2d');
+      function draw(b){
+        var tw=Math.max(2,Math.round(w/b)),th=Math.max(2,Math.round(h/b));
+        sm.width=tw;sm.height=th;smx.imageSmoothingEnabled=true;smx.imageSmoothingQuality='high';
+        try{smx.drawImage(im,sx,sy,sw,sh,0,0,tw,th)}catch(err){return false}
+        ctx.imageSmoothingEnabled=false;ctx.clearRect(0,0,c.width,c.height);ctx.drawImage(sm,0,0,tw,th,0,0,c.width,c.height);
+        return true;
+      }
+      if(!draw(44))return;
+      par.appendChild(c);
+      var live=true;
+      (function sync(){if(!live)return;c.style.filter=cs.filter;requestAnimationFrame(sync)})();
+      var steps=[44,28,16,9,5],n=0;
+      var t=setInterval(function(){
+        n++;
+        if(n<steps.length){draw(steps[n])}
+        else{clearInterval(t);c.classList.add('done');setTimeout(function(){live=false;c.remove()},520)}
+      },120);
+    }
+    var pio=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(!e.isIntersecting||e.intersectionRatio<.3)return;
+        var im=e.target;pio.unobserve(im);
+        if(im.complete&&im.naturalWidth)develop(im);
+        else im.addEventListener('load',function(){develop(im)},{once:true});
+      });
+    },{threshold:[0,.3]});
+    imgs.forEach(function(im){pio.observe(im)});
+  }
+
+  // 3. 故障风标题：逐字升起落定后闪一下；鼠标移上去再闪；封面还在屏幕上时，隔十几秒偶尔再闪一次
+  var mh=document.querySelector('.mh-gl');
+  if(mh){
+    var busy=false,onCover=true;
+    function glitch(){if(busy)return;busy=true;mh.classList.remove('glitching');void mh.offsetWidth;mh.classList.add('glitching');setTimeout(function(){mh.classList.remove('glitching');busy=false},950)}
+    setTimeout(glitch,2300);
+    if(fine)mh.addEventListener('mouseenter',glitch);
+    if('IntersectionObserver' in window)new IntersectionObserver(function(es){onCover=es[es.length-1].isIntersecting},{threshold:0}).observe(mh);
+    (function again(){setTimeout(function(){if(onCover&&!document.hidden)glitch();again()},11000+Math.random()*7000)})();
+  }
+  // 顶部条的字先乱码再归位；鼠标移到哪一格，哪一格再乱一次
+  var G='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789°·/';
+  function scramble(sp,frames){
+    if(sp._scr)return;
+    var el=sp.children.length?(sp.children.length===1&&sp.textContent===sp.children[0].textContent?sp.children[0]:null):sp;
+    if(!el||!sp.offsetWidth)return;
+    var fin=el._fin||(el._fin=el.textContent),n=0;
+    sp._scr=true;sp.style.width=(sp.offsetWidth+1)+'px';sp.style.overflow='hidden';sp.style.whiteSpace='nowrap';
+    var t=setInterval(function(){
+      n++;var keep=Math.floor(fin.length*n/frames);
+      el.textContent=fin.slice(0,keep)+fin.slice(keep).replace(/[^\s·°′]/g,function(){return G[Math.random()*G.length|0]});
+      if(n>=frames){clearInterval(t);el.textContent=fin;sp.style.width=sp.style.overflow=sp.style.whiteSpace='';sp._scr=false}
+    },55);
+  }
+  [].slice.call(document.querySelectorAll('.cv-bar>span')).forEach(function(sp,ix){
+    setTimeout(function(){scramble(sp,14+ix*4)},700);
+    if(fine)sp.addEventListener('mouseenter',function(){scramble(sp,12)});
+  });
+
+  // 4. 柔光：宣传片和 MV 截图这几块深色画面里，一团柔光跟着鼠标；深色主题时整页也有一团很淡的光慢慢跟着
+  if(fine){
+    [].slice.call(document.querySelectorAll('.screen, .mv-still .frame')).forEach(function(host){
+      var dot=document.createElement('i');dot.className='glow-dot';dot.setAttribute('aria-hidden','true');host.appendChild(dot);
+      host.addEventListener('pointermove',function(e){var r=host.getBoundingClientRect();host.style.setProperty('--mx',Math.round(e.clientX-r.left)+'px');host.style.setProperty('--my',Math.round(e.clientY-r.top)+'px');host.classList.add('glowing')});
+      host.addEventListener('pointerleave',function(){host.classList.remove('glowing')});
+    });
+    var g=document.createElement('div');g.id='glowx';g.setAttribute('aria-hidden','true');document.body.appendChild(g);
+    var tx=innerWidth/2,ty=innerHeight/2,x=tx,y=ty,run=false;
+    function step(){x+=(tx-x)*.12;y+=(ty-y)*.12;g.style.transform='translate3d('+x.toFixed(1)+'px,'+y.toFixed(1)+'px,0)';if(Math.abs(tx-x)+Math.abs(ty-y)>.5)requestAnimationFrame(step);else run=false}
+    addEventListener('pointermove',function(e){tx=e.clientX;ty=e.clientY;g.classList.add('on');if(!run){run=true;requestAnimationFrame(step)}},{passive:true});
+    document.addEventListener('mouseout',function(e){if(!e.relatedTarget)g.classList.remove('on')});
+  }
 })();
 </script>
 </body>
