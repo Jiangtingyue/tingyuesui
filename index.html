@@ -825,6 +825,9 @@ html.lenis,html.lenis body{height:auto}
 :root{--paper-tex:url("assets/942f368a01.webp");--sheet-tex:url("assets/3ab2d085c3.webp")}
 /* ---------- 纸张质感：页面底色是一张会跟着滚动的纸，卡片、照片白边是更细的纸片 ---------- */
 body{background-color:#FDF9EF;background-image:var(--paper-tex);background-size:360px 360px;background-blend-mode:multiply}
+/* 深色主题：纸的底色跟着变深，纸纹照旧叠在上面 */
+:root[data-theme="onyx"] body{background-color:var(--bg)}
+@media (max-width:980px){:root[data-theme="onyx"] .jr-stage{background-color:var(--bg)}}
 .print,.cv-pola,.card,.problems.stack .card:nth-child(n),.readme,.ticket,.clip,.postcard,.portrait,.toy,.arch-box,.swatch,.stamp-in,.idx-prev{background-image:var(--sheet-tex);background-size:240px 240px;background-blend-mode:multiply}
 @media print{html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 /* ---------- House：一条消息的旅程（滚动叙事） ---------- */
@@ -1595,7 +1598,7 @@ html,body{overflow-x:clip}
 .xv{max-width:1080px;margin:0 auto clamp(90px,14vh,150px);--xv-edge:var(--muted);--xv-edge-on:#4E1414}
 :root[data-theme="onyx"] .xv{--xv-edge:#4a443b;--xv-edge-on:#7d3b33}
 .xv-title{font-size:clamp(24px,2.4vw,34px);font-weight:600;line-height:1.5;margin:14px 0 8px;max-width:26em}
-.xv-sub{color:var(--muted);margin:0;max-width:34em;line-height:1.8}
+.xv-sub{color:var(--muted);margin:0;max-width:40em;line-height:1.8}
 .xv-body{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(20px,4vw,64px);align-items:center;margin-top:10px}
 .xv-stage{position:relative;aspect-ratio:1/1;perspective:1600px}
 .xv-grid{position:absolute;inset:3%;background-image:radial-gradient(var(--line) 1.1px,transparent 1.4px);background-size:18px 18px;-webkit-mask-image:radial-gradient(closest-side,#000 60%,transparent);mask-image:radial-gradient(closest-side,#000 60%,transparent)}
@@ -1651,7 +1654,7 @@ html,body{overflow-x:clip}
 @media (max-width:980px){.cv-bar .coord{display:none}}
 
 /* ---------- 柔光：深色画面里一团柔光跟着鼠标；深色主题时整页有一团很淡的光跟着 ---------- */
-.glow-dot{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:0;transition:opacity .45s ease;mix-blend-mode:soft-light;background:radial-gradient(380px circle at var(--mx,50%) var(--my,50%),rgba(255,244,228,.62),rgba(255,244,228,0) 64%)}
+.glow-dot{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:0;transition:opacity .45s ease;mix-blend-mode:soft-light;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(255,244,228,.85),rgba(255,244,228,0) 62%)}
 .glowing>.glow-dot{opacity:1}
 #glowx{position:fixed;left:0;top:0;width:680px;height:680px;margin:-340px 0 0 -340px;border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(closest-side,rgba(255,238,214,.075),rgba(255,238,214,0));opacity:0;transition:opacity .6s ease;will-change:transform}
 :root[data-theme="onyx"] #glowx.on{opacity:1}
