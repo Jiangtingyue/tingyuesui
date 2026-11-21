@@ -1653,6 +1653,134 @@ html,body{overflow-x:clip}
 :root[data-theme="onyx"] #glowx.on{opacity:1}
 @media print{.glow-dot,#glowx{display:none!important}}
 </style>
+<style id="wb-style">
+/* ---------- N°05 故事工作台 ---------- */
+#workbench{--chapter:#6E4F7E;--mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace}
+:root[data-theme="onyx"] #workbench{--chapter:#C7A9D6}
+.wb-head{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(36px,6vw,96px);align-items:end;margin-bottom:clamp(56px,9vh,96px)}
+.wb-title{font-size:clamp(34px,4.2vw,60px);line-height:1.3;font-weight:600;letter-spacing:.04em;margin-bottom:22px}
+.wb-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px;margin-top:34px}
+.wb-open{display:inline-flex;align-items:center;gap:14px;padding:15px 26px;background:var(--ink);color:var(--paper);border:1px solid var(--ink);font-size:15px;letter-spacing:.16em;text-decoration:none;transition:background .3s ease,color .3s ease}
+.wb-open span{display:inline-block;transition:transform .3s ease}
+.wb-open:hover{background:transparent;color:var(--ink)}
+.wb-open:hover span{transform:translate(3px,-3px)}
+.wb-src{font-family:var(--sans);font-size:12px;letter-spacing:.22em;color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:3px;transition:color .3s ease,border-color .3s ease}
+.wb-src:hover{color:var(--ink);border-bottom-color:var(--ink)}
+.wb-note{margin-top:18px;font-size:13px;line-height:1.9;color:var(--muted);max-width:34em}
+.wb-chan{position:relative;background:var(--paper);background-image:var(--sheet-tex,none);box-shadow:var(--shadow);padding:30px 26px 12px}
+.wb-chan>.label{display:block;margin-bottom:6px}
+.wb-chan ul{list-style:none;margin:0;padding:0}
+.wb-chan li{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"tag name" "tag note";column-gap:18px;row-gap:2px;align-items:center;padding:16px 0;border-top:1px solid var(--line)}
+.wb-chan li:first-child{border-top:0}
+.wb-chan .dymo{grid-area:tag;min-width:96px;text-align:center}
+@supports (grid-template-columns:subgrid){.wb-chan ul{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:18px}.wb-chan li{grid-column:1/-1;grid-template-columns:subgrid}}
+.wb-chan li:nth-child(1) .dymo{--dy:#7A3B2A;--rot:-.8deg}
+.wb-chan li:nth-child(2) .dymo{--dy:#1c1916;--rot:.6deg}
+.wb-chan li:nth-child(3) .dymo{--dy:#4B4570;--rot:-.3deg}
+.wb-chan b{grid-area:name;font-family:var(--display);font-style:italic;font-weight:400;font-size:24px;line-height:1.15;color:var(--ink)}
+.wb-chan small{grid-area:note;font-family:var(--sans);font-size:12px;letter-spacing:.04em;line-height:1.6;color:var(--muted)}
+.wb-demo{margin:0;padding:14px 14px 16px}
+.wb-win{container-type:inline-size;border:1px solid rgba(22,19,15,.18);background:#fff;overflow:hidden}
+.wb-bar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid #e6e6e1;background:#f6f6f4}
+.wb-live{justify-self:start;display:inline-flex;align-items:center;gap:7px;font:600 10px/1 var(--sans);letter-spacing:.2em;color:#6f6f69;white-space:nowrap}
+.wb-live i{width:7px;height:7px;border-radius:50%;background:#d0453a;animation:wbpulse 1.6s ease-in-out infinite}
+@keyframes wbpulse{50%{opacity:.3}}
+.wb-url{padding:4px 16px;border-radius:6px;background:#ececea;font:500 11px/1.4 var(--sans);letter-spacing:.04em;color:#6f6f69;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wb-app{position:relative;display:grid;grid-template-columns:20% minmax(0,1fr) 26%;height:clamp(300px,52cqw,580px);overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;font-size:clamp(8.5px,1.2cqw,13px);line-height:1.6;letter-spacing:0;color:#1f1f1e;text-align:left}
+.wb-side,.wb-ctx{min-width:0;overflow:hidden;background:#fafaf9;padding:1.5em 1.2em}
+.wb-side{border-right:1px solid #e6e6e1}
+.wb-logo{display:inline-grid;place-items:center;width:2.2em;height:2.2em;border-radius:.5em;background:#1f1f1e;color:#fff;font-size:1.05em}
+.wb-brand{display:block;margin:.8em 0 1.1em;font-weight:600;font-size:1.15em;white-space:nowrap}
+.wb-nav{list-style:none;margin:0;padding:0;display:grid;gap:.15em}
+.wb-nav li{padding:.42em .6em;border-radius:.5em;color:#55554f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wb-nav li i{font-style:normal;font-size:.8em;color:#a3a39c;margin-right:.7em}
+.wb-nav li.on{background:#ececea;color:#1f1f1e;font-weight:500;box-shadow:inset 2px 0 0 #1f1f1e}
+.wb-main{min-width:0;overflow:hidden;padding:1.6em 1.9em}
+.wb-h{margin:0 0 1em;font-size:1.55em;font-weight:600;line-height:1.3}
+.wb-form{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.9em 1em}
+.wb-f{display:flex;flex-direction:column;gap:.35em;min-width:0}
+.wb-f.full{grid-column:1/-1}
+.wb-f .k{font-size:.85em;color:#6f6f69}
+.wb-f .v{display:block;padding:.5em .7em;border:1px solid #d6d6d0;border-radius:.5em;background:#fff;color:#1f1f1e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wb-ctx{border-left:1px solid #e6e6e1;display:flex;flex-direction:column;gap:.7em}
+.wb-ctx .h{font-weight:600}
+.wb-row{display:flex;flex-wrap:wrap;align-items:center;gap:.3em .8em;font-size:.85em}
+.wb-status{display:inline-flex;align-items:center;gap:.5em;min-width:0}
+.wb-status::before{content:"";flex:none;width:.5em;height:.5em;border-radius:50%;background:#3d9a62}
+.wb-set{color:#2f6fde}
+.wb-ctx .t{font-size:.8em;line-height:1.7;color:#6f6f69}
+.wb-b{display:inline-block;padding:.5em 1em;border:1px solid #d6d6d0;border-radius:.5em;background:#fff;color:#1f1f1e;font-size:.9em;text-align:center;white-space:nowrap;transition:transform .16s ease,background .16s ease}
+.wb-b.p{background:#1f1f1e;border-color:#1f1f1e;color:#fff}
+.wb-b.wide{display:block}
+.wb-b.press{transform:scale(.95);background:#3a3a38;border-color:#3a3a38;color:#fff}
+.wb-count{font-size:.8em;color:#6f6f69}
+.wb-app::after{content:"";position:absolute;inset:0;z-index:2;background:rgba(20,20,18,.26);opacity:0;transition:opacity .35s ease;pointer-events:none}
+.wb-dlg{position:absolute;left:12%;right:12%;top:8%;bottom:8%;z-index:3;display:flex;flex-direction:column;gap:.65em;padding:1.3em 1.5em;background:#fff;border-radius:.8em;box-shadow:0 1.2em 3em rgba(0,0,0,.18);opacity:0;transform:translateY(.6em) scale(.985);transition:opacity .35s ease,transform .35s ease;pointer-events:none}
+.wb-app[data-s="1"]::after,.wb-app[data-s="2"]::after,.wb-app[data-s="3"]::after,.wb-app[data-s="4"]::after{opacity:1}
+.wb-app[data-s="1"] .wb-dlg,.wb-app[data-s="2"] .wb-dlg,.wb-app[data-s="3"] .wb-dlg,.wb-app[data-s="4"] .wb-dlg{opacity:1;transform:none}
+.wb-dlg-hd{display:flex;align-items:center;justify-content:space-between;gap:1em}
+.wb-dlg-t{min-width:0;font-weight:600;font-size:1.2em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wb-dlg-h{min-height:1.5em;font-size:.82em;color:#6f6f69}
+.wb-dlg-b{flex:1;min-height:0;overflow:hidden;padding:.8em 1em;border:1px solid #e6e6e1;border-radius:.5em;white-space:pre-wrap;line-height:1.85}
+.wb-app[data-s="1"] .wb-dlg-b{-webkit-mask-image:linear-gradient(180deg,#000 74%,transparent);mask-image:linear-gradient(180deg,#000 74%,transparent)}
+.wb-app[data-s="2"] .wb-dlg-b,.wb-app[data-s="3"] .wb-dlg-b{background:#f4f4f2}
+.wb-app[data-s="2"] .wb-dlg-b::after,.wb-app[data-s="3"] .wb-dlg-b::after{content:"";display:inline-block;width:.09em;height:1.05em;margin-left:.1em;background:#1f1f1e;vertical-align:-.18em;animation:wbcaret 1s steps(1) infinite}
+@keyframes wbcaret{50%{opacity:0}}
+.wb-dlg-a{display:flex;flex-wrap:wrap;gap:.6em}
+.wb-toast{position:absolute;left:50%;bottom:7%;z-index:4;padding:.65em 1.2em;border-radius:.5em;background:#1f1f1e;color:#fff;font-size:.9em;white-space:nowrap;opacity:0;transform:translate(-50%,.6em);transition:opacity .3s ease,transform .3s ease}
+.wb-toast.on{opacity:1;transform:translate(-50%,0)}
+.wb-cur{position:absolute;left:0;top:0;z-index:6;width:1.3em;pointer-events:none;opacity:0;transition:transform .75s cubic-bezier(.45,0,.2,1),opacity .3s ease}
+.wb-cur.on{opacity:1}
+.wb-cur svg{display:block;width:100%;height:auto;fill:#1f1f1e;stroke:#fff;stroke-width:1.3;stroke-linejoin:round;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.3));transition:transform .15s ease;transform-origin:10% 10%}
+.wb-cur.tap svg{transform:scale(.82)}
+@media (pointer:coarse){
+  .wb-cur svg{display:none}
+  .wb-cur::before{content:"";display:block;width:1.8em;height:1.8em;margin:-.9em 0 0 -.9em;border-radius:50%;background:rgba(31,31,30,.16);border:1.5px solid rgba(31,31,30,.5);transition:transform .15s ease}
+  .wb-cur.tap::before{transform:scale(.78)}
+}
+.wb-steps{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.wb-steps button{position:relative;width:100%;padding:12px 0 4px;border:0;border-top:2px solid var(--line);background:none;color:var(--muted);font:inherit;text-align:left;cursor:pointer;transition:color .3s ease}
+.wb-steps button::before{content:"";position:absolute;left:0;top:-2px;width:0;height:2px;background:var(--chapter);transition:width .35s ease}
+.wb-steps button.on::before{width:100%}
+.wb-steps button.on,.wb-steps button:hover{color:var(--ink)}
+.wb-steps button.done{color:var(--ink-2);border-top-color:color-mix(in srgb,var(--ink) 38%,transparent)}
+.wb-steps button:focus-visible{outline:2px solid var(--chapter);outline-offset:4px}
+.wb-steps b{display:block;font-family:var(--display);font-style:italic;font-weight:400;font-size:16px;color:inherit}
+.wb-steps span{font-family:var(--sans);font-size:12.5px;letter-spacing:.1em}
+.wb-demo figcaption{margin-top:6px}
+.wb-nums{list-style:none;margin:clamp(56px,9vh,96px) 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink)}
+.wb-nums li{padding:24px 22px 6px;border-left:1px solid var(--line)}
+.wb-nums li:first-child{padding-left:0;border-left:0}
+.wb-nums b{display:block;font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(44px,5.2vw,76px);line-height:1;color:var(--chapter)}
+.wb-nums span{display:block;margin-top:12px;font-family:var(--sans);font-size:12.5px;letter-spacing:.08em;line-height:1.7;color:var(--ink-2)}
+@container (max-width:620px){
+  .wb-bar{display:flex}
+  .wb-url{flex:1;min-width:0;text-align:center}
+  .wb-app{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;height:clamp(330px,104cqw,480px);font-size:clamp(10.5px,3.1cqw,13px)}
+  .wb-side{display:none}
+  .wb-main{padding:1.2em 1.25em}
+  .wb-ctx{border-left:0;border-top:1px solid #e6e6e1;flex-direction:row;flex-wrap:wrap;align-items:center;gap:.55em .6em;padding:.85em 1.1em}
+  .wb-ctx .h,.wb-ctx .t,.wb-count{display:none}
+  .wb-row{flex:1 1 100%}
+  .wb-ctx .wb-b{flex:1 1 0}
+  .wb-dlg{left:4%;right:4%;top:4%;bottom:4%;padding:1.1em 1.2em}
+}
+/* 顶栏多了 WORKBENCH：981–1180 宽的时候把导航间距收一点，名字和导航不挤在一起 */
+@media (min-width:981px) and (max-width:1180px){.top nav{gap:18px}.top nav a{letter-spacing:.2em}}
+@media (max-width:980px){.wb-head{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:760px){
+  .wb-nums{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .wb-nums li{padding:20px 0 14px 16px;border-bottom:1px solid var(--line)}
+  .wb-nums li:nth-child(odd){padding-left:0;border-left:0}
+}
+@media (max-width:600px){
+  .wb-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .wb-demo{padding:10px 10px 12px}
+  .wb-chan{padding:28px 20px 10px}
+  .wb-chan b{font-size:21px}
+}
+@media (prefers-reduced-motion:reduce){.wb-dlg,.wb-app::after,.wb-toast,.wb-b,.wb-cur{transition:none}.wb-live i,.wb-dlg-b::after{animation:none}}
+</style>
 </head>
 <body>
 
@@ -1681,7 +1809,7 @@ html,body{overflow-x:clip}
     <a href="#mv">FILM</a>
     <a href="#index">INDEX</a>
     <a href="#persona">PERSONA</a>
-    <a href="#words">WORDS</a>
+    <a href="#words">WORDS</a> <a href="#workbench">WORKBENCH</a>
     <a href="#colophon">CONTACT</a>
   </nav>
   <button class="kbtn" id="kbtn" title="搜索页面">⌘K</button>
@@ -2161,7 +2289,8 @@ html,body{overflow-x:clip}
       <li><a href="#mv"><span class="n">N°02</span><span class="t">AI·MV《你心知肚明，我是你幻想中的朋友》<small>AIGC FILM · 可灵 AI</small></span><span class="y">2024</span></a></li>
       <li><a href="#persona"><span class="n">N°03</span><span class="t">互动内容企划 · 人设载体<small>INTERACTIVE · WORLD-BUILDING</small></span><span class="y">2026</span></a></li>
       <li><a href="#words"><span class="n">N°04</span><span class="t">文字与内容<small>FICTION · COMMUNITY · DISTRIBUTION</small></span><span class="y">Ongoing</span></a></li>
-      <li><a href="#skills"><span class="n">N°05</span><span class="t">能力与工具<small>TOOLKIT · LANGUAGES</small></span><span class="y">Skills</span></a></li>
+      <li><a href="#workbench"><span class="n">N°05</span><span class="t">故事工作台 · AI 写作工具<small>PRODUCT · WEB APP · CLAUDE / CHATGPT</small></span><span class="y">2026</span></a></li>
+<li><a href="#skills"><span class="n">N°06</span><span class="t">能力与工具<small>TOOLKIT · LANGUAGES</small></span><span class="y">Skills</span></a></li>
     </ol>
   </div>
 </section>
@@ -2190,7 +2319,7 @@ html,body{overflow-x:clip}
         <div class="proof">见 N°04 文字与内容</div></div>
       <div class="rv"><span class="label">04 · Systems</span><div class="k">Systems</div><div class="zh">AI 效能提升</div>
         <p>用 Claude Code 和 Codex 协作开发。我负责拆解需求、分配任务、验收和定位问题。两个月做了 21 个版本。</p>
-        <div class="proof">见 N°01 和 N°03</div></div>
+        <div class="proof">见 N°01、N°03 和 N°05</div></div>
     </div>
     <div class="travel rv">
       <div><p>我一个人旅行去过这五个国家。</p><button type="button" class="pc-hint" id="pc-open">点明信片，看沿途拍的照片 <span aria-hidden="true">↗</span></button></div>
@@ -2278,10 +2407,77 @@ html,body{overflow-x:clip}
   </div>
 </section>
 
+<!-- 故事工作台 -->
+<section id="workbench">
+  <div class="wrap">
+    <div class="sec-head"><span class="label">N°05 · Workbench</span><span class="no">08</span></div>
+    <div class="wb-head">
+      <div>
+        <h2 class="wb-title rv">故事工作台</h2>
+        <p class="lede dc rv">这是我做的一个故事创作工具，打开网页就能用。每一轮要改哪里、哪些设定不能动、最后交什么，在对应的模块里填好，就能整理成一份发给模型的执行指令。接上自己的 Claude 或 ChatGPT 密钥，指令可以直接发出去，回复边生成边显示。回来的结果先放进「待核对」，核对过再保存。</p>
+        <div class="wb-actions rv">
+          <a class="wb-open" href="https://jiangtingyue.github.io/story-workbench/" target="_blank" rel="noopener">打开故事工作台<span aria-hidden="true">↗</span></a>
+          <a class="wb-src" href="https://github.com/Jiangtingyue/story-workbench" target="_blank" rel="noopener">查看源码</a>
+        </div>
+        <p class="wb-note rv">不用注册。稿件和密钥都只存在自己的浏览器里；不填密钥也能整理指令，复制到别的模型里用。</p>
+      </div>
+      <div class="wb-chan rv r1"><span class="tape tc"></span>
+        <span class="label">模型通道</span>
+        <ul>
+          <li><span class="dymo">Claude 官方</span><b>Opus 5.5</b><small>官方 SDK，浏览器直接连接</small></li>
+          <li><span class="dymo">ChatGPT 官方</span><b>GPT-5.6</b><small>官方 SDK，走 Responses 接口</small></li>
+          <li><span class="dymo">兼容通道</span><b>DeepSeek 等</b><small>填上地址，就能接 OpenAI 格式的接口</small></li>
+        </ul>
+      </div>
+    </div>
+    <figure class="print sp-on wb-demo rv"><span class="tape tl"></span><span class="tape tr"></span>
+      <div class="wb-win">
+        <div class="wb-bar"><span class="wb-live"><i></i>自动演示</span><span class="wb-url">jiangtingyue.github.io/story-workbench</span></div>
+        <div class="wb-app" id="wb-app" data-s="0" aria-hidden="true">
+          <div class="wb-side"><span class="wb-logo">叙</span><span class="wb-brand">故事工作台</span>
+            <ol class="wb-nav"><li class="on"><i>01</i>本轮任务</li><li><i>02</i>题材与方向</li><li><i>03</i>短剧拆解</li><li><i>04</i>策划深化</li><li><i>05</i>人物与命名</li><li><i>06</i>正文与润色</li><li><i>07</i>审稿记录</li><li><i>08</i>连续性</li><li><i>09</i>规则与证据</li><li><i>10</i>互动与分支</li><li><i>11</i>文本交接</li><li><i>12</i>验证记录</li><li><i>13</i>知识与模板</li></ol>
+          </div>
+          <div class="wb-main"><div class="wb-h">本轮任务</div>
+            <div class="wb-form">
+              <div class="wb-f"><span class="k">本轮任务</span><span class="v">选题构思</span></div>
+              <div class="wb-f"><span class="k">处理范围／起止</span><span class="v">第一章开头</span></div>
+              <div class="wb-f"><span class="k">必须保留／冻结项</span><span class="v">女主是调香师</span></div>
+              <div class="wb-f"><span class="k">交付格式</span><span class="v">分条列出</span></div>
+              <div class="wb-f full"><span class="k">长度／数量</span><span class="v">三个方向，每个一句话</span></div>
+            </div>
+          </div>
+          <div class="wb-ctx"><div class="h">执行与回填</div>
+            <div class="wb-row"><span class="wb-status">Claude 官方 · claude-opus-5-5</span><span class="wb-set">模型设置</span></div>
+            <div class="t">整理本轮表单与参考，可以直接发给模型，也可以复制到别处。结果回来后先核对，再保存。</div>
+            <span class="wb-b p wide wb-prep">整理执行指令</span><span class="wb-b wide">粘贴模型结果</span>
+            <div class="wb-count">已手动回填 0 条结果。</div>
+          </div>
+          <div class="wb-dlg"><div class="wb-dlg-hd"><span class="wb-dlg-t">整理执行指令</span><span class="wb-b">关闭</span></div><div class="wb-dlg-h"></div><div class="wb-dlg-b"></div><div class="wb-dlg-a"></div></div>
+          <div class="wb-toast">已保存模型结果，待人工核对。</div>
+          <span class="wb-cur"><svg viewBox="0 0 15 20"><path d="M1.5 1.5v14.7l3.8-3.6 2.6 6 2.7-1.2-2.6-5.9h5.4z"/></svg></span>
+        </div>
+      </div>
+      <ol class="wb-steps" aria-label="演示步骤">
+        <li><button type="button"><b>01</b><span>整理执行指令</span></button></li>
+        <li><button type="button"><b>02</b><span>发送给模型</span></button></li>
+        <li><button type="button"><b>03</b><span>边写边看</span></button></li>
+        <li><button type="button"><b>04</b><span>核对后保存</span></button></li>
+      </ol>
+      <figcaption>界面按工作台原样缩小重画，自动演示发给模型的一轮。点步骤可以跳到那一步。</figcaption>
+    </figure>
+    <ul class="wb-nums">
+      <li class="rv"><b>13</b><span>个模块，从选题到文本交接</span></li>
+      <li class="rv"><b>23</b><span>张女频题材卡</span></li>
+      <li class="rv"><b>496</b><span>个分层标签</span></li>
+      <li class="rv"><b>18</b><span>份写作参考，按任务自动带上</span></li>
+    </ul>
+  </div>
+</section>
+
 <!-- 07 能力 -->
 <section id="skills">
   <div class="wrap">
-    <div class="sec-head"><span class="label">N°05 · Toolkit</span><span class="no">08</span></div>
+    <div class="sec-head"><span class="label">N°06 · Toolkit</span><span class="no">09</span></div>
     <div class="skills">
       <div>
         <dl class="rv"><dt>AI 工具</dt><dd><b>Claude Code、Codex</b>（需求拆解、任务下发、产出验收、缺陷定位）<br>Claude、ChatGPT、Gemini、Grok；可灵 AI</dd></dl>
@@ -2440,7 +2636,7 @@ html,body{overflow-x:clip}
 
   // ---------- 命令面板 ----------
   var pal=document.getElementById('pal'),pq=document.getElementById('pal-q'),pl=document.getElementById('pal-list'),palOpen=false,act=0,items=[];
-  var pages=[['cover','封面','00'],['tour','快速导览','01'],['index','目录','02'],['four','个人概况','03'],['house','House · AI 情感陪伴应用','04'],['mv','AI MV','05'],['persona','角色设定的三种载体','06'],['words','写作与内容运营','07'],['skills','能力与工具','08'],['colophon','联系方式','09']];
+  var pages=[['cover','封面','00'],['tour','快速导览','01'],['index','目录','02'],['four','个人概况','03'],['house','House · AI 情感陪伴应用','04'],['mv','AI MV','05'],['persona','角色设定的三种载体','06'],['words','写作与内容运营','07'],['workbench','故事工作台','08'],['skills','能力与工具','09'],['colophon','联系方式','10']];
   function render(){
     var q=pq.value.trim().toLowerCase();
     items=pages.filter(function(p){return !q||p[1].toLowerCase().indexOf(q)>-1||p[0].indexOf(q)>-1});
@@ -2479,7 +2675,7 @@ html,body{overflow-x:clip}
     tn.nodeValue=(0).toFixed(dec)+rest;requestAnimationFrame(step);
   }
   var cio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){countUp(e.target);cio.unobserve(e.target)}})},{threshold:.6});
-  document.querySelectorAll('.facts .v,.ticket .main b,.metrics li b').forEach(function(el){cio.observe(el)});
+  document.querySelectorAll('.facts .v,.ticket .main b,.metrics li b,.wb-nums b').forEach(function(el){cio.observe(el)});
 
   // ---------- 快速导览 ----------
   var card=document.getElementById('tcard'),stage=document.getElementById('tstage');
@@ -3831,7 +4027,7 @@ window.__initFin3D = function(){
   }
 
   // ---- 标题逐行浮出：按字拆开，再按实际换行分组，每一行从一条缝里升起来
-  var heads=[].slice.call(document.querySelectorAll('#four h2, .mv h2, #persona .wrap > h2, #words .wrap > h2, .feature h3, .motion-head h3, .photos-head h3, .quote blockquote, #house > .wrap > h3'));
+  var heads=[].slice.call(document.querySelectorAll('#four h2, .mv h2, #persona .wrap > h2, #words .wrap > h2, #workbench .wb-title, .feature h3, .motion-head h3, .photos-head h3, .quote blockquote, #house > .wrap > h3'));
   function split(el){
     var frag=document.createDocumentFragment(), chars=[];
     [].slice.call(el.childNodes).forEach(function(n){
@@ -3964,7 +4160,7 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
   // 2. 顶部阅读进度条，带各章位置刻度（减少动态效果时也保留）
   var prog = document.createElement('div'); prog.className = 'read-prog'; prog.setAttribute('aria-hidden', 'true');
   var fill = document.createElement('i'); prog.appendChild(fill); document.body.appendChild(prog);
-  var chapterIds = ['four', 'house', 'mv', 'persona', 'words', 'skills', 'colophon'];
+  var chapterIds = ['four', 'house', 'mv', 'persona', 'words', 'workbench', 'skills', 'colophon'];
   function docTop(el){ var y = 0; while (el) { y += el.offsetTop; el = el.offsetParent; } return y; }
   function layoutTicks(){
     [].forEach.call(prog.querySelectorAll('b'), function(b){ prog.removeChild(b); });
@@ -4282,7 +4478,7 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
   <a href="#mv" data-s="mv">影像</a>
   <a href="#index" data-s="tour,index,four">目录</a>
   <a href="#persona" data-s="persona">角色</a>
-  <a href="#words" data-s="words,skills">文字</a>
+  <a href="#words" data-s="words,workbench,skills">文字</a>
   <a href="#colophon" data-s="colophon">联系</a>
   <span class="bar" aria-hidden="true"><i></i></span>
 </nav>
@@ -5061,6 +5257,85 @@ var RoughNotation=function(t){"use strict";const e="http://www.w3.org/2000/svg";
     addEventListener('pointermove',function(e){tx=e.clientX;ty=e.clientY;g.classList.add('on');if(!run){run=true;requestAnimationFrame(step)}},{passive:true});
     document.addEventListener('mouseout',function(e){if(!e.relatedTarget)g.classList.remove('on')});
   }
+})();
+</script>
+<script>
+/* N°05 故事工作台：演示窗自己走一轮「整理指令 → 发送 → 边写边看 → 核对保存」。
+   这页开场有 3D 倾斜，IntersectionObserver 会误判，所以按滚动时的实际位置判断看没看见；看不见就停。减少动态效果时只显示核对那一步。 */
+(function(){
+  var app = document.getElementById('wb-app'); if (!app) return;
+  function q(sel){ return app.querySelector(sel); }
+  var title = q('.wb-dlg-t'), hint = q('.wb-dlg-h'), body = q('.wb-dlg-b'), acts = q('.wb-dlg-a'), toast = q('.wb-toast'), prep = q('.wb-prep'), count = q('.wb-count'), cur = q('.wb-cur');
+  var steps = [].slice.call(document.querySelectorAll('#workbench .wb-steps button'));
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var LABEL = 'Claude 官方 · claude-opus-5-5';
+  var PROMPT = ['按《通用故事创作工作台 v1.2》执行，只启用本轮有关模块。', '本轮模块：本轮任务', '资料足够直接处理；阻塞时一次最多问 3 个问题。', '本轮任务：选题构思', '处理范围／起止：第一章开头', '必须保留／冻结项：女主是调香师', '交付格式：分条列出', '长度／数量：三个方向，每个一句话', '采用的题材卡：都市甜宠'];
+  var OUT = Array.from(['开头一：雨夜，她抱着样品箱推开工作室的门，桌上放着一份还没签的合同。', '开头二：婚礼前一晚，他递来一瓶没贴标签的香水，请她猜里面是哪三种花。', '开头三：合同到期那天早上，餐桌上还是摆着两份早餐。'].join('\n'));
+  var timers = [], playing = false, state = 0;
+  function later(fn, ms){ timers.push(setTimeout(fn, ms)); }
+  function clear(){ timers.forEach(clearTimeout); timers = []; }
+  function chip(text, primary){ var b = document.createElement('span'); b.className = 'wb-b' + (primary ? ' p' : ''); b.textContent = text; return b; }
+  function setActs(list){ while (acts.firstChild) acts.removeChild(acts.firstChild); list.forEach(function(b){ acts.appendChild(b); }); }
+  function primary(){ return acts.querySelector('.p'); }
+  function mark(i){ steps.forEach(function(s, k){ s.classList.toggle('on', k === i); s.classList.toggle('done', k < i); s.setAttribute('aria-pressed', k === i ? 'true' : 'false'); }); }
+  function show(n){
+    state = n; app.setAttribute('data-s', String(n)); toast.classList.remove('on'); prep.classList.remove('press');
+    mark(n <= 1 ? 0 : n >= 4 ? 3 : n - 1);
+    if (n === 0) count.textContent = '已手动回填 0 条结果。';
+    if (n === 1) { title.textContent = '整理执行指令'; hint.textContent = '核对材料和敏感信息后，可以直接发送给模型。'; body.textContent = PROMPT.join('\n'); setActs([chip('发送给模型', true), chip('复制文字'), chip('导出 Markdown')]); }
+    if (n === 2 || n === 3) { title.textContent = '模型回复 · ' + LABEL; hint.textContent = n === 2 ? '正在连接…' : '正在生成 · 已收到 0 字'; body.textContent = ''; setActs([chip('停止生成')]); }
+    if (n === 4) { title.textContent = '核对模型结果'; hint.textContent = '来自 ' + LABEL + '。先核对再保存；保存后仍是「待核对」，不会自动改动设定。'; body.textContent = OUT.join(''); setActs([chip('保存模型结果', true)]); }
+    if (n === 5) { count.textContent = '已手动回填 1 条结果。'; toast.classList.add('on'); }
+  }
+  function place(x, y){ cur.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)'; }
+  function rest(){ var a = app.getBoundingClientRect(); cur.classList.add('on'); place(a.width * 0.6, a.height * 0.76); }
+  function aim(el){
+    if (!el) return; var a = app.getBoundingClientRect(), r = el.getBoundingClientRect(); if (!r.width) return;
+    cur.classList.add('on'); place(r.left - a.left + r.width * 0.6, r.top - a.top + r.height * 0.6);
+  }
+  function press(el, next){ if (el) el.classList.add('press'); cur.classList.add('tap'); later(function(){ cur.classList.remove('tap'); }, 170); later(next, 380); }
+  function type(i){
+    var n = Math.min(i, OUT.length);
+    body.textContent = OUT.slice(0, n).join(''); hint.textContent = '正在生成 · 已收到 ' + n + ' 字';
+    if (n < OUT.length) later(function(){ type(n + 2); }, 70); else later(function(){ run(4); }, 900);
+  }
+  function run(n){
+    clear(); show(n);
+    if (n === 0) { rest(); later(function(){ aim(prep); }, 500); later(function(){ press(prep, function(){ run(1); }); }, 1450); }
+    if (n === 1) {
+      (function add(k){ body.textContent = PROMPT.slice(0, k).join('\n'); if (k < PROMPT.length) later(function(){ add(k + 1); }, 110); })(1);
+      later(function(){ aim(primary()); }, 1500); later(function(){ press(primary(), function(){ run(2); }); }, 2600);
+    }
+    if (n === 2) { later(function(){ cur.classList.remove('on'); }, 250); later(function(){ run(3); }, 900); }
+    if (n === 3) { cur.classList.remove('on'); type(0); }
+    if (n === 4) { rest(); later(function(){ aim(primary()); }, 900); later(function(){ press(primary(), function(){ run(5); }); }, 2300); }
+    if (n === 5) { later(rest, 200); later(function(){ run(0); }, 2300); }
+  }
+  function still(n){
+    clear(); show(n); cur.classList.remove('on');
+    if (n === 3) { body.textContent = OUT.join(''); hint.textContent = '正在生成 · 已收到 ' + OUT.length + ' 字'; }
+  }
+  steps.forEach(function(btn, k){
+    btn.addEventListener('click', function(){ var n = k + 1; if (reduce) { still(n); return; } playing = true; run(n); });
+  });
+  if (reduce) { still(4); return; }
+  show(0);
+  function visible(){
+    var r = app.getBoundingClientRect(), h = window.innerHeight || document.documentElement.clientHeight;
+    var seen = Math.min(r.bottom, h) - Math.max(r.top, 0);
+    return r.height > 0 && seen >= Math.min(r.height, h) * 0.4;
+  }
+  var queued = false;
+  function check(){
+    queued = false; var v = !document.hidden && visible();
+    if (v && !playing) { playing = true; run(state === 5 ? 0 : state); }
+    else if (!v && playing) { playing = false; clear(); }
+  }
+  function soon(){ if (!queued) { queued = true; requestAnimationFrame(check); } }
+  window.addEventListener('scroll', soon, { passive: true });
+  window.addEventListener('resize', soon);
+  document.addEventListener('visibilitychange', soon);
+  setTimeout(check, 2600);
 })();
 </script>
 </body>
